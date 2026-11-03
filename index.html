@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loan Officer</title>
+<link href="loanoffice.css?v=2" type="text/css" rel="stylesheet" media="all">
+</head>
+<body>
+
+  <!-- CUBICLE WALL -->
+  <header id="cubicle-wall">
+    <div class="wall-item" id="boss-sticky">
+      <span class="memo-tag" id="memo-tag">Today's Priority</span>
+      <strong id="memo-title">BRANCH MANAGER MEMORANDUM:</strong>
+      <span id="sticky-text">Loading memo...</span>
+    </div>
+
+    <div id="status-badges">
+      <div class="badge-box"><span id="lbl-sp">WARNINGS</span> <span class="hide-mobile" id="lbl-sp-detail">TOTAL:</span> <span id="badge-sp">0/3</span></div>
+      <div class="badge-box"><span id="lbl-savings">SAVINGS:</span> <span id="badge-savings">$ 0</span></div>
+      <div class="badge-box"><span id="lbl-day">DAY:</span> <span id="calendar-day">1</span></div>
+      <button class="side-btn" style="background-color:#455a64;" id="btn-open-newspaper">📰 Daily News</button>
+    </div>
+  </header>
+
+  <!-- DESK WORKSPACE -->
+  <main id="workspace">
+    <!-- LEFT PANEL: FOLDER TABS -->
+    <section id="left-panel">
+      <button class="side-btn" id="btn-open-sop">📚 SOP Handbook</button>
+      <div class="panel-title" id="lbl-folder-title">🗃️ Today's Applications</div>
+      <div id="folder-list"></div>
+    </section>
+
+    <!-- CENTER PANEL: DOCUMENT SHEET -->
+    <section id="center-panel">
+      <article id="document-sheet">
+        <div id="stamp-indicator" class="stamp-mark">APPROVED</div>
+        <div id="doc-content">Select an applicant file from the desk inbox on the left to begin examination.</div>
+      </article>
+
+      <div id="action-bar">
+        <button class="stamp-button" id="btn-approve">APPROVE</button>
+        <button class="stamp-button" id="btn-decline">DECLINE</button>
+      </div>
+    </section>
+
+    <!-- RIGHT PANEL: VERIFICATION TOOLS -->
+    <aside id="right-panel">
+      <!-- CRT MONITOR -->
+      <div class="desk-tool-card">
+        <div class="tool-title">
+          <span id="lbl-crt-title">Credit Bureau Terminal</span>
+          <span>🟩ONLINE</span>
+        </div>
+        <div id="crt-screen">
+          <div id="crt-log">> System ready to query applicant credit record...</div>
+          <button class="crt-btn" id="btn-query-slik">QUERY CREDIT BUREAU</button>
+        </div>
+      </div>
+
+      <!-- DESK TELEPHONE -->
+      <div class="desk-tool-card">
+        <div class="tool-title" id="lbl-phone-title">Employer Verification Phone</div>
+        <div id="phone-box">
+          <div id="phone-display">Receiver is on the hook.</div>
+          <button class="phone-btn" id="btn-call-hrd">📞 CALL HR / EMPLOYER</button>
+        </div>
+      </div>
+
+      <!-- DESK CALCULATOR -->
+      <div class="desk-tool-card">
+        <div class="tool-title" id="lbl-calc-title">Desk Calculator</div>
+        <div id="calculator">
+          <div id="calc-screen">0</div>
+          <div class="calc-keys">
+            <button class="calc-key clear" onclick="calcClear()">C</button>
+            <button class="calc-key" onclick="calcBackspace()">⌫</button>
+            <button class="calc-key op" onclick="calcOp('/')">/</button>
+            <button class="calc-key op" onclick="calcOp('*')">*</button>
+
+            <button class="calc-key" onclick="calcInput('7')">7</button>
+            <button class="calc-key" onclick="calcInput('8')">8</button>
+            <button class="calc-key" onclick="calcInput('9')">9</button>
+            <button class="calc-key op" onclick="calcOp('-')">-</button>
+
+            <button class="calc-key" onclick="calcInput('4')">4</button>
+            <button class="calc-key" onclick="calcInput('5')">5</button>
+            <button class="calc-key" onclick="calcInput('6')">6</button>
+            <button class="calc-key op" onclick="calcOp('+')">+</button>
+
+            <button class="calc-key" onclick="calcInput('1')">1</button>
+            <button class="calc-key" onclick="calcInput('2')">2</button>
+            <button class="calc-key" onclick="calcInput('3')">3</button>
+            <button class="calc-key op" style="grid-row: span 2;" onclick="calcEquals()">=</button>
+
+            <button class="calc-key" onclick="calcInput('0')">0</button>
+            <button class="calc-key" onclick="calcInput('00')">00</button>
+            <button class="calc-key" onclick="calcInput('000')">000</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- BOTTOM BAR: CASH MONITOR -->
+  <footer id="cash-bar-container">
+    <div class="meter-labels">
+      <span id="lbl-disbursed">Disbursed</span>&nbsp: <span id="val-current-cash">$ 0</span><br>
+      <span id="lbl-target">Target</span>&nbsp&nbsp&nbsp&nbsp: <span id="val-min-cash">$ 0</span> <br> 
+      <span id="lbl-ceiling">Ceiling</span>&nbsp&nbsp&nbsp&nbsp: <span id="val-max-cash">$ 0</span>
+    </div>
+    <div id="meter-track">
+      <div id="target-marker" title="Target Minimum"></div>
+      <div id="ceiling-marker" title="Plafon Maksimal"></div>
+      <div id="meter-fill"></div>
+    </div>
+    <button id="btn-submit-day">END SHIFT</button>
+  </footer>
+
+  <!-- NEWSPAPER MODAL -->
+  <div class="modal-overlay" id="modal-newspaper">
+    <div class="newspaper-box">
+      <div class="newspaper-header">
+        <h1 id="news-main-header">METROPOLITAN DAILY</h1>
+        <div class="newspaper-date">
+          <span id="news-edition">MORNING EDITION</span>
+          <span id="news-section-tag">DAILY BUSINESS & SOCIAL TRIBUNE</span>
+        </div>
+      </div>
+
+      <!-- HALAMAN 1: BERITA HARIAN -->
+      <div id="news-page-1" class="news-page">
+        <div class="news-articles" id="news-container"></div>
+      </div>
+
+      <!-- HALAMAN 2: PANDUAN BAGIAN 1 -->
+      <div id="news-page-2" class="news-page" style="display: none;">
+        <div class="tutorial-grid">
+          <div class="tutorial-col">
+            <div class="tutorial-img-placeholder">
+              <img src="tutorial-1.png" alt="Guide 1">
+            </div>
+            <div class="tutorial-text">
+              <h4 id="tut-title-1">GUIDE 1: BASIC ANALYSIS</h4>
+              <p id="tut-desc-1" style="text-align:justify">SOPs serve as the mandatory foundation for reviewing borrower files. Daily MEMORANDUMS from the Branch Manager introduce additional approval criteria.</p>
+            </div>
+          </div>
+          <div class="tutorial-col">
+            <div class="tutorial-img-placeholder">
+              <img src="tutorial-2.png" alt="Guide 2">
+            </div>
+            <div class="tutorial-text">
+              <h4 id="tut-title-2">GUIDE 2: DOCUMENT INSPECTION</h4>
+              <p id="tut-desc-2" style="text-align:justify">Multiple applicant files arrive each day. Pick folders from the desk inbox and examine whether the borrower satisfies lending criteria.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HALAMAN 3: PANDUAN BAGIAN 2 -->
+      <div id="news-page-3" class="news-page" style="display: none;">
+        <div class="tutorial-grid">
+          <div class="tutorial-col">
+            <div class="tutorial-img-placeholder">
+              <img src="tutorial-3.png" alt="Guide 3">
+            </div>
+            <div class="tutorial-text">
+              <h4 id="tut-title-3">GUIDE 3: PHONE & SLIK VERIFICATION</h4>
+              <p id="tut-desc-3" style="text-align:justify">Verify National ID formatting and confirm Credit Bureau delinquency rating is Clean (Rating 1). Place verification calls to confirm active employment.</p>
+            </div>
+          </div>
+          <div class="tutorial-col">
+            <div class="tutorial-img-placeholder">
+              <img src="tutorial-4.png" alt="Guide 4">
+            </div>
+            <div class="tutorial-text">
+              <h4 id="tut-title-4">GUIDE 4: FINANCIAL RATIOS</h4>
+              <p id="tut-desc-4" style="text-align:justify">Review the lower section for collateral ratio, DTI percentage, and maturity age. These metrics directly dictate approval validity.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HALAMAN 4: PANDUAN BAGIAN 3 -->
+      <div id="news-page-4" class="news-page" style="display: none;">
+        <div class="tutorial-grid">
+          <div class="tutorial-col">
+            <div class="tutorial-img-placeholder">
+              <img src="tutorial-5.png" alt="Guide 5">
+            </div>
+            <div class="tutorial-text">
+              <h4 id="tut-title-5">GUIDE 5: CASH TARGETS & CEILING</h4>
+              <p id="tut-desc-5" style="text-align:justify">Each day has a maximum branch cash ceiling that cannot be breached, alongside a minimum disbursement target to keep branch capital productive.</p>
+            </div>
+          </div>
+          <div class="tutorial-col">
+            <div class="tutorial-img-placeholder">
+              <img src="tutorial-6.png" alt="Guide 6">
+            </div>
+            <div class="tutorial-text">
+              <h4 id="tut-title-6">GUIDE 6: AUDIT CONSEQUENCES</h4>
+              <p id="tut-desc-6" style="text-align:justify">At shift end, all files and earned commissions are audited. Commissions pay for mandatory living expenses, while net surplus accumulates into savings.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NAVIGASI KORAN -->
+      <div class="newspaper-nav" id="newspaper-nav-bar">
+        <button class="news-nav-btn" id="btn-news-prev" onclick="changeNewsPage(-1)">◀ Previous</button>
+        <span id="news-page-indicator" style="font-size: 11px; font-weight: bold; color: #3e2723;">Page 1/4</span>
+        <button class="news-nav-btn" id="btn-news-next" onclick="changeNewsPage(1)">Next ▶</button>
+      </div>
+
+      <button class="modal-close-btn" id="btn-close-newspaper" onclick="closeModal('modal-newspaper')">CLOSE NEWSPAPER</button>
+    </div>
+  </div>
+
+  <!-- SOP HANDBOOK MODAL -->
+  <div class="modal-overlay" id="modal-sop">
+    <div class="handbook-box">
+      <div class="handbook-title"><span id="sop-title-text">STANDARD OPERATING PROCEDURE (SOP)</span><div class="eval-line alert" id="sop-alert-text">!!SOP RULES EXPAND DAILY!!</div></div>
+      <div id="sop-rules-list"></div>
+      <button class="modal-close-btn" id="btn-close-sop" onclick="closeModal('modal-sop')">CLOSE HANDBOOK</button>
+    </div>
+  </div>
+
+  <!-- DAY END EVALUATION MODAL -->
+  <div class="modal-overlay" id="modal-eval">
+    <div class="eval-box">
+      <div class="eval-header"><span id="eval-title-prefix">SHIFT CLOSING AUDIT - DAY</span> <span id="eval-day-num">1</span></div>
+      <div class="eval-line">
+        <span id="lbl-eval-target">Branch Minimum Target:</span>
+        <span id="eval-target-val">$ 0</span>
+      </div>
+      <div class="eval-line">
+        <span id="lbl-eval-disbursed">Total Disbursed Funds:</span>
+        <span id="eval-disbursed-val">$ 0</span>
+      </div>
+      <div class="eval-line">
+        <span id="lbl-eval-max">Branch Ceiling Limit:</span>
+        <span id="eval-max-val">$ 0</span>
+      </div>
+      <div id="eval-target-status" class="eval-line"></div>
+      
+      <div id="eval-strikes-container" style="border-bottom: 2px dashed #90a4ae;"></div>
+      
+	  <br>
+      <div class="eval-section-title" id="lbl-eval-section-title" style="font-weight:bold; margin-top:12px; border-bottom:1px solid #90a4ae; padding-bottom:3px; color:#263238;">
+        PERSONAL INCOME & LIVING EXPENSES SLIP
+      </div>
+      <div class="eval-line success" style="margin-top:6px;">
+        <span><span id="lbl-eval-comm">Today's Commission</span> (<span id="eval-correct-count">0</span> <span id="lbl-eval-files-text">Accurate Files x $ 25</span>):</span>
+        <span id="eval-comm-val">+$ 0</span>
+      </div>
+      
+      <div id="eval-expenses-list" style="background:#fff; border:1px solid #cfd8dc; padding:8px; border-radius:4px; margin:6px 0; font-size:12px;"></div>
+      
+      <div class="eval-line alert" style="margin-bottom:6px;">
+        <span id="lbl-eval-total-expense">Today's Total Living Cost:</span>
+        <span id="eval-total-expense">-$ 0</span>
+      </div>
+      <div class="eval-line" style="font-size:14px; font-weight:bold; border-top:2px solid #37474f; padding-top:6px;">
+        <span id="lbl-eval-net-savings">Net Personal Savings Balance:</span>
+        <span id="eval-net-savings">$ 0</span>
+      </div>
+      
+      <button class="modal-close-btn" id="btn-next-day" onclick="advanceToNextDay()">PROCEED TO NEXT DAY</button>
+    </div>
+  </div>
+
+  <!-- ENDING MODAL -->
+  <div class="modal-overlay" id="modal-ending">
+    <div class="ending-box">
+      <div class="ending-badge" id="end-badge">CAREER APPRAISAL</div>
+      <div class="ending-title" id="end-title">EVALUATION OUTCOME</div>
+      
+      <div class="img-container-16-9">
+        <img id="end-image" src="end-star.png" alt="Ending Condition Illustration">
+      </div>
+
+      <div class="ending-desc" id="end-desc">Final career evaluation description.</div>
+      <div class="stat-grid">
+        <div><span id="lbl-end-comm">Total Commission Earned</span>: <strong id="end-total-comm">$ 0</strong></div>
+        <div><span id="lbl-end-savings">Final Net Savings</span>: <strong id="end-total-savings">$ 0</strong></div>
+        <div><span id="lbl-end-sp">Cumulative Warnings</span>: <strong id="end-total-sp">0 / 3</strong></div>
+        <div><span id="lbl-end-files">Total Files Processed</span>: <strong id="end-total-files">0 Files</strong></div>
+        <div style="grid-column: span 2;"><span id="lbl-end-status">Employment Status</span>: <strong id="end-final-status">-</strong></div>
+      </div>
+      <button class="restart-btn" id="btn-restart" onclick="restartGame()">START NEW CAREER</button>
+    </div>
+  </div>
+
+  <!-- BACKGROUND STORY INTRO MODAL -->
+  <div class="modal-overlay active" id="modal-intro">
+    <div class="story-box">
+      <!-- MINI PILL SWITCH BAHASA DI POJOK KANAN ATAS -->
+      <div class="lang-switch-group">
+        <button type="button" class="lang-pill-btn active" id="btn-lang-en" onclick="setIntroLanguage('en')">EN</button>
+        <button type="button" class="lang-pill-btn" id="btn-lang-id" onclick="setIntroLanguage('id')">ID</button>
+      </div>
+      <h2 id="intro-title" style="margin: 0; color: #3e2723; font-size: 18px; text-transform: uppercase;">LOAN OFFICER</h2>
+      <div class="img-container-16-9">
+        <img id="intro-image" src="story-intro.png" alt="Desk of Fate Story Illustration">
+      </div>
+      <div class="story-text" id="intro-story-desc">
+        You were just hired as a credit analyst at this municipal branch. Facing strict lending quotas and an ailing family member with mounting hospital surgery deadlines, every stamp you place dictates lives—including your own.
+      </div>
+      <button class="restart-btn" id="btn-start-game" onclick="startGameFromIntro()" style="background:#2e7d32; width:100%; padding:10px; font-weight:bold; cursor:pointer;">
+        START SHIFT
+      </button>
+    </div>
+  </div>
+
+  <!-- LOAD DATASETS -->
+  <script type="text/javascript" src="days_data.js?v=3"></script>
+  <script type="text/javascript" src="days_data_en.js?v=3"></script>
+  <script>
+  /* GAME DATABASE & CLIENTS (INDONESIA & ENGLISH) */
+  const DAYS_DATA_ID = typeof generateDaysData === "function"? generateDaysData(): [];
+  const DAYS_DATA_EN = typeof generateDaysDataEn === "function"? generateDaysDataEn(): DAYS_DATA_ID;
+  let currentLang = "en";
+  let DAYS_DATA = currentLang === "en"? DAYS_DATA_EN: DAYS_DATA_ID;
+
+  /* TEKS INTRO DUAL BAHASA */
+  const INTRO_TEXTS = {
+    en: {
+      title: "LOAN OFFICER",
+      desc: "You were just hired as a credit analyst at this municipal branch.",
+      btn: "START SHIFT"
+    },
+    id: {
+      title: "LOAN OFFICER",
+      desc: "Kamu baru saja diterima bekerja sebagai analis kredit di kantor cabang ini.",
+      btn: "MULAI KERJA"
+    }
+  };
+
+  const SOP_RULES_HISTORY = {
+    id: [
+      {
+        day: 1,
+        title: "SOP 1: Rasio Beban Utang Dasar (DTI)",
+        desc: "Batas maksimal Debt-to-Income (Cicilan Bulanan / Pendapatan Bulanan) adalah 30%. Cicilan tidak boleh melebihi persentase ini.<br>(jika data dokumen tidak ada, bisa dihitung manual)"
+      },
+      {
+        day: 2,
+        title: "SOP 2: Riwayat Kredit SLIK OJK",
+        desc: "Periksa catatan BI Checking / SLIK OJK pada terminal CRT: Kolektibilitas 1 (Lancar) dapat diproses. Kolektibilitas 2 membutuhkan jaminan sah. Kolektibilitas 3, 4, dan 5 wajib DITOLAK mutlak."
+      },
+      {
+        day: 3,
+        title: "SOP 3: Ambang Nilai Agunan / Jaminan Fisik",
+        desc: "Taksiran nilai agunan fisik yang diserahkan nasabah minimal bernilai 120% dari pokok pinjaman yang diajukan. Rumus: (Nilai Agunan / Nilai Pinjaman) x 100% >= 120%.<br>(jika data dokumen tidak ada, bisa dihitung manual)"
+      },
+      {
+        day: 4,
+        title: "SOP 4: Uji Keabsahan Dokumen & Anti-Fraud",
+        desc: "Wajib memverifikasi kesesuaian digit NIK KTP (digit ke-7 sampai 12 harus mencerminkan tanggal-bulan-tahun lahir). Wajib menekan telepon verifikasi ke kantor pemohon; tolak jika nomor tidak terdaftar atau pemohon sudah tidak bekerja."
+      },
+      {
+        day: 5,
+        title: "SOP 5: Segmentasi Sektor Pinjaman",
+        desc: "Batas DTI dibedakan menurut sektor pembiayaan: Kredit Produktif (pengembangan usaha/alat kerja) maksimal DTI 30%. Kredit Konsumtif (kebutuhan pribadi/renovasi) diperketat menjadi maksimal 20%.<br>(jika data dokumen tidak ada, bisa dihitung manual)"
+      },
+      {
+        day: 6,
+        title: "SOP 6: Batas Usia Masa Pensiun",
+        desc: "Perhitungan jatuh tempo pelunasan: Usia Pemohon Saat Ini + Tenor Waktu Pinjaman (dalam tahun) tidak boleh melebihi 60 tahun.<br>(jika data dokumen tidak ada, bisa dihitung manual)"
+      },
+      {
+        day: 7,
+        title: "SOP 7: Audit Komprehensif Akhir Tahun",
+        desc: "Seluruh SOP dari Hari 1 hingga Hari 6 berlaku penuh secara bersamaan tanpa toleransi kelalaian prosedur."
+      }
+    ],
+    en: [
+      {
+        day: 1,
+        title: "SOP 1: Debt-to-Income (DTI) Threshold",
+        desc: "The maximum Debt-to-Income ratio (Monthly Installment / Net Monthly Income) is 30%. Installments must not exceed this ceiling.<br>(if unlisted on document, calculate manually)"
+      },
+      {
+        day: 2,
+        title: "SOP 2: Central Credit Bureau (SLIK)",
+        desc: "Inspect credit registry records on the CRT terminal: Rating 1 (Current / Clean) is eligible. Rating 2 requires verified physical collateral. Rating 3, 4, and 5 (Delinquent / Default) must be strictly REJECTED."
+      },
+      {
+        day: 3,
+        title: "SOP 3: Physical Collateral Threshold",
+        desc: "Appraisal value of physical collateral must equal at least 120% of requested principal. Formula: (Collateral Value / Loan) x 100% >= 120%.<br>(if unlisted on document, calculate manually)"
+      },
+      {
+        day: 4,
+        title: "SOP 4: Identity & Anti-Fraud Verification",
+        desc: "Verify applicant National ID digits (digits 7 to 12 must match birth date DD-MM-YY; female applicants add +40 to date). Dial employer phone to verify employment; decline if phone is invalid or applicant is not employed there."
+      },
+      {
+        day: 5,
+        title: "SOP 5: Loan Sector Segmentation",
+        desc: "DTI ceiling is segmented by sector: Productive Credit (business expansion/tools) max DTI 30%. Consumer Credit (personal/lifestyle) tightened to max DTI 20%.<br>(if unlisted on document, calculate manually)"
+      },
+      {
+        day: 6,
+        title: "SOP 6: Retirement Maturity Age Limit",
+        desc: "Repayment maturity calculation: Applicant Age + Loan Tenor (in years) must not exceed 60 years.<br>(if unlisted on document, calculate manually)"
+      },
+      {
+        day: 7,
+        title: "SOP 7: Comprehensive Annual Audit",
+        desc: "All SOPs from Day 1 to Day 6 apply simultaneously without procedural tolerance."
+      }
+    ]
+  };
+
+  const EXPENSES_CONFIG = {
+    id: {
+      1: [
+        { label: "Makan Hari Ini", amount: 25000 },
+        { label: "Ongkos Transport", amount: 15000 }
+      ],
+      2: [
+        { label: "Makan Hari Ini", amount: 25000 },
+        { label: "Ongkos Transport", amount: 15000 },
+        { label: "Beli Pulsa & Kuota", amount: 25000 }
+      ],
+      3: [
+        { label: "Makan Hari Ini", amount: 25000 },
+        { label: "Ongkos Transport", amount: 15000 },
+        { label: "Token Listrik Rumah", amount: 50000 }
+      ],
+      4: [
+        { label: "Makan Hari Ini", amount: 25000 },
+        { label: "Ongkos Transport", amount: 15000 },
+        { label: "Tagihan Air PAM", amount: 35000 }
+      ],
+      5: [
+        { label: "Makan Hari Ini", amount: 25000 },
+        { label: "Ongkos Transport", amount: 15000 },
+        { label: "Cicilan Mobil Bulanan", amount: 160000 }
+      ],
+      6: [
+        { label: "Makan Hari Ini", amount: 25000 },
+        { label: "Ongkos Transport", amount: 15000 },
+        { label: "Beli Obat", amount: 30000 },
+        { label: "Iuran BPJS Kesehatan", amount: 80000 }
+      ],
+      7: [
+        { label: "Makan Hari Ini", amount: 25000 },
+        { label: "Ongkos Transport", amount: 15000 },
+        { label: "Servis Rutin Berkala Mobil", amount: 80000 },
+        { label: "Biaya RS Orang Tua", amount: 400000 }
+      ]
+    },
+    en: {
+      1: [
+        { label: "Daily Meals", amount: 25 },
+        { label: "Commute & Transit", amount: 15 }
+      ],
+      2: [
+        { label: "Daily Meals", amount: 25 },
+        { label: "Commute & Transit", amount: 15 },
+        { label: "Mobile Data Voucher", amount: 25 }
+      ],
+      3: [
+        { label: "Daily Meals", amount: 25 },
+        { label: "Commute & Transit", amount: 15 },
+        { label: "Home Electricity Token", amount: 35 }
+      ],
+      4: [
+        { label: "Daily Meals", amount: 25 },
+        { label: "Commute & Transit", amount: 15 },
+        { label: "Municipal Water Bill", amount: 30 }
+      ],
+      5: [
+        { label: "Daily Meals", amount: 25 },
+        { label: "Commute & Transit", amount: 15 },
+        { label: "Monthly Car Loan", amount: 60 }
+      ],
+      6: [
+        { label: "Daily Meals", amount: 25 },
+        { label: "Commute & Transit", amount: 15 },
+        { label: "Neighborhood Dues", amount: 20 },
+        { label: "Health Insurance", amount: 40 }
+      ],
+      7: [
+        { label: "Daily Meals", amount: 25 },
+        { label: "Commute & Transit", amount: 15 },
+        { label: "Car Routine Service", amount: 40 },
+        { label: "Parents Hospital Expenses", amount: 250 }
+      ]
+    }
+  };
+
+  const NEWS_PAGE_TITLES = {
+    id: {
+      1: "KORAN HARIAN BISNIS & SOSIAL",
+      2: "LAMPIRAN I: PANDUAN DASAR KREDIT",
+      3: "LAMPIRAN II: VERIFIKASI & AGUNAN",
+      4: "LAMPIRAN III: PENGELOLAAN KAS & SANKSI"
+    },
+    en: {
+      1: "DAILY BUSINESS & SOCIAL TRIBUNE",
+      2: "APPENDIX I: BASIC CREDIT GUIDE",
+      3: "APPENDIX II: VERIFICATION & COLLATERAL",
+      4: "APPENDIX III: CASH MANAGEMENT & AUDIT"
+    }
+  };
+
+  /* STATE MACHINE PERMAINAN */
+  const gameState = {
+    currentDay: 1,
+    totalStrikes: 0,
+    totalCommission: 0,
+    playerSavings: 0,
+    dailyDisbursedCash: 0,
+    activeClientIndex: 0,
+    currentDocPage: 1,
+    clientDecisions: {},
+    yesterdayDecisions: null,
+    totalFilesProcessed: 0
+  };
+
+  /* HELPER FORMAT MATA UANG (DUAL CURRENCY OTOMATIS) */
+  function formatRupiah(amount) {
+    if (typeof amount!== "number" || isNaN(amount)) {
+      return currentLang === "en"? "$ 0": "Rp 0";
+    }
+    if (currentLang === "en") {
+      return "$ " + amount.toLocaleString("en-US");
+    }
+    return "Rp " + amount.toLocaleString("id-ID");
+  }
+
+  function getCommissionPerFile() {
+    return currentLang === "en"? 25: 50000;
+  }
+
+  /* SISTEM LOKALISASI (EN / ID) */
+  function applyLanguage() {
+    const isEn = (currentLang === "en");
+    document.documentElement.lang = currentLang;
+
+    /* LABEL TOMBOL TOGGLE POJOK KANAN ATAS MODAL INTRO */
+    const btnEn = document.getElementById("btn-lang-en");
+    const btnId = document.getElementById("btn-lang-id");
+    if (btnEn && btnId) {
+      btnEn.classList.toggle("active", isEn);
+      btnId.classList.toggle("active",!isEn);
+    }
+
+    /* TEKS NARASI MODAL INTRO */
+    const introData = INTRO_TEXTS[currentLang] || INTRO_TEXTS.en;
+    const introTitleEl = document.getElementById("intro-title");
+    const introDescEl = document.getElementById("intro-story-desc");
+    const btnStartEl = document.getElementById("btn-start-game");
+    if (introTitleEl) introTitleEl.textContent = introData.title;
+    if (introDescEl) introDescEl.textContent = introData.desc;
+    if (btnStartEl) btnStartEl.textContent = introData.btn;
+
+    /* HEADER & STATUS BADGES BILIK KERJA */
+    document.getElementById("memo-tag").textContent = isEn? "Today's Priority": "Hanya berlaku hari ini";
+    document.getElementById("memo-title").textContent = isEn? "BRANCH MANAGER MEMORANDUM:": "MEMORANDUM KEPALA CABANG:";
+    document.getElementById("lbl-sp").textContent = isEn? "WARNINGS": "SP";
+    document.getElementById("lbl-sp-detail").textContent = isEn? "TOTAL:": "AKUMULASI:";
+    document.getElementById("lbl-savings").textContent = isEn? "SAVINGS:": "TABUNGAN:";
+    document.getElementById("lbl-day").textContent = isEn? "DAY": "HARI KE";
+    document.getElementById("btn-open-newspaper").textContent = isEn? "📰 Daily News": "📰 Koran Hari ini";
+
+    /* MEJA KERJA, FOLDER, & PERALATAN VERIFIKASI */
+    document.getElementById("btn-open-sop").textContent = isEn? "📚 SOP Handbook": "📚 Buku Pedoman SOP";
+    document.getElementById("lbl-folder-title").textContent = isEn? "🗃️ Today's Applications": "🗃️ Berkas Meja Hari Ini";
+    document.getElementById("lbl-crt-title").textContent = isEn? "Credit Bureau Terminal": "Terminal SLIK OJK";
+    document.getElementById("btn-query-slik").textContent = isEn? "QUERY CREDIT BUREAU": "CEK DATABASE OJK";
+    document.getElementById("lbl-phone-title").textContent = isEn? "Employer Verification Phone": "Verifikasi Telepon Instansi";
+    document.getElementById("btn-call-hrd").textContent = isEn? "📞 CALL HR / EMPLOYER": "📞 PANGGIL NOMOR HRD/KANTOR";
+    document.getElementById("lbl-calc-title").textContent = isEn? "Desk Calculator": "Kalkulator Meja";
+
+    /* PANEL KAS CABANG & TOMBOL SELESAI SHIFT */
+    document.getElementById("lbl-disbursed").textContent = isEn? "Disbursed": "Pencairan";
+    document.getElementById("lbl-target").textContent = isEn? "Target": "Target";
+    document.getElementById("lbl-ceiling").textContent = isEn? "Ceiling": "Plafon";
+    document.getElementById("btn-submit-day").textContent = isEn? "END SHIFT": "AKHIRI SHIFT";
+
+    /* MODAL KORAN METROPOLITAN */
+    document.getElementById("news-main-header").textContent = isEn? "METROPOLITAN DAILY": "HARIAN METROPOLITAN";
+    document.getElementById("btn-news-prev").textContent = isEn? "◀ Previous": "◀ Sebelumnya";
+    document.getElementById("btn-news-next").textContent = isEn? "Next ▶": "Selanjutnya ▶";
+    document.getElementById("btn-close-newspaper").textContent = isEn? "CLOSE NEWSPAPER": "TUTUP KORAN";
+
+    /* TEKS PANDUAN KORAN */
+    document.getElementById("tut-title-1").textContent = isEn? "GUIDE 1: BASIC ANALYSIS": "PANDUAN 1: DASAR ANALISIS";
+    document.getElementById("tut-desc-1").textContent = isEn 
+? "SOPs serve as the mandatory foundation for reviewing borrower files. Daily MEMORANDUMS from the Branch Manager introduce additional approval criteria." 
+: "Terdapat SOP yang menjadi landasan pengecekan dokumen yang harus diproses. MEMORANDUM dari Kepala cabang yang akan menambah syarat untuk penyetujauan pinjaman.";
+    document.getElementById("tut-title-2").textContent = isEn? "GUIDE 2: DOCUMENT INSPECTION": "PANDUAN 2: PEMERIKSAAN DOKUMEN";
+    document.getElementById("tut-desc-2").textContent = isEn 
+? "Multiple applicant files arrive each day. Pick folders from the desk inbox and examine whether the borrower satisfies lending criteria." 
+: "Setiap hari akan ada beberapa berkas yang harus diperiksa, silahkan dipilih di list berkas dimeja dan periksa apakah berkas tersebut layak mendapat pinjaman.";
+    document.getElementById("tut-title-3").textContent = isEn? "GUIDE 3: PHONE & CREDIT BUREAU": "PANDUAN 3: VERIFIKASI TELP & SLIK";
+    document.getElementById("tut-desc-3").textContent = isEn 
+? "Verify National ID formatting and confirm Credit Bureau delinquency rating is Clean (Rating 1). Place verification calls to confirm active employment." 
+: "Anda juga harus mengecek keabsahan NIK dan SLIK nya Lancar (Kolektibilitas 1) serta pengecekan telp instansi yang memastikan bahwa pemohon bekerja di tempat tersebut.";
+    document.getElementById("tut-title-4").textContent = isEn? "GUIDE 4: FINANCIAL RATIOS": "PANDUAN 4: PERHITUNGAN AGUNAN";
+    document.getElementById("tut-desc-4").textContent = isEn 
+? "Review the lower section for collateral ratio, DTI percentage, and maturity age. These metrics directly dictate approval validity." 
+: "Bagian bawah dokumen akan ada perhitungan rasio agunan, DTI dan umur pemohon saat lunas. tentusaja hal- hal tersebut turut menjadi pertimbangan penerimaan pinjaman.";
+    document.getElementById("tut-title-5").textContent = isEn? "GUIDE 5: CASH TARGETS & CEILING": "PANDUAN 5: TARGET & PLAFON KAS";
+    document.getElementById("tut-desc-5").textContent = isEn 
+? "Each day has a maximum branch cash ceiling that cannot be breached, alongside a minimum disbursement target to keep branch capital productive." 
+: "Setiap harinya akan ada plafon maksimal pinjaman yang dapat diterima, ada juga plafon target yang harus digunakan untuk memberi pinjaman bagi pemohon agar uang tidak mengendap terlalu banyak di kantor.";
+    document.getElementById("tut-title-6").textContent = isEn? "GUIDE 6: AUDIT CONSEQUENCES": "PANDUAN 6: KONSEKUENSI & AUDIT";
+    document.getElementById("tut-desc-6").textContent = isEn 
+? "At shift end, all files and earned commissions are audited. Commissions pay for mandatory living expenses, while net surplus accumulates into savings." 
+: "Pada AKHIR SHIFT akan ada hasil dari semua dokumen serta komisi yang didapat pada hari tersebut. Komisi akan digunakan untuk kebutuhan hidup serta tanggungan yang ada, sisanya akan masuk ke tabungan.";
+
+    /* MODAL BUKU PEDOMAN SOP */
+    document.getElementById("sop-title-text").textContent = isEn? "STANDARD OPERATING PROCEDURE (SOP)": "BUKU PEDOMAN STANDAR OPERASIONAL (SOP)";
+    document.getElementById("sop-alert-text").textContent = isEn? "!!SOP RULES EXPAND DAILY!!": "!!SOP AKAN BERTAMBAH SETIAP HARI!!";
+    document.getElementById("btn-close-sop").textContent = isEn? "CLOSE HANDBOOK": "TUTUP BUKU PEDOMAN";
+
+    /* MODAL AUDIT AKHIR SHIFT (DAILY EVALUATION) */
+    document.getElementById("eval-title-prefix").textContent = isEn? "SHIFT CLOSING AUDIT - DAY": "AUDIT SHIFT CLOSING - HARI";
+    document.getElementById("lbl-eval-target").textContent = isEn? "Branch Minimum Target:": "Target Minimum Kas Cabang:";
+    document.getElementById("lbl-eval-disbursed").textContent = isEn? "Total Disbursed Funds:": "Total Berkas Dicairkan:";
+    document.getElementById("lbl-eval-max").textContent = isEn? "Branch Ceiling Limit:": "Batas Plafon Kas Cabang:";
+    document.getElementById("lbl-eval-section-title").textContent = isEn? "PERSONAL INCOME & LIVING EXPENSES SLIP": "SLIP PENDAPATAN & PENGELUARAN PRIBADI";
+    document.getElementById("lbl-eval-comm").textContent = isEn? "Today's Commission": "Komisi Hari Ini";
+    document.getElementById("lbl-eval-total-expense").textContent = isEn? "Today's Total Living Cost:": "Total Beban Hidup Hari Ini:";
+    document.getElementById("lbl-eval-net-savings").textContent = isEn? "Net Personal Savings Balance:": "Sisa Saldo Tabungan Pribadi:";
+
+    /* MODAL AKHIR PERMAINAN (ENDING CAREER) */
+    document.getElementById("lbl-end-comm").textContent = isEn? "Total Commission Earned": "Total Komisi Diperoleh";
+    document.getElementById("lbl-end-savings").textContent = isEn? "Final Net Savings": "Sisa Tabungan Bersih";
+    document.getElementById("lbl-end-sp").textContent = isEn? "Cumulative Warnings": "Akumulasi Surat Peringatan";
+    document.getElementById("lbl-end-files").textContent = isEn? "Total Files Processed": "Total Berkas Diproses";
+    document.getElementById("lbl-end-status").textContent = isEn? "Employment Status": "Status Masa Kerja";
+    document.getElementById("btn-restart").textContent = isEn? "START NEW CAREER": "MULAI KARIER BARU";
+
+    /* SINKRONISASI BADGE STATUS & DAFTAR ATURAN SOP */
+    document.getElementById("badge-sp").textContent = `${gameState.totalStrikes}/3`;
+    document.getElementById("badge-savings").textContent = formatRupiah(gameState.playerSavings);
+    document.getElementById("calendar-day").textContent = gameState.currentDay;
+
+    renderSopHandbook();
+  }
+
+  /* FUNGSI TOGGLE BAHASA DI MODAL INTRO */
+  function setIntroLanguage(lang) {
+    if (currentLang === lang) return;
+    currentLang = lang;
+    DAYS_DATA = (currentLang === "en")? DAYS_DATA_EN: DAYS_DATA_ID;
+    applyLanguage();
+  }
+  
+  /* PANDUAN VISUAL HARI 1 (BREATHING PULSE BUTTONS) */
+  function updateTutorialHighlights() {
+    const btnApprove = document.getElementById("btn-approve");
+    const btnDecline = document.getElementById("btn-decline");
+    const btnSubmitDay = document.getElementById("btn-submit-day");
+
+    if (gameState.currentDay!== 1) {
+      if (btnApprove) btnApprove.classList.remove("btn-pulse-approve");
+      if (btnDecline) btnDecline.classList.remove("btn-pulse-decline");
+      if (btnSubmitDay) btnSubmitDay.classList.remove("btn-pulse-submit");
+      return;
+    }
+
+    const currentClients = DAYS_DATA[gameState.currentDay - 1].clients;
+    const allDecided = currentClients.every(c =>!!gameState.clientDecisions[c.id]);
+
+    if (allDecided) {
+      if (btnApprove) btnApprove.classList.remove("btn-pulse-approve");
+      if (btnDecline) btnDecline.classList.remove("btn-pulse-decline");
+      if (btnSubmitDay) btnSubmitDay.classList.add("btn-pulse-submit");
+    } else {
+      if (btnSubmitDay) btnSubmitDay.classList.remove("btn-pulse-submit");
+
+      const activeClient = currentClients[gameState.activeClientIndex];
+      const isCurrentDecided =!!gameState.clientDecisions[activeClient.id];
+
+      if (!isCurrentDecided) {
+        if (btnApprove) btnApprove.classList.add("btn-pulse-approve");
+        if (btnDecline) btnDecline.classList.add("btn-pulse-decline");
+      } else {
+        if (btnApprove) btnApprove.classList.remove("btn-pulse-approve");
+        if (btnDecline) btnDecline.classList.remove("btn-pulse-decline");
+      }
+    }
+  }
+
+  /* INISIALISASI HARI & TRANSISI FASE */
+  function initDay(dayNum) {
+    gameState.currentDay = dayNum;
+    gameState.dailyDisbursedCash = 0;
+    gameState.activeClientIndex = 0;
+    gameState.clientDecisions = {};
+
+    const dayObj = DAYS_DATA[dayNum - 1];
+
+    document.getElementById("calendar-day").textContent = dayNum;
+    document.getElementById("sticky-text").textContent = dayObj.stickyText;
+    document.getElementById("badge-sp").textContent = `${gameState.totalStrikes}/3`;
+    document.getElementById("badge-savings").textContent = formatRupiah(gameState.playerSavings);
+
+    document.getElementById("val-min-cash").textContent = formatRupiah(dayObj.minCash);
+    document.getElementById("val-max-cash").textContent = formatRupiah(dayObj.maxCash);
+    updateCashBar();
+
+    document.getElementById("crt-log").textContent = (currentLang === "en")? "> System ready to check applicant identity...": "> Siap menjalankan cek identitas nasabah...";
+    document.getElementById("phone-display").textContent = (currentLang === "en")? "Receiver is on the hook.": "Gagang telepon terpasang di tempatnya.";
+
+    renderFolderList();
+    selectClient(0);
+
+    renderNewspaper();
+    openModal('modal-newspaper');
+
+    const sopBtn = document.getElementById("btn-open-sop");
+    if (sopBtn) sopBtn.classList.add("sop-blink");
+
+    applyLanguage();
+    updateTutorialHighlights();
+  }
+
+  /* RENDER FOLDER LIST */
+  function renderFolderList() {
+    const container = document.getElementById("folder-list");
+    container.innerHTML = "";
+    const currentClients = DAYS_DATA[gameState.currentDay - 1].clients;
+    const isEn = (currentLang === "en");
+
+    currentClients.forEach((client, idx) => {
+      const tab = document.createElement("div");
+      tab.className = `folder-tab ${idx === gameState.activeClientIndex? 'active': ''}`;
+      tab.onclick = () => selectClient(idx);
+
+      const decision = gameState.clientDecisions[client.id] || (isEn? "UNDECIDED": "BELUM DIPUTUSKAN");
+      let statusClass = "status-pending";
+      if (decision === "APPROVE") statusClass = "status-approved";
+      if (decision === "DECLINE") statusClass = "status-declined";
+
+      tab.innerHTML = `
+        <div>
+          <div><strong>Doc ${gameState.currentDay}.${idx + 1}</strong>: ${client.name.substring(0, 16)}</div>
+          <div style="font-size:10px; color:#5d4037;">${formatRupiah(client.loan)}</div>
+        </div>
+        <span class="tab-status ${statusClass}">${decision}</span>
+      `;
+      container.appendChild(tab);
+    });
+  }
+
+  /* MEMILIH & MENAMPILKAN DOKUMEN NASABAH */
+  function switchDocPage(pageNum) {
+    gameState.currentDocPage = pageNum;
+    const currentClients = DAYS_DATA[gameState.currentDay - 1].clients;
+    renderDocumentPage(currentClients[gameState.activeClientIndex]);
+  }
+
+  function updateStampDisplay(clientId) {
+    const stampMark = document.getElementById("stamp-indicator");
+    const decision = gameState.clientDecisions[clientId];
+    if (decision === "APPROVE") {
+      stampMark.className = "stamp-mark approve stamped";
+      stampMark.textContent = "APPROVED";
+    } else if (decision === "DECLINE") {
+      stampMark.className = "stamp-mark decline stamped";
+      stampMark.textContent = "DECLINED";
+    } else {
+      stampMark.className = "stamp-mark";
+    }
+  }
+
+  function selectClient(index) {
+    gameState.activeClientIndex = index;
+    gameState.currentDocPage = 1;
+    const currentClients = DAYS_DATA[gameState.currentDay - 1].clients;
+    const client = currentClients[index];
+
+    renderFolderList();
+    renderDocumentPage(client);
+    updateStampDisplay(client.id);
+
+    const isEn = (currentLang === "en");
+    document.getElementById("crt-log").textContent = isEn 
+? `> Credit Bureau ready to query ID: ${client.nik}` 
+: `> Sistem SLIK siap memeriksa identitas: ${client.nik}`;
+    document.getElementById("phone-display").textContent = isEn 
+? `Ready to dial employer: ${client.phoneContact}` 
+: `Siap memanggil: ${client.phoneContact}`;
+    updateTutorialHighlights();
+  }
+
+  function renderDocumentPage(client) {
+    const docContainer = document.getElementById("doc-content");
+    const isPage1 = (gameState.currentDocPage === 1);
+    const isEn = (currentLang === "en");
+
+    const navTabsHtml = `
+      <div class="doc-page-tabs">
+        <button type="button" class="doc-page-tab ${isPage1? 'active': ''}" onclick="switchDocPage(1)">
+          ${isEn? 'SHEET 1: IDENTITY & VERIFICATION': 'LEMBAR 1: IDENTITAS & VERIFIKASI'}
+        </button>
+        <button type="button" class="doc-page-tab ${!isPage1? 'active': ''}" onclick="switchDocPage(2)">
+          ${isEn? 'SHEET 2: FINANCIALS & COLLATERAL': 'LEMBAR 2: KEUANGAN & AGUNAN'}
+        </button>
+      </div>
+    `;
+
+    if (isPage1) {
+      const isFemale = (client.gender === "Perempuan" || client.gender === "Female");
+      const photoSrc = isFemale? "woman.png": "man.png";
+      const displayGender = isEn? (isFemale? "Female": "Male"): (isFemale? "Perempuan": "Laki-laki");
+      const ageSuffix = isEn? "Years": "Tahun";
+
+      docContainer.innerHTML = `
+        ${navTabsHtml}
+        <div class="doc-header">
+          <div class="doc-title">${isEn? 'APPLICATION DOSSIER:': 'BERKAS PERMOHONAN:'} <br class="mobile-only">Doc.${client.id} - ${client.name.toUpperCase()}</div>
+          <div class="doc-sub"><a class="hide-mobile">${isEn? 'MAIN BRANCH OFFICE - ': 'KANTOR CABANG UTAMA - '}</a>${isEn? 'SHEET 1: APPLICANT IDENTITY DATA': 'LEMBAR 1: DATA IDENTITAS NASABAH'}</div>
+        </div>
+
+        <div class="doc-section-title">${isEn? 'I. APPLICANT IDENTITY DATA': 'I. DATA IDENTITAS PEMOHON'}</div>
+        <div class="identity-layout">
+          <div class="photo-frame">
+            <img src="${photoSrc}" alt="Applicant Photo">
+          </div>
+          <div class="doc-grid" style="margin-bottom:0;">
+            <div class="field-group">
+              <span class="field-label">${isEn? 'Full Name': 'Nama Lengkap'}</span>
+              <span class="field-value">${client.name}</span>
+            </div>
+            <div class="field-group">
+              <span class="field-label">${isEn? 'Gender / Age': 'Jenis Kelamin / Usia'}</span>
+              <span class="field-value">${displayGender} / ${client.age} ${ageSuffix}</span>
+            </div>
+            <div class="field-group">
+              <span class="field-label ${gameState.currentDay > 1? 'calc': ''}">${isEn? 'National ID Number (SSN/ID)': 'Nomor Induk Kependudukan (NIK)'}</span>
+              <span class="field-value highlight">${client.nik}</span>
+            </div>
+            <div class="field-group">
+              <span class="field-label ${gameState.currentDay > 3? 'calc': ''}">${isEn? 'Date of Birth (ID)': 'Tanggal Lahir di KTP'}</span>
+              <span class="field-value">${client.birthDate}</span>
+            </div>
+            <div class="field-group">
+              <span class="field-label">${isEn? 'Employer & Position': 'Pekerjaan & Instansi'}</span>
+              <span class="field-value">${client.job}</span>
+            </div>
+            <div class="field-group">
+              <span class="field-label ${gameState.currentDay > 3? 'calc': ''}">${isEn? 'Employer / HR Contact Phone': 'Nomor Kontak HRD / Instansi Pemohon'}</span>
+              <span class="field-value highlight">${client.phoneContact}</span>
+            </div>
+            <div class="field-group">
+              <span class="field-label">${isEn? 'Government / Public Official Kin': 'Hubungan Kerabat Pejabat Daerah'}</span>
+              <span class="field-value">${client.familyRelation}</span>
+            </div>
+          </div>
+        </div>
+        <div class="doc-header" style="margin-top:10px;"></div>
+      `;
+    } else {
+      let dti = isEn? '(error, manual calc)': '(error, hitung manual)';
+      let collateralRatio = isEn? '(error, manual calc)': '(error, hitung manual)';
+      let agecreditend = isEn? '(error, manual calc)': '(error, hitung manual)';
+
+      if (gameState.activeClientIndex < 3) {
+        dti = ((client.installment / client.income) * 100).toFixed(1) + '%';
+        collateralRatio = ((client.collateralValue / client.loan) * 100).toFixed(0) + (isEn? '% of Principal': '% dari Plafon');
+        agecreditend = (client.age + client.tenorYears).toFixed(1) + (isEn? ' Years': ' Tahun');
+      }
+
+      docContainer.innerHTML = `
+        ${navTabsHtml}
+        <div class="doc-header">
+          <div class="doc-sub"><a class="hide-mobile">${isEn? 'MAIN BRANCH OFFICE - ': 'KANTOR CABANG UTAMA - '}</a>${isEn? 'SHEET 2: CREDIT ANALYSIS & FINANCIALS': 'LEMBAR 2: ANALISIS KREDIT & FASILITAS KEUANGAN'}</div>
+        </div>
+
+        <div class="doc-section-title">${isEn? 'II. LOAN FACILITY & FINANCIALS': 'II. PENGAJUAN PINJAMAN & FASILITAS KEUANGAN'}</div>
+        <div class="doc-grid">
+          <div class="field-group">
+            <span class="field-label">${isEn? 'Requested Principal': 'Plafon Pinjaman Diajukan'}</span>
+            <span class="field-value highlight">${formatRupiah(client.loan)}</span>
+          </div>
+          <div class="field-group">
+            <span class="field-label">${isEn? 'Lending Sector': 'Sektor Pembiayaan'}</span>
+            <span class="field-value">${client.sector}</span>
+          </div>
+          <div class="field-group">
+            <span class="field-label">${isEn? 'Loan Purpose': 'Peruntukan Pinjaman'}</span>
+            <span class="field-value">${client.purpose}</span>
+          </div>
+          <div class="field-group">
+            <span class="field-label">${isEn? 'Loan Tenor / Term': 'Jangka Waktu Tenor'}</span>
+            <span class="field-value">${client.tenorMonths} ${isEn? 'Months': 'Bulan'} (${client.tenorYears} ${isEn? 'Years': 'Tahun'})</span>
+          </div>
+          <div class="field-group">
+            <span class="field-label">${isEn? 'Net Monthly Income': 'Pendapatan Bersih Bulanan'}</span>
+            <span class="field-value">${formatRupiah(client.income)}</span>
+          </div>
+          <div class="field-group">
+            <span class="field-label">${isEn? 'Monthly Installment': 'Kewajiban Cicilan Bulanan'}</span>
+            <span class="field-value">${formatRupiah(client.installment)}</span>
+          </div>
+        </div>
+
+        <div class="doc-section-title">${isEn? 'III. PHYSICAL COLLATERAL': 'III. AGUNAN / JAMINAN FISIK'}</div>
+        <div class="doc-grid">
+          <div class="field-group">
+            <span class="field-label">${isEn? 'Collateral Title Type': 'Jenis Dokumen Agunan'}</span>
+            <span class="field-value">${client.collateralType}</span>
+          </div>
+          <div class="field-group">
+            <span class="field-label">${isEn? 'Appraised Collateral Value': 'Nilai Taksiran Kantor Agunan'}</span>
+            <span class="field-value highlight">${formatRupiah(client.collateralValue)}</span>
+          </div>
+        </div>
+
+        <div class="doc-section-title">${isEn? 'IV. RAPID CREDIT METRICS SUMMARY': 'IV. RINGKASAN METRIK ANALISIS KREDIT CEPAT'}</div>
+        <div class="doc-grid">
+          <div class="field-group">
+            <span class="field-label calc">${isEn? 'Debt-to-Income Ratio (DTI)': 'Rasio Cicilan/Pendapatan (DTI)'}</span>
+            <span class="field-value highlight">${dti}</span>
+          </div>
+          <div class="field-group">
+            <span class="field-label ${gameState.currentDay > 2? 'calc': ''}">${isEn? 'Collateral Coverage Ratio': 'Rasio Nilai Taksiran Agunan'}</span>
+            <span class="field-value highlight">${collateralRatio}</span>
+          </div>
+          <div class="field-group">
+            <span class="field-label ${gameState.currentDay > 5? 'calc': ''}">${isEn? 'Applicant Age at Loan Maturity': 'Usia Pemohon Saat Pelunasan Akhir'}</span>
+            <span class="field-value highlight">${agecreditend}</span>
+          </div>
+        </div>
+        <div class="doc-header" style="margin-top:10px;"></div>
+      `;
+    }
+  }
+
+  /* EKSEKUSI STEMPEL (APPROVE / DECLINE) */
+  function stampDocument(action) {
+    const currentClients = DAYS_DATA[gameState.currentDay - 1].clients;
+    const client = currentClients[gameState.activeClientIndex];
+
+    const prevDecision = gameState.clientDecisions[client.id];
+
+    if (prevDecision === "APPROVE" && action === "DECLINE") {
+      gameState.dailyDisbursedCash -= client.loan;
+    } else if (prevDecision!== "APPROVE" && action === "APPROVE") {
+      gameState.dailyDisbursedCash += client.loan;
+    }
+
+    gameState.clientDecisions[client.id] = action;
+
+    const stampMark = document.getElementById("stamp-indicator");
+    stampMark.className = "stamp-mark";
+    setTimeout(() => {
+      updateStampDisplay(client.id);
+    }, 30);
+
+    updateCashBar();
+    renderFolderList();
+    updateTutorialHighlights();
+  }
+
+  document.getElementById("btn-approve").onclick = () => stampDocument("APPROVE");
+  document.getElementById("btn-decline").onclick = () => stampDocument("DECLINE");
+
+  /* METERAN KAS HARIAN */
+  function updateCashBar() {
+    const dayObj = DAYS_DATA[gameState.currentDay - 1];
+    const disbursed = gameState.dailyDisbursedCash;
+    const max = dayObj.maxCash;
+    const min = dayObj.minCash;
+
+    document.getElementById("val-current-cash").textContent = formatRupiah(disbursed);
+
+    const fillPercent = Math.min(100, Math.max(0, (disbursed / max) * 100));
+    const minPercent = (min / max) * 100;
+
+    const meterFill = document.getElementById("meter-fill");
+    meterFill.style.width = `${fillPercent}%`;
+
+    const targetMarker = document.getElementById("target-marker");
+    targetMarker.style.left = `${minPercent}%`;
+
+    if (disbursed > max) {
+      meterFill.style.backgroundColor = "#d32f2f";
+    } else if (disbursed >= min) {
+      meterFill.style.backgroundColor = "#4caf50";
+    } else {
+      meterFill.style.backgroundColor = "#ffb300";
+    }
+  }
+
+  /* ALAT MEJA: TERMINAL SLIK & TELEPON */
+  document.getElementById("btn-query-slik").onclick = () => {
+    const currentClients = DAYS_DATA[gameState.currentDay - 1].clients;
+    const client = currentClients[gameState.activeClientIndex];
+    const crt = document.getElementById("crt-log");
+    const isEn = (currentLang === "en");
+
+    if (isEn) {
+      crt.innerHTML = `> Querying central credit bureau...<br>> National ID: ${client.nik}<br>> Bureau Delinquency Record: <strong>${client.slikDesc}</strong>`;
+    } else {
+      crt.innerHTML = `> Query database OJK...<br>> NIK: ${client.nik}<br>> Status SLIK: <strong>${client.slikDesc}</strong>`;
+    }
+  };
+
+  document.getElementById("btn-call-hrd").onclick = () => {
+    const currentClients = DAYS_DATA[gameState.currentDay - 1].clients;
+    const client = currentClients[gameState.activeClientIndex];
+    const phone = document.getElementById("phone-display");
+    const isEn = (currentLang === "en");
+
+    if (isEn) {
+      phone.innerHTML = `Dialing employer ${client.phoneContact}...<br><strong>"${client.phoneResponse}"</strong>`;
+    } else {
+      phone.innerHTML = `Menghubungi ${client.phoneContact}...<br><strong>"${client.phoneResponse}"</strong>`;
+    }
+  };
+
+  /* ALAT MEJA: KALKULATOR MEJA */
+  let calcMemory = "0";
+
+  function updateScreen() {
+    if (calcMemory === "Error") {
+      document.getElementById("calc-screen").textContent = "Error";
+      return;
+    }
+
+    const formatted = calcMemory.replace(/\d+(\.\d*)?/g, (num) => {
+      const parts = num.split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join(".");
+    });
+
+    document.getElementById("calc-screen").textContent = formatted;
+  }
+
+  function calcInput(char) {
+    if (calcMemory === "0" || calcMemory === "Error") {
+      if (char === "00" || char === "000") return;
+      calcMemory = "";
+    }
+    if (calcMemory.endsWith(" ") && (char === "00" || char === "000")) {
+      char = "0";
+    }
+    calcMemory += char;
+    updateScreen();
+  }
+
+  function calcBackspace() {
+    if (calcMemory === "Error" || calcMemory.length <= 1) {
+      calcMemory = "0";
+    } else {
+      if (calcMemory.endsWith(" ")) {
+        calcMemory = calcMemory.trimEnd().slice(0, -1).trimEnd();
+      } else {
+        calcMemory = calcMemory.slice(0, -1);
+      }
+      if (calcMemory === "") calcMemory = "0";
+    }
+    updateScreen();
+  }
+
+  function calcOp(op) {
+    if (calcMemory === "Error") calcMemory = "0";
+    if (calcMemory.endsWith(" ")) {
+      calcMemory = calcMemory.trimEnd().slice(0, -1);
+    }
+    calcMemory += " " + op + " ";
+    updateScreen();
+  }
+
+  function calcClear() {
+    calcMemory = "0";
+    updateScreen();
+  }
+
+  function calcEquals() {
+    try {
+      const sanitized = calcMemory.replace(/[^0-9+\-*/.]/g, '');
+      const res = Function(`'use strict'; return (${sanitized})`)();
+      calcMemory = Number.isFinite(res)? (Math.round(res * 100) / 100).toString(): "Error";
+    } catch (e) {
+      calcMemory = "Error";
+    }
+    updateScreen();
+  }
+
+  /* KORAN HARIAN (THE DAILY NEWS) */
+  function renderNewspaper() {
+    totalNewsPages = (gameState.currentDay === 1)? 4: 1;
+    currentNewsPage = 1;
+    updateNewsPageDisplay();
+
+    const container = document.getElementById("news-container");
+    container.innerHTML = "";
+    const isEn = (currentLang === "en");
+
+    const editionText = document.getElementById("news-edition");
+    editionText.textContent = isEn? `WORK DAY ${gameState.currentDay} / SPECIAL EDITION`: `HARI KERJA KE-${gameState.currentDay} / EDISI KHUSUS`;
+
+    if (gameState.currentDay === 1 ||!gameState.yesterdayDecisions) {
+      container.classList.add("news-welcome");
+      if (isEn) {
+        container.innerHTML = `
+          <div class="news-item" style="grid-column: span 2;">
+            <h3>BRANCH INDUCTS NEW LOAN OFFICER</h3>
+            <p>Branch management officially assigned a new Loan Officer today amid tightening regional micro-credit regulations. The officer is required to inspect and finalize decisions (<strong>Approve</strong> or <strong>Decline</strong>) for all applicant dossiers on desk before shift end. Management emphasized that total disbursements must fulfill branch minimum targets without ever exceeding the authorized cash ceiling.</p>
+          </div>
+          <div class="news-item">
+            <h3>CENTRAL BANK RELEASES INAUGURAL CREDIT SOP</h3>
+            <p>Operational handbooks are delivered to officers' desks each morning.<br>Staff must inspect the <strong>SOP HANDBOOK</strong> daily. (Rules expand every day)</p>
+          </div>
+          <div class="news-item">
+            <h3>SMALL BUSINESS CLIMATE REBOUNDS</h3>
+            <p>Regional micro-entrepreneurs flock to branch desks seeking productive working capital.<br>The Branch Manager issues a daily <strong>MEMORANDUM</strong> serving as mandatory criteria for credit approval. (Memos change daily)</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="news-item" style="grid-column: span 2;">
+            <h3>MANAJEMEN RESMI LANTIK ANALIS KREDIT BARU</h3>
+            <p>Manajemen cabang resmi menugaskan Loan Officer baru hari ini di tengah pengetatan kredit mikro daerah. Analis baru diwajibkan memeriksa dan menuntaskan keputusan (<strong>Approve</strong> atau <strong>Decline</strong>) seluruh berkas pemohon di mejanya setiap hari kerja. Manajemen juga menegaskan bahwa total pencairan wajib memenuhi target minimum kantor tanpa boleh menembus batas plafon kas yang ditetapkan.</p>
+          </div>
+          <div class="news-item">
+            <h3>BANK PUSAT TERBITKAN EDISI PERDANA SOP KREDIT</h3>
+            <p>Buku pedoman operasional dibagikan ke meja kerja analis setiap pagi.<br>Staf diwajibkan memeriksa <strong>BUKU PEDOMAN SOP</strong> tiap harinya. (SOP akan bertambah tiap harinya)</p>
+          </div>
+          <div class="news-item">
+            <h3>IKLIM USAHA KECIL MULAI BERGELIAT</h3>
+            <p>Para pengusaha mikro daerah ramai-ramai mendatangi kantor cabang perbankan untuk memperluas akses modal kerja produktif. <br>Kepala Cabang akan memberi <strong>MEMORANDUM</strong> tiap harinya yang akan menjadi filter tambahan yang harus dipatuhi para staf. (Memo akan berubah tiap harinya)</p>
+          </div>
+        `;
+      }
+      return;
+    }
+
+    container.classList.remove("news-welcome");
+
+    const prevDayObj = DAYS_DATA[gameState.currentDay - 2];
+    prevDayObj.clients.forEach(c => {
+      const dec = gameState.yesterdayDecisions[c.id];
+      const headline = (dec === "APPROVE")? c.newsApprove: c.newsDecline;
+      const item = document.createElement("div");
+      item.className = "news-item";
+      item.innerHTML = `
+        <h3>${headline}</h3>
+        <p>${isEn? 'Source Person': 'Narasumber'}: <strong>${c.name}</strong><br>
+        ${isEn? 'Yesterday Decision': 'Keputusan Kemarin'}: <strong>${dec || (isEn? 'UNDECIDED': 'TIDAK DIPUTUSKAN')}</strong> (${formatRupiah(c.loan)})</p>
+      `;
+      container.appendChild(item);
+    });
+  }
+
+  document.getElementById("btn-open-newspaper").onclick = () => {
+    renderNewspaper();
+    openModal("modal-newspaper");
+  };
+
+  /* NAVIGASI HALAMAN KORAN */
+  let currentNewsPage = 1;
+  let totalNewsPages = 1;
+
+  function changeNewsPage(delta) {
+    currentNewsPage += delta;
+    if (currentNewsPage < 1) currentNewsPage = 1;
+    if (currentNewsPage > totalNewsPages) currentNewsPage = totalNewsPages;
+    updateNewsPageDisplay();
+  }
+
+  function updateNewsPageDisplay() {
+    const isMultiPage = (totalNewsPages > 1);
+    const isEn = (currentLang === "en");
+
+    const navBar = document.getElementById("newspaper-nav-bar");
+    if (navBar) {
+      navBar.style.display = isMultiPage? "flex": "none";
+    }
+
+    for (let i = 1; i <= 4; i++) {
+      const pageEl = document.getElementById(`news-page-${i}`);
+      if (pageEl) {
+        pageEl.style.display = (i === currentNewsPage)? "block": "none";
+      }
+    }
+
+    if (isMultiPage) {
+      const btnPrev = document.getElementById("btn-news-prev");
+      const btnNext = document.getElementById("btn-news-next");
+      if (btnPrev) btnPrev.disabled = (currentNewsPage === 1);
+      if (btnNext) btnNext.disabled = (currentNewsPage === totalNewsPages);
+
+      const indicator = document.getElementById("news-page-indicator");
+      if (indicator) {
+        indicator.textContent = isEn? `Page ${currentNewsPage}/${totalNewsPages}`: `Halaman ${currentNewsPage}/${totalNewsPages}`;
+      }
+    }
+
+    const sectionTag = document.getElementById("news-section-tag");
+    if (sectionTag) {
+      const titles = NEWS_PAGE_TITLES[currentLang] || NEWS_PAGE_TITLES.id;
+      sectionTag.textContent = titles[currentNewsPage] || (isEn? "DAILY BUSINESS & SOCIAL TRIBUNE": "KORAN HARIAN BISNIS & SOSIAL");
+    }
+  }
+
+  /* BUKU SOP HANDBOOK */
+  function renderSopHandbook() {
+    const container = document.getElementById("sop-rules-list");
+    container.innerHTML = "";
+    const rulesList = SOP_RULES_HISTORY[currentLang] || SOP_RULES_HISTORY.id;
+
+    rulesList.forEach(item => {
+      if (item.day <= gameState.currentDay) {
+        const row = document.createElement("div");
+        row.className = "sop-rule-item";
+        row.innerHTML = `
+          <strong>${item.title}</strong>
+          <div>${item.desc}</div>
+        `;
+        container.appendChild(row);
+      }
+    });
+  }
+
+  document.getElementById("btn-open-sop").onclick = () => {
+    const sopBtn = document.getElementById("btn-open-sop");
+    if (sopBtn) sopBtn.classList.remove("sop-blink");
+    renderSopHandbook();
+    openModal("modal-sop");
+  };
+
+  /* FASE SORE: AUDIT & EVALUASI AKHIR HARI */
+  document.getElementById("btn-submit-day").onclick = () => {
+    const dayObj = DAYS_DATA[gameState.currentDay - 1];
+    const isEn = (currentLang === "en");
+
+    const unhandled = dayObj.clients.filter(c =>!gameState.clientDecisions[c.id]);
+    if (unhandled.length > 0) {
+      if (isEn) {
+        alert(`There are still ${unhandled.length} application(s) without an explicit stamp (APPROVE/DECLINE)! Process all files before closing the shift.`);
+      } else {
+        alert(`Masih ada ${unhandled.length} berkas yang belum Anda stempel (APPROVE/DECLINE)! Selesaikan seluruh berkas sebelum shift berakhir.`);
+      }
+      return;
+    }
+
+    evaluateShiftEnd();
+  };
+
+  function evaluateShiftEnd() {
+    const dayObj = DAYS_DATA[gameState.currentDay - 1];
+    const isEn = (currentLang === "en");
+    let strikesToday = 0;
+    const violationLogs = [];
+    let correctCountToday = 0;
+
+    const disbursed = gameState.dailyDisbursedCash;
+    if (disbursed < dayObj.minCash) {
+      strikesToday++;
+      violationLogs.push(isEn 
+? `Failed to reach Minimum Disbursement Target (${formatRupiah(disbursed)} of target ${formatRupiah(dayObj.minCash)}).` 
+: `Gagal mencapai Target Minimum Pencairan (${formatRupiah(disbursed)} dari target ${formatRupiah(dayObj.minCash)}).`);
+    } else if (disbursed > dayObj.maxCash) {
+      strikesToday++;
+      violationLogs.push(isEn 
+? `Breached Maximum Cash Ceiling (${formatRupiah(disbursed)} exceeds ceiling ${formatRupiah(dayObj.maxCash)}).` 
+: `Melanggar Batas Plafon Kas Maksimal (${formatRupiah(disbursed)} melebihi plafon ${formatRupiah(dayObj.maxCash)}).`);
+    }
+
+    dayObj.clients.forEach(client => {
+      const dec = gameState.clientDecisions[client.id];
+      gameState.totalFilesProcessed++;
+
+      if (dec === client.correctDecision) {
+        correctCountToday++;
+      } else {
+        if (dec === "APPROVE" && client.correctDecision === "DECLINE") {
+          strikesToday++;
+          const reason = client.failReason || (isEn? "Failed SOP compliance criteria": "Tidak memenuhi kriteria SOP");
+          violationLogs.push(isEn 
+? `Approved non-compliant applicant [${client.name}]: ${reason}` 
+: `Meloloskan berkas bermasalah [${client.name}]: ${reason}`);
+        }
+      }
+    });
+
+    const commissionRate = getCommissionPerFile();
+    const dayCommission = correctCountToday * commissionRate;
+    const todayExpenses = (EXPENSES_CONFIG[currentLang] || EXPENSES_CONFIG.id)[gameState.currentDay] || [];
+    const totalDayExpense = todayExpenses.reduce((sum, item) => sum + item.amount, 0);
+
+    gameState.totalCommission += dayCommission;
+    gameState.playerSavings += (dayCommission - totalDayExpense);
+    gameState.totalStrikes += strikesToday;
+
+    document.getElementById("eval-day-num").textContent = gameState.currentDay;
+    document.getElementById("eval-target-val").textContent = formatRupiah(dayObj.minCash);
+    document.getElementById("eval-disbursed-val").textContent = formatRupiah(disbursed);
+    document.getElementById("eval-max-val").textContent = formatRupiah(dayObj.maxCash);
+    document.getElementById("eval-correct-count").textContent = correctCountToday;
+    document.getElementById("lbl-eval-files-text").textContent = isEn 
+? `Accurate Files x ${formatRupiah(commissionRate)}` 
+: `Berkas Tepat x ${formatRupiah(commissionRate)}`;
+    document.getElementById("eval-comm-val").textContent = "+" + formatRupiah(dayCommission);
+    document.getElementById("eval-total-expense").textContent = "-" + formatRupiah(totalDayExpense);
+
+    const netSavingsEl = document.getElementById("eval-net-savings");
+    netSavingsEl.textContent = formatRupiah(gameState.playerSavings);
+    netSavingsEl.style.color = (gameState.playerSavings < 0)? "#b71c1c": "#2e7d32";
+
+    const expenseContainer = document.getElementById("eval-expenses-list");
+    expenseContainer.innerHTML = todayExpenses.map(item => `
+      <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+        <span>• ${item.label}</span>
+        <span>${formatRupiah(item.amount)}</span>
+      </div>
+    `).join("");
+
+    const targetStatus = document.getElementById("eval-target-status");
+    if (disbursed >= dayObj.minCash && disbursed <= dayObj.maxCash) {
+      targetStatus.className = "eval-line success";
+      targetStatus.innerHTML = isEn 
+? "<span>Branch Cash Status:</span><span>TARGET ACHIEVED & COMPLIANT</span>" 
+: "<span>Status Kas Cabang:</span><span>TARGET TERCAPAI & AMAN</span>";
+    } else {
+      targetStatus.className = "eval-line alert";
+      targetStatus.innerHTML = isEn 
+? "<span>Branch Cash Status:</span><span>OUTSIDE ALLOWED THRESHOLD</span>" 
+: "<span>Status Kas Cabang:</span><span>DILUAR AMBANG BATAS</span>";
+    }
+
+    const strikesContainer = document.getElementById("eval-strikes-container");
+    strikesContainer.innerHTML = "";
+
+    if (strikesToday > 0) {
+      const box = document.createElement("div");
+      box.className = "strike-box";
+      const titleText = isEn 
+? `<strong>TODAY'S AUDIT INFRACTIONS (+${strikesToday} WARNING LETTER${strikesToday > 1? 'S': ''}):</strong>` 
+: `<strong>PELANGGARAN AUDIT HARI INI (+${strikesToday} SURAT PERINGATAN):</strong>`;
+      const footerText = isEn 
+? `Total Cumulative Warnings: ${gameState.totalStrikes} / 3` 
+: `Total SP Akumulasi Saat Ini: ${gameState.totalStrikes} / 3`;
+
+      box.innerHTML = `${titleText}<ul>` +
+        violationLogs.map(log => `<li>${log}</li>`).join("") +
+        `</ul><div style="margin-top:6px; color:#b71c1c; font-weight:bold;">${footerText}</div>`;
+      strikesContainer.appendChild(box);
+    } else {
+      const box = document.createElement("div");
+      box.className = "eval-line success";
+      box.style.margin = "10px 0";
+      box.textContent = isEn 
+? "Clean Audit! No credit compliance infractions or cash limit violations today." 
+: "Audit Bersih! Tidak ada pelanggaran kepatuhan kredit maupun batas kas hari ini.";
+      strikesContainer.appendChild(box);
+    }
+
+    const btnNext = document.getElementById("btn-next-day");
+    if (gameState.totalStrikes >= 3) {
+      btnNext.textContent = isEn? "RECEIVE TERMINATION NOTICE (GAME OVER)": "TERIMA SURAT PEMECATAN (GAME OVER)";
+    } else if (gameState.currentDay === 7) {
+      if (gameState.playerSavings < 0) {
+        btnNext.textContent = isEn? "SAVINGS DEFICIT / HOSPITAL UNPAID (GAME OVER)": "SALDO DEFISIT / RS TERTUNGGAK (GAME OVER)";
+      } else {
+        btnNext.textContent = isEn? "VIEW FINAL CAREER EVALUATION": "LIHAT EVALUASI AKHIR MASA KERJA";
+      }
+    } else {
+      btnNext.textContent = isEn? "PROCEED TO NEXT DAY": "LANJUT KE HARI BERIKUTNYA";
+    }
+
+    gameState.yesterdayDecisions = {...gameState.clientDecisions};
+    openModal("modal-eval");
+  }
+
+  /* TRANSISI HARI BERIKUTNYA ATAU TRIGGER ENDING */
+  function advanceToNextDay() {
+    closeModal("modal-eval");
+
+    if (gameState.totalStrikes >= 3) {
+      triggerEnding("TERMINATED");
+      return;
+    }
+
+    if (gameState.currentDay >= 7) {
+      if (gameState.playerSavings < 0) {
+        triggerEnding("FINANCIAL_RUIN");
+      } else if (gameState.totalStrikes === 0) {
+        triggerEnding("STAR_OFFICER");
+      } else {
+        triggerEnding("SURVIVOR");
+      }
+      return;
+    }
+
+    initDay(gameState.currentDay + 1);
+  }
+
+  function triggerEnding(type) {
+    const isEn = (currentLang === "en");
+    const badge = document.getElementById("end-badge");
+    const title = document.getElementById("end-title");
+    const desc = document.getElementById("end-desc");
+    const status = document.getElementById("end-final-status");
+    const endImg = document.getElementById("end-image");
+
+    document.getElementById("end-total-comm").textContent = formatRupiah(gameState.totalCommission);
+    document.getElementById("end-total-savings").textContent = formatRupiah(gameState.playerSavings);
+    document.getElementById("end-total-sp").textContent = `${gameState.totalStrikes} / 3`;
+    document.getElementById("end-total-files").textContent = `${gameState.totalFilesProcessed} ${isEn? 'Files': 'Berkas'}`;
+
+    if (type === "STAR_OFFICER") {
+      endImg.src = "end-star.png";
+      badge.textContent = isEn? "STAR LOAN OFFICER": "BINTANG KREDIT KANTOR";
+      badge.style.color = "#2e7d32";
+      title.textContent = isEn? "PROMOTION: BRANCH MANAGER": "PROMOSI JABATAN: KEPALA CABANG";
+      title.style.color = "#1b5e20";
+      desc.textContent = isEn 
+? "7 audit days cleared with zero warnings. Hospital bills fully paid, and you are promoted to Branch Manager."
+: "Audit 7 hari selesai tanpa SP. Biaya RS terbayar lunas dan kamu resmi dipromosikan menjadi Kepala Cabang.";
+      status.textContent = isEn? "PROMOTION TO BRANCH MANAGER": "PROMOSI KEPALA CABANG";
+      status.style.color = "#1b5e20";
+    } else if (type === "SURVIVOR") {
+      endImg.src = "end-survivor.png";
+      badge.textContent = isEn? "MODEST SURVIVOR": "BERTAHAN HIDUP PAS-PASAN";
+      badge.style.color = "#f57f17";
+      title.textContent = isEn? "SURVIVOR: SURGERY FUNDED ON TIME": "SURVIVOR: OPERASI TERLAKSANA TEPAT WAKTU";
+      title.style.color = "#e65100";
+      desc.textContent = isEn 
+? "Survived 7 days without being fired. Commissions barely covered hospital bills with zero debt left."
+: "Lolos 7 hari tanpa dipecat. Komisi pas-pasan menutup biaya RS tepat tanpa menyisakan utang.";
+      status.textContent = isEn? "CONTRACT EXTENDED (BREAK-EVEN)": "KONTRAK BERLANJUT (IMPAS)";
+      status.style.color = "#e65100";
+    } else if (type === "FINANCIAL_RUIN") {
+      endImg.src = "end-ruin.png";
+      badge.textContent = isEn? "FINANCIAL INSOLVENCY": "KEBANGKRUTAN FINANSIAL";
+      badge.style.color = "#c62828";
+      title.textContent = isEn? "GAME OVER: UNPAID HOSPITAL BILLS": "GAME OVER: BIAYA RUMAH SAKIT TERTUNGGAK";
+      title.style.color = "#b71c1c";
+      desc.textContent = isEn 
+? "Not fired, but commissions fell short. Savings are in deficit and surgery bills remain unpaid."
+: "Tidak dipecat, namun komisimu kurang. Tabungan defisit dan biaya operasi RS gagal dilunasi.";
+      status.textContent = isEn? "HOSPITAL DEFAULT (DEFICIT)": "GAGAL BAYAR RS (DEFISIT)";
+      status.style.color = "#b71c1c";
+    } else {
+      endImg.src = "end-terminated.png";
+      badge.textContent = isEn? "TERMINATION OF EMPLOYMENT": "PEMUTUSAN HUBUNGAN KERJA";
+      badge.style.color = "#c62828";
+      title.textContent = isEn? "TERMINATED: DISHONORABLE DISMISSAL": "TERMINATED: DIPECAT SECARA TIDAK HORMAT";
+      title.style.color = "#b71c1c";
+      desc.textContent = isEn 
+? "Reached 3 Warning Letters (SP 3). You are dismissed immediately due to operational negligence."
+: "Mencapai batas 3 Surat Peringatan (SP 3). Kamu resmi dipecat akibat kelalaian operasional.";
+      status.textContent = isEn? "DISMISSED (SP 3)": "DIPECAT (SP 3)";
+      status.style.color = "#b71c1c";
+    }
+
+    openModal("modal-ending");
+  }
+
+  function restartGame() {
+    gameState.currentDay = 1;
+    gameState.totalStrikes = 0;
+    gameState.totalCommission = 0;
+    gameState.playerSavings = 0;
+    gameState.dailyDisbursedCash = 0;
+    gameState.activeClientIndex = 0;
+    gameState.clientDecisions = {};
+    gameState.yesterdayDecisions = null;
+    gameState.totalFilesProcessed = 0;
+
+    closeModal("modal-ending");
+    openModal("modal-intro");
+  }
+
+  /* MODAL CONTROLLER */
+  function openModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add("active");
+  }
+
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove("active");
+  }
+
+  /* ALUR MEMULAI PERMAINAN DARI BACKGROUND STORY */
+  function startGameFromIntro() {
+    closeModal("modal-intro");
+    initDay(1);
+  }
+
+  /* GAME START ENTRY POINT */
+  window.addEventListener("DOMContentLoaded", () => {
+    applyLanguage();
+    openModal("modal-intro");
+  });
+  </script>
+</body>
+</html>
