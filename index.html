@@ -24,6 +24,7 @@
       <div class="badge-box"><span id="lbl-savings">SAVINGS:</span> <span id="badge-savings">$ 0</span></div>
       <div class="badge-box"><span id="lbl-day">DAY:</span> <span id="calendar-day">1</span></div>
       <button class="side-btn" style="background-color:#455a64;" id="btn-open-newspaper">📰 Daily News</button>
+	  <button class="side-btn" style="background-color:#37474f;" id="btn-open-options">⚙️ Options</button>
     </div>
   </header>
 
@@ -316,6 +317,48 @@
       </button>
     </div>
   </div>
+  
+	<!-- OPTIONS MODAL -->
+	<div class="modal-overlay" id="modal-options">
+	  <div class="handbook-box" id="options-box" style="position: relative; max-width: 380px;">
+		<div class="handbook-title"><span id="options-title-text">GAME SETTINGS</span></div>
+		
+		<div style="display: flex; flex-direction: column; gap: 14px; margin: 18px 0;">
+		  <!-- LANGUAGE SWITCHER -->
+		  <div style="display:flex; justify-content:space-between; align-items:center;">
+			<span id="lbl-opt-lang" style="font-weight:bold; font-size:13px;">Language / اللغة</span>
+			<div style="display:flex; gap:6px;">
+			  <button type="button" class="side-btn lang-btn-en" onclick="setLanguage('en')" style="margin:0; width:50px; padding:4px;">EN</button>
+			  <button type="button" class="side-btn lang-btn-ar" onclick="setLanguage('ar')" style="margin:0; width:50px; padding:4px;">عربي</button>
+			</div>
+		  </div>
+
+		  <!-- BGM TOGGLE -->
+		  <div style="display:flex; justify-content:space-between; align-items:center;">
+			<span id="lbl-opt-bgm" style="font-weight:bold; font-size:13px;">Background Music</span>
+			<button type="button" class="side-btn" id="btn-toggle-bgm" style="margin:0; width:70px; background:#2e7d32;">ON</button>
+		  </div>
+
+		  <!-- SFX TOGGLE -->
+		  <div style="display:flex; justify-content:space-between; align-items:center;">
+			<span id="lbl-opt-sfx" style="font-weight:bold; font-size:13px;">Sound Effects (SFX)</span>
+			<button type="button" class="side-btn" id="btn-toggle-sfx" style="margin:0; width:70px; background:#2e7d32;">ON</button>
+		  </div>
+
+		  <!-- CREDITS -->
+		  <div id="options-credits-box" style="margin-top: 10px; padding: 12px; background: #e0d7c6; border: 1px dashed #8d6e63; border-radius: 4px; text-align: center; font-size: 11px; line-height: 1.5; color: #3e2723;">
+			<div id="lbl-opt-credits-title" style="font-weight: bold; margin-bottom: 4px; font-size: 12px;">CREDITS</div>
+			<div id="lbl-opt-credits-body">
+			  <strong>Loan Officer</strong><br>
+			  Created by: <strong>PRAXLUDO</strong><br>
+			  Sound by <a href="https://www.freesoundeffects.com/" target="_blank" rel="noopener noreferrer" style="color: #1565c0; text-decoration: underline;">https://www.freesoundeffects.com/</a>
+			</div>
+		  </div>
+		</div>
+
+		<button class="modal-close-btn" id="btn-close-options" onclick="closeModal('modal-options')">CLOSE</button>
+	  </div>
+	</div>
 
   <!-- LOAD DATASETS -->
   <script type="text/javascript" src="days_data_ar.js?v=102"></script>
@@ -534,6 +577,76 @@
       4: "APPENDIX III: CASH MANAGEMENT & AUDIT"
     }
   };
+	/* AUDIO SYSTEM & CONTROLS */
+	const audioSettings = {
+	  bgmEnabled: true,
+	  sfxEnabled: true
+	};
+
+	const audioTracks = {
+	  bgm: new Audio("bgmusic.mp3"),
+	  pageturn: new Audio("pageturn.mp3"),
+	  stamp: new Audio("stamp.mp3"),
+	  coin: new Audio("coin.mp3"),
+	  winning: new Audio("winning.mp3"),
+	  lose: new Audio("lose.mp3")
+	};
+
+	audioTracks.bgm.loop = true;
+	audioTracks.bgm.volume = 0.25;
+
+	function playBgm() {
+	  if (!audioSettings.bgmEnabled) return;
+	  audioTracks.bgm.play().catch(() => {});
+	}
+
+	function stopBgm() {
+	  audioTracks.bgm.pause();
+	  audioTracks.bgm.currentTime = 0;
+	}
+
+	function playSfx(trackName) {
+	  if (!audioSettings.sfxEnabled) return;
+	  const sfx = audioTracks[trackName];
+	  if (sfx) {
+		sfx.currentTime = 0;
+		sfx.volume = 0.7;
+		sfx.play().catch(() => {});
+	  }
+	}
+	function stopEndingSfx() {
+	  audioTracks.winning.pause();
+	  audioTracks.winning.currentTime = 0;
+	  audioTracks.lose.pause();
+	  audioTracks.lose.currentTime = 0;
+	}
+
+	function toggleBgm() {
+	  audioSettings.bgmEnabled =!audioSettings.bgmEnabled;
+	  const btn = document.getElementById("btn-toggle-bgm");
+	  if (audioSettings.bgmEnabled) {
+		btn.textContent = "ON";
+		btn.style.backgroundColor = "#2e7d32";
+		audioTracks.bgm.play().catch(() => {});
+	  } else {
+		btn.textContent = "OFF";
+		btn.style.backgroundColor = "#c62828";
+		audioTracks.bgm.pause();
+	  }
+	}
+
+	function toggleSfx() {
+	  audioSettings.sfxEnabled =!audioSettings.sfxEnabled;
+	  const btn = document.getElementById("btn-toggle-sfx");
+	  if (audioSettings.sfxEnabled) {
+		btn.textContent = "ON";
+		btn.style.backgroundColor = "#2e7d32";
+		playSfx("pageturn");
+	  } else {
+		btn.textContent = "OFF";
+		btn.style.backgroundColor = "#c62828";
+	  }
+	}
 
   const gameState = {
     currentDay: 1,
@@ -561,7 +674,18 @@
   function getCommissionPerFile() {
     return 25;
   }
-
+  function setLanguage(lang) {
+    if (currentLang === lang) return;
+    currentLang = lang;
+    
+    applyLanguage();
+    renderFolderList();
+    if (typeof selectClient === "function" && gameState) {
+      selectClient(gameState.activeClientIndex);
+    }
+    playSfx('pageturn');
+  }
+  window.setLanguage = setLanguage;
   function applyLanguage() {
     const isEn = (currentLang === "en");
     document.documentElement.lang = currentLang;
@@ -571,7 +695,8 @@
 
     const rtlTargetIds = [
       "meter-labels", "document-sheet", "newspaper-box", "handbook-box",
-      "eval-box", "ending-box", "phone-display", "crt-log", "boss-sticky"
+      "eval-box", "ending-box", "phone-display", "crt-log", "boss-sticky",
+      "options-box"
     ];
 
     rtlTargetIds.forEach(id => {
@@ -602,8 +727,16 @@
       });
     }
 
-    document.querySelectorAll(".lang-btn-en").forEach(b => b.classList.toggle("active", isEn));
-    document.querySelectorAll(".lang-btn-ar").forEach(b => b.classList.toggle("active",!isEn));
+    document.querySelectorAll(".lang-btn-en").forEach(b => {
+      b.classList.toggle("active", isEn);
+      b.style.backgroundColor = isEn? "#2e7d32": "#546e7a";
+      b.style.color = "#ffffff";
+    });
+    document.querySelectorAll(".lang-btn-ar").forEach(b => {
+      b.classList.toggle("active",!isEn);
+      b.style.backgroundColor =!isEn? "#2e7d32": "#546e7a";
+      b.style.color = "#ffffff";
+    });
 
     const introData = INTRO_TEXTS[currentLang] || INTRO_TEXTS.en;
     const introTitleEl = document.getElementById("intro-title");
@@ -624,6 +757,7 @@
     document.getElementById("lbl-savings").textContent = isEn? "SAVINGS:": "المدخرات:";
     document.getElementById("lbl-day").textContent = isEn? "DAY:": "اليوم:";
     document.getElementById("btn-open-newspaper").textContent = isEn? "📰 Daily News": "📰 صحيفة اليوم";
+    document.getElementById("btn-open-options").textContent = isEn? "⚙️ Options": "⚙️ الإعدادات";
 
     document.getElementById("btn-open-sop").textContent = isEn? "📚 SOP Handbook": "📚 دليل إجراءات SOP";
     document.getElementById("lbl-folder-title").textContent = isEn? "🗃️ Today's Applications": "🗃️ ملفات الوارد اليوم";
@@ -640,6 +774,11 @@
     document.getElementById("lbl-target").textContent = isEn? "Target": "المستهدف";
     document.getElementById("lbl-ceiling").textContent = isEn? "Ceiling": "السقف";
     document.getElementById("btn-submit-day").textContent = isEn? "END SHIFT": "إنهاء الوردية";
+
+    document.getElementById("options-title-text").textContent = isEn? "GAME SETTINGS": "إعدادات اللعبة";
+    document.getElementById("lbl-opt-bgm").textContent = isEn? "Background Music": "الموسيقى الخلفية";
+    document.getElementById("lbl-opt-sfx").textContent = isEn? "Sound Effects (SFX)": "المؤثرات الصوتية (SFX)";
+    document.getElementById("btn-close-options").textContent = isEn? "CLOSE": "إغلاق";
 
     document.getElementById("news-main-header").textContent = isEn? "METROPOLITAN DAILY": "صحيفة ميتروبوليتان اليومية";
     document.getElementById("btn-news-prev").textContent = isEn? "◀ Previous": "◀ السابق";
@@ -694,10 +833,17 @@
     document.getElementById("badge-sp").textContent = `${gameState.totalStrikes}/3`;
     document.getElementById("badge-savings").textContent = formatRupiah(gameState.playerSavings);
     document.getElementById("calendar-day").textContent = gameState.currentDay;
-
+	
+	
+    document.getElementById("options-title-text").textContent = isEn? "GAME SETTINGS": "إعدادات اللعبة";
+    document.getElementById("lbl-opt-bgm").textContent = isEn? "Background Music": "الموسيقى الخلفية";
+    document.getElementById("lbl-opt-sfx").textContent = isEn? "Sound Effects (SFX)": "المؤثرات الصوتية (SFX)";
+    document.getElementById("lbl-opt-credits-title").textContent = isEn? "CREDITS": "فريق العمل والتقدير";
+    document.getElementById("btn-close-options").textContent = isEn? "CLOSE": "إغلاق";
+	
     renderSopHandbook();
   }
-
+  
   function toggleLanguage(lang) {
     if (currentLang === lang) return;
     currentLang = lang;
@@ -816,7 +962,12 @@
     currentClients.forEach((client, idx) => {
       const tab = document.createElement("div");
       tab.className = `folder-tab ${idx === gameState.activeClientIndex? 'active': ''}`;
-      tab.onclick = () => selectClient(idx);
+      tab.onclick = () => {
+        if (idx!== gameState.activeClientIndex) {
+          playSfx('pageturn');
+        }
+        selectClient(idx);
+      };
 
       const decision = gameState.clientDecisions[client.id] || (isEn? "UNDECIDED": "قيد المراجعة");
       let statusClass = "status-pending";
@@ -842,6 +993,7 @@
   }
 
   function switchDocPage(pageNum) {
+	playSfx('pageturn');
     gameState.currentDocPage = pageNum;
     const currentClients = DAYS_DATA[gameState.currentDay - 1].clients;
     renderDocumentPage(currentClients[gameState.activeClientIndex]);
@@ -1032,7 +1184,7 @@
     const client = currentClients[gameState.activeClientIndex];
 
     const prevDecision = gameState.clientDecisions[client.id];
-
+	playSfx('stamp');
     if (prevDecision === "APPROVE" && action === "DECLINE") {
       gameState.dailyDisbursedCash -= client.loan;
     } else if (prevDecision!== "APPROVE" && action === "APPROVE") {
@@ -1319,7 +1471,7 @@
     openModal("modal-sop");
   };
 
-  document.getElementById("btn-submit-day").onclick = () => {
+    document.getElementById("btn-submit-day").onclick = () => {
     const dayObj = DAYS_DATA[gameState.currentDay - 1];
     const isEn = (currentLang === "en");
 
@@ -1333,8 +1485,24 @@
       return;
     }
 
+    playSfx('coin');
     evaluateShiftEnd();
   };
+
+  document.getElementById("btn-open-options").onclick = () => {
+    openModal("modal-options");
+  };
+
+  document.getElementById("btn-toggle-bgm").onclick = toggleBgm;
+  document.getElementById("btn-toggle-sfx").onclick = toggleSfx;
+  
+  // Pasang event klik untuk tombol bahasa di modal options
+  document.querySelectorAll(".lang-btn-en").forEach(b => {
+    b.onclick = () => setLanguage('en');
+  });
+  document.querySelectorAll(".lang-btn-ar").forEach(b => {
+    b.onclick = () => setLanguage('ar');
+  });
 
   function evaluateShiftEnd() {
     const dayObj = DAYS_DATA[gameState.currentDay - 1];
@@ -1491,13 +1659,14 @@
     const desc = document.getElementById("end-desc");
     const status = document.getElementById("end-final-status");
     const endImg = document.getElementById("end-image");
-
+	stopBgm();
     document.getElementById("end-total-comm").textContent = formatRupiah(gameState.totalCommission);
     document.getElementById("end-total-savings").textContent = formatRupiah(gameState.playerSavings);
     document.getElementById("end-total-sp").textContent = `${gameState.totalStrikes} / 3`;
     document.getElementById("end-total-files").textContent = `${gameState.totalFilesProcessed} ${isEn? 'Files': 'ملفات'}`;
 
     if (type === "STAR_OFFICER") {
+	  playSfx('winning');
       endImg.src = "end-star.png";
       badge.textContent = isEn? "STAR LOAN OFFICER": "مسؤول ائتمان مثالي";
       badge.style.color = "#2e7d32";
@@ -1509,6 +1678,7 @@
       status.textContent = isEn? "PROMOTION TO BRANCH MANAGER": "ترقية إلى مدير الفرع";
       status.style.color = "#1b5e20";
     } else if (type === "SURVIVOR") {
+	  playSfx('winning');
       endImg.src = "end-survivor.png";
       badge.textContent = isEn? "MODEST SURVIVOR": "النجاة بالكاد";
       badge.style.color = "#f57f17";
@@ -1520,6 +1690,7 @@
       status.textContent = isEn? "CONTRACT EXTENDED (BREAK-EVEN)": "تمديد العقد (نقطة تعادل)";
       status.style.color = "#e65100";
     } else if (type === "FINANCIAL_RUIN") {
+	  playSfx('lose');
       endImg.src = "end-ruin.png";
       badge.textContent = isEn? "FINANCIAL INSOLVENCY": "إعسار مالي وإفلاس";
       badge.style.color = "#c62828";
@@ -1531,6 +1702,7 @@
       status.textContent = isEn? "HOSPITAL DEFAULT (DEFICIT)": "تخلف عن السداد الطبي (عجز مالي)";
       status.style.color = "#b71c1c";
     } else {
+	  playSfx('lose');
       endImg.src = "end-terminated.png";
       badge.textContent = isEn? "TERMINATION OF EMPLOYMENT": "إنهاء الخدمة والفصل الفوري";
       badge.style.color = "#c62828";
@@ -1556,7 +1728,8 @@
     gameState.clientDecisions = {};
     gameState.yesterdayDecisions = null;
     gameState.totalFilesProcessed = 0;
-
+	stopBgm();
+	stopEndingSfx();
     closeModal("modal-ending");
     openModal("modal-intro");
   }
@@ -1572,6 +1745,7 @@
   }
 
   function startGameFromIntro() {
+	playBgm();
     closeModal("modal-intro");
     initDay(1);
   }
