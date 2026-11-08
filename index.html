@@ -918,6 +918,15 @@
     }
   }
 
+    function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
   function initDay(dayNum) {
     gameState.currentDay = dayNum;
     gameState.dailyDisbursedCash = 0;
@@ -929,6 +938,24 @@
       console.error("Data hari tidak ditemukan:", dayNum);
       return;
     }
+
+    // Kocok tumpukan foto 1-10 untuk hari ini
+    const manPool = shuffleArray([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const womanPool = shuffleArray([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+    const clientsEn = (DAYS_DATA_EN && DAYS_DATA_EN[dayNum - 1])? DAYS_DATA_EN[dayNum - 1].clients: [];
+    const clientsAr = (DAYS_DATA_AR && DAYS_DATA_AR[dayNum - 1])? DAYS_DATA_AR[dayNum - 1].clients: [];
+
+    // Pasangkan foto unik ke masing-masing klien hari ini (tersinkron di EN & AR)
+    dayObj.clients.forEach((client, idx) => {
+      const isFemale = (client.gender === "Perempuan" || client.gender === "Female" || client.gender === "أنثى");
+      const photoNum = isFemale? (womanPool.pop() || 1): (manPool.pop() || 1);
+      const photoFile = isFemale? `woman${photoNum}.png`: `man${photoNum}.png`;
+
+      client.photoFile = photoFile;
+      if (clientsEn[idx]) clientsEn[idx].photoFile = photoFile;
+      if (clientsAr[idx]) clientsAr[idx].photoFile = photoFile;
+    });
 
     document.getElementById("calendar-day").textContent = dayNum;
     document.getElementById("sticky-text").textContent = dayObj.stickyText;
@@ -1058,7 +1085,7 @@
 
 	window.addEventListener("click", closeAllFormulaHints);
 
-	function renderDocumentPage(client) {
+		function renderDocumentPage(client) {
 	  const docContainer = document.getElementById("doc-content");
 	  const isPage1 = (gameState.currentDocPage === 1);
 	  const isEn = (currentLang === "en");
@@ -1076,7 +1103,7 @@
 
 	  if (isPage1) {
 		const isFemale = (client.gender === "Perempuan" || client.gender === "Female" || client.gender === "أنثى");
-		const photoSrc = isFemale? "woman.png": "man.png";
+		const photoSrc = client.photoFile || (isFemale? "woman1.png": "man1.png");
 		const displayGender = isEn? (isFemale? "Female": "Male"): (isFemale? "أنثى": "ذكر");
 		const ageSuffix = isEn? "Years": "سنة";
 
@@ -1137,16 +1164,16 @@
 		}
 
 		const dtiFormula = isEn
-	? '<strong>Formula:</strong> (Installment ÷ Income) × 100%'
-	: '<strong>المعادلة:</strong> <span dir="ltr">(القسط ÷ الدخل) × 100%</span>';
+? '<strong>Formula:</strong> (Installment ÷ Income) × 100%'
+: '<strong>المعادلة:</strong> <span dir="ltr">(القسط ÷ الدخل) × 100%</span>';
 
 		const colFormula = isEn
-	? '<strong>Formula:</strong> (Collateral ÷ Loan) × 100%'
-	: '<strong>المعادلة:</strong> <span dir="ltr">(قيمة الضمان ÷ مبلغ التمويل) × 100%</span>';
+? '<strong>Formula:</strong> (Collateral ÷ Loan) × 100%'
+: '<strong>المعادلة:</strong> <span dir="ltr">(قيمة الضمان ÷ مبلغ التمويل) × 100%</span>';
 
 		const ageFormula = isEn
-	? '<strong>Formula:</strong> Age + Tenor (Years)'
-	: '<strong>المعادلة:</strong> العمر الحالي + مدة التمويل (سنوات)';
+? '<strong>Formula:</strong> Age + Tenor (Years)'
+: '<strong>المعادلة:</strong> العمر الحالي + مدة التمويل (سنوات)';
 
 		docContainer.innerHTML = `
 		  ${navTabsHtml}
