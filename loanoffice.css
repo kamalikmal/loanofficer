@@ -1694,3 +1694,140 @@ html[lang="ar"] .meter-labels span {
     border-bottom: 1px solid #8d6e63!important;
   }
 }
+
+/* TOMBOL & BALON TEKS RUMUS (RETRO OFFICE THEME) */
+.field-label-wrapper {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  gap: 6px;
+  vertical-align: middle;
+}
+
+/* Tombol bergaya stempel paraf kecil */
+.hint-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 3px;
+  border-radius: 3px;
+  background: #fff8e1;
+  border: 1px dashed #8d6e63;
+  color: #5d4037;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+  transition: all 0.12s ease;
+  user-select: none;
+}
+
+.hint-btn:hover {
+  background: #ffe082;
+  border-color: #5d4037;
+  color: #2b1d0c;
+  transform: translateY(-1px);
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.hint-btn.active {
+  background: #5d4037;
+  border-color: #3e2723;
+  border-style: solid;
+  color: #fff8e1;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Balon teks memo arsip */
+.hint-bubble {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  background: #fffdf7;
+  color: #2b1d0c;
+  border: 1px solid #8d6e63;
+  border-left: 3px solid #ff8f00;
+  border-radius: 3px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-family: inherit;
+  font-weight: normal;
+  white-space: nowrap;
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 120;
+  pointer-events: auto;
+}
+
+.hint-bubble strong {
+  color: #b71c1c;
+  margin-right: 4px;
+}
+
+.hint-bubble.show {
+  display: block;
+  animation: bubblePop 0.15s ease-out;
+}
+
+@keyframes bubblePop {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Panah penunjuk memo */
+.hint-bubble::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 10px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #8d6e63 transparent transparent transparent;
+}
+
+.hint-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 11px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #fffdf7 transparent transparent transparent;
+}
+
+/* Dukungan Mode Arab (RTL) */
+html[lang="ar"].hint-btn {
+  font-family: 'Amiri', 'Courier New', serif!important;
+}
+
+html[lang="ar"].hint-bubble {
+  left: auto!important;
+  right: 0!important;
+  border-left: 1px solid #8d6e63!important;
+  border-right: 3px solid #ff8f00!important;
+}
+
+html[lang="ar"].hint-bubble strong {
+  margin-right: 0;
+  margin-left: 4px;
+}
+
+html[lang="ar"].hint-bubble::before {
+  left: auto!important;
+  right: 10px!important;
+}
+
+html[lang="ar"].hint-bubble::after {
+  left: auto!important;
+  right: 11px!important;
+}

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-<link href="loanoffice.css?v=106" type="text/css" rel="stylesheet" media="all">
+<link href="loanoffice.css?v=107" type="text/css" rel="stylesheet" media="all">
 </head>
 <body>
 
@@ -1036,150 +1036,203 @@
 : `جاهز للاتصال بجهة العمل: ${client.phoneContact}`;
     updateTutorialHighlights();
   }
+  
+	/* KONTROL BALON RUMUS METRIK */
+	function toggleFormulaHint(e, hintId) {
+	  e.stopPropagation();
+	  const targetBubble = document.getElementById(hintId);
+	  const isOpen = targetBubble && targetBubble.classList.contains("show");
 
-  function renderDocumentPage(client) {
-    const docContainer = document.getElementById("doc-content");
-    const isPage1 = (gameState.currentDocPage === 1);
-    const isEn = (currentLang === "en");
+	  closeAllFormulaHints();
 
-    const navTabsHtml = `
-      <div class="doc-page-tabs">
-        <button type="button" class="doc-page-tab ${isPage1? 'active': ''}" onclick="switchDocPage(1)">
-          ${isEn? 'SHEET 1: IDENTITY & VERIFICATION': 'الورقة 1: بيانات الهوية والتحقق'}
-        </button>
-        <button type="button" class="doc-page-tab ${!isPage1? 'active': ''}" onclick="switchDocPage(2)">
-          ${isEn? 'SHEET 2: FINANCIALS & COLLATERAL': 'الورقة 2: البيانات المالية والضمانات'}
-        </button>
-      </div>
-    `;
+	  if (!isOpen && targetBubble) {
+		targetBubble.classList.add("show");
+		e.currentTarget.classList.add("active");
+	  }
+	}
 
-    if (isPage1) {
-      const isFemale = (client.gender === "Perempuan" || client.gender === "Female" || client.gender === "أنثى");
-      const photoSrc = isFemale? "woman.png": "man.png";
-      const displayGender = isEn? (isFemale? "Female": "Male"): (isFemale? "أنثى": "ذكر");
-      const ageSuffix = isEn? "Years": "سنة";
+	function closeAllFormulaHints() {
+	  document.querySelectorAll(".hint-bubble.show").forEach(b => b.classList.remove("show"));
+	  document.querySelectorAll(".hint-btn.active").forEach(b => b.classList.remove("active"));
+	}
 
-      docContainer.innerHTML = `
-        ${navTabsHtml}
-        <div class="doc-header">
-          <div class="doc-title">${isEn? 'APPLICATION DOSSIER:': 'ملف طلب التمويل:'} <br class="mobile-only">${isEn? 'Doc.': 'ملف.'}${client.id} - ${client.name.toUpperCase()}</div>
-          <div class="doc-sub"><a class="hide-mobile">${isEn? 'MAIN BRANCH OFFICE - ': 'المكتب الإقليمي للفرع الرئيسي - '}</a>${isEn? 'SHEET 1: APPLICANT IDENTITY DATA': 'الورقة 1: بيانات هوية مقدم الطلب'}</div>
-        </div>
+	window.addEventListener("click", closeAllFormulaHints);
 
-        <div class="doc-section-title">${isEn? 'I. APPLICANT IDENTITY DATA': 'أولاً: بيانات هوية مقدم الطلب'}</div>
-        <div class="identity-layout">
-          <div class="photo-frame">
-            <img src="${photoSrc}" alt="Applicant Photo">
-          </div>
-          <div class="doc-grid" style="margin-bottom:0;">
-            <div class="field-group">
-              <span class="field-label">${isEn? 'Full Name': 'الاسم الكامل'}</span>
-              <span class="field-value">${client.name}</span>
-            </div>
-            <div class="field-group">
-              <span class="field-label">${isEn? 'Gender / Age': 'الجنس / العمر'}</span>
-              <span class="field-value">${displayGender} / ${client.age} ${ageSuffix}</span>
-            </div>
-            <div class="field-group">
-              <span class="field-label ${gameState.currentDay > 1? 'calc': ''}">${isEn? 'National ID Number (SSN/ID)': 'رقم الهوية الوطنية'}</span>
-              <span class="field-value highlight">${client.nik}</span>
-            </div>
-            <div class="field-group">
-              <span class="field-label ${gameState.currentDay > 3? 'calc': ''}">${isEn? 'Date of Birth (ID)': 'تاريخ الميلاد بالهوية'}</span>
-              <span class="field-value">${client.birthDate}</span>
-            </div>
-            <div class="field-group">
-              <span class="field-label">${isEn? 'Employer & Position': 'جهة العمل والمسمى الوظيفي'}</span>
-              <span class="field-value">${client.job}</span>
-            </div>
-            <div class="field-group">
-              <span class="field-label ${gameState.currentDay > 3? 'calc': ''}">${isEn? 'Employer / HR Contact Phone': 'هاتف جهة العمل / الموارد البشرية'}</span>
-              <span class="field-value highlight">${client.phoneContact}</span>
-            </div>
-            <div class="field-group">
-              <span class="field-label">${isEn? 'Government / Public Official Kin': 'صلة قرابة بمسؤول حكومي'}</span>
-              <span class="field-value">${client.familyRelation}</span>
-            </div>
-          </div>
-        </div>
-        <div class="doc-header" style="margin-top:10px;"></div>
-      `;
-    } else {
-      let dti = isEn? '(error, manual calc)': '(خطأ، يتطلب حساباً يدويًا)';
-      let collateralRatio = isEn? '(error, manual calc)': '(خطأ، يتطلب حساباً يدويًا)';
-      let agecreditend = isEn? '(error, manual calc)': '(خطأ، يتطلب حساباً يدويًا)';
+	function renderDocumentPage(client) {
+	  const docContainer = document.getElementById("doc-content");
+	  const isPage1 = (gameState.currentDocPage === 1);
+	  const isEn = (currentLang === "en");
 
-      if (gameState.activeClientIndex < 3) {
-        dti = ((client.installment / client.income) * 100).toFixed(1) + '%';
-        collateralRatio = ((client.collateralValue / client.loan) * 100).toFixed(0) + (isEn? '% of Principal': '% من أصل التمويل');
-        agecreditend = (client.age + client.tenorYears).toFixed(1) + (isEn? ' Years': ' سنة');
-      }
+	  const navTabsHtml = `
+		<div class="doc-page-tabs">
+		  <button type="button" class="doc-page-tab ${isPage1? 'active': ''}" onclick="switchDocPage(1)">
+			${isEn? 'SHEET 1: IDENTITY & VERIFICATION': 'الورقة 1: بيانات الهوية والتحقق'}
+		  </button>
+		  <button type="button" class="doc-page-tab ${!isPage1? 'active': ''}" onclick="switchDocPage(2)">
+			${isEn? 'SHEET 2: FINANCIALS & COLLATERAL': 'الورقة 2: البيانات المالية والضمانات'}
+		  </button>
+		</div>
+	  `;
 
-      docContainer.innerHTML = `
-        ${navTabsHtml}
-        <div class="doc-header">
-          <div class="doc-sub"><a class="hide-mobile">${isEn? 'MAIN BRANCH OFFICE - ': 'المكتب الإقليمي للفرع الرئيسي - '}</a>${isEn? 'SHEET 2: CREDIT ANALYSIS & FINANCIALS': 'الورقة 2: التحليل الائتماني والبيانات المالية'}</div>
-        </div>
+	  if (isPage1) {
+		const isFemale = (client.gender === "Perempuan" || client.gender === "Female" || client.gender === "أنثى");
+		const photoSrc = isFemale? "woman.png": "man.png";
+		const displayGender = isEn? (isFemale? "Female": "Male"): (isFemale? "أنثى": "ذكر");
+		const ageSuffix = isEn? "Years": "سنة";
 
-        <div class="doc-section-title">${isEn? 'II. LOAN FACILITY & FINANCIALS': 'ثانياً: التمويل المطلوب والبيانات المالية'}</div>
-        <div class="doc-grid">
-          <div class="field-group">
-            <span class="field-label">${isEn? 'Requested Principal': 'مبلغ التمويل المطلوب'}</span>
-            <span class="field-value highlight">${formatRupiah(client.loan)}</span>
-          </div>
-          <div class="field-group">
-            <span class="field-label">${isEn? 'Lending Sector': 'قطاع التمويل'}</span>
-            <span class="field-value">${client.sector}</span>
-          </div>
-          <div class="field-group">
-            <span class="field-label">${isEn? 'Loan Purpose': 'الغرض من التمويل'}</span>
-            <span class="field-value">${client.purpose}</span>
-          </div>
-          <div class="field-group">
-            <span class="field-label">${isEn? 'Loan Tenor / Term': 'مدة التمويل / الأجل'}</span>
-            <span class="field-value">${client.tenorMonths} ${isEn? 'Months': 'شهرًا'} (${client.tenorYears} ${isEn? 'Years': 'سنوات'})</span>
-          </div>
-          <div class="field-group">
-            <span class="field-label">${isEn? 'Net Monthly Income': 'صافي الدخل الشهري'}</span>
-            <span class="field-value">${formatRupiah(client.income)}</span>
-          </div>
-          <div class="field-group">
-            <span class="field-label">${isEn? 'Monthly Installment': 'القسط الشهري المستحق'}</span>
-            <span class="field-value">${formatRupiah(client.installment)}</span>
-          </div>
-        </div>
+		docContainer.innerHTML = `
+		  ${navTabsHtml}
+		  <div class="doc-header">
+			<div class="doc-title">${isEn? 'APPLICATION DOSSIER:': 'ملف طلب التمويل:'} <br class="mobile-only">${isEn? 'Doc.': 'ملف.'}${client.id} - ${client.name.toUpperCase()}</div>
+			<div class="doc-sub"><a class="hide-mobile">${isEn? 'MAIN BRANCH OFFICE - ': 'المكتب الإقليمي للفرع الرئيسي - '}</a>${isEn? 'SHEET 1: APPLICANT IDENTITY DATA': 'الورقة 1: بيانات هوية مقدم الطلب'}</div>
+		  </div>
 
-        <div class="doc-section-title">${isEn? 'III. PHYSICAL COLLATERAL': 'ثالثاً: الضمانات العينية / الرهن'}</div>
-        <div class="doc-grid">
-          <div class="field-group">
-            <span class="field-label">${isEn? 'Collateral Title Type': 'نوع وثيقة الضمان'}</span>
-            <span class="field-value">${client.collateralType}</span>
-          </div>
-          <div class="field-group">
-            <span class="field-label">${isEn? 'Appraised Collateral Value': 'القيمة التقديرية للضمان'}</span>
-            <span class="field-value highlight">${formatRupiah(client.collateralValue)}</span>
-          </div>
-        </div>
+		  <div class="doc-section-title">${isEn? 'I. APPLICANT IDENTITY DATA': 'أولاً: بيانات هوية مقدم الطلب'}</div>
+		  <div class="identity-layout">
+			<div class="photo-frame">
+			  <img src="${photoSrc}" alt="Applicant Photo">
+			</div>
+			<div class="doc-grid" style="margin-bottom:0;">
+			  <div class="field-group">
+				<span class="field-label">${isEn? 'Full Name': 'الاسم الكامل'}</span>
+				<span class="field-value">${client.name}</span>
+			  </div>
+			  <div class="field-group">
+				<span class="field-label">${isEn? 'Gender / Age': 'الجنس / العمر'}</span>
+				<span class="field-value">${displayGender} / ${client.age} ${ageSuffix}</span>
+			  </div>
+			  <div class="field-group">
+				<span class="field-label ${gameState.currentDay > 1? 'calc': ''}">${isEn? 'National ID Number (SSN/ID)': 'رقم الهوية الوطنية'}</span>
+				<span class="field-value highlight">${client.nik}</span>
+			  </div>
+			  <div class="field-group">
+				<span class="field-label ${gameState.currentDay > 3? 'calc': ''}">${isEn? 'Date of Birth (ID)': 'تاريخ الميلاد بالهوية'}</span>
+				<span class="field-value">${client.birthDate}</span>
+			  </div>
+			  <div class="field-group">
+				<span class="field-label">${isEn? 'Employer & Position': 'جهة العمل والمسمى الوظيفي'}</span>
+				<span class="field-value">${client.job}</span>
+			  </div>
+			  <div class="field-group">
+				<span class="field-label ${gameState.currentDay > 3? 'calc': ''}">${isEn? 'Employer / HR Contact Phone': 'هاتف جهة العمل / الموارد البشرية'}</span>
+				<span class="field-value highlight">${client.phoneContact}</span>
+			  </div>
+			  <div class="field-group">
+				<span class="field-label">${isEn? 'Government / Public Official Kin': 'صلة قرابة بمسؤول حكومي'}</span>
+				<span class="field-value">${client.familyRelation}</span>
+			  </div>
+			</div>
+		  </div>
+		  <div class="doc-header" style="margin-top:10px;"></div>
+		`;
+	  } else {
+		let dti = isEn? '(error, manual calc)': '(خطأ، يتطلب حساباً يدويًا)';
+		let collateralRatio = isEn? '(error, manual calc)': '(خطأ، يتطلب حساباً يدويًا)';
+		let agecreditend = isEn? '(error, manual calc)': '(خطأ، يتطلب حساباً يدويًا)';
 
-        <div class="doc-section-title">${isEn? 'IV. RAPID CREDIT METRICS SUMMARY': 'رابعاً: ملخص المؤشرات الائتمانية السريعة'}</div>
-        <div class="doc-grid">
-          <div class="field-group">
-            <span class="field-label calc">${isEn? 'Debt-to-Income Ratio (DTI)': 'نسبة عبء الدين (DTI)'}</span>
-            <span class="field-value highlight">${dti}</span>
-          </div>
-          <div class="field-group">
-            <span class="field-label ${gameState.currentDay > 2? 'calc': ''}">${isEn? 'Collateral Coverage Ratio': 'نسبة تغطية الضمان العيني'}</span>
-            <span class="field-value highlight">${collateralRatio}</span>
-          </div>
-          <div class="field-group">
-            <span class="field-label ${gameState.currentDay > 5? 'calc': ''}">${isEn? 'Applicant Age at Loan Maturity': 'عمر المتقدم عند اكتمال السداد'}</span>
-            <span class="field-value highlight">${agecreditend}</span>
-          </div>
-        </div>
-        <div class="doc-header" style="margin-top:10px;"></div>
-      `;
-    }
-  }
+		if (gameState.activeClientIndex < 3) {
+		  dti = ((client.installment / client.income) * 100).toFixed(1) + '%';
+		  collateralRatio = ((client.collateralValue / client.loan) * 100).toFixed(0) + (isEn? '% of Principal': '% من أصل التمويل');
+		  agecreditend = (client.age + client.tenorYears).toFixed(1) + (isEn? ' Years': ' سنة');
+		}
+
+		const dtiFormula = isEn
+	? '<strong>Formula:</strong> (Installment ÷ Income) × 100%'
+	: '<strong>المعادلة:</strong> <span dir="ltr">(القسط ÷ الدخل) × 100%</span>';
+
+		const colFormula = isEn
+	? '<strong>Formula:</strong> (Collateral ÷ Loan) × 100%'
+	: '<strong>المعادلة:</strong> <span dir="ltr">(قيمة الضمان ÷ مبلغ التمويل) × 100%</span>';
+
+		const ageFormula = isEn
+	? '<strong>Formula:</strong> Age + Tenor (Years)'
+	: '<strong>المعادلة:</strong> العمر الحالي + مدة التمويل (سنوات)';
+
+		docContainer.innerHTML = `
+		  ${navTabsHtml}
+		  <div class="doc-header">
+			<div class="doc-sub"><a class="hide-mobile">${isEn? 'MAIN BRANCH OFFICE - ': 'المكتب الإقليمي للفرع الرئيسي - '}</a>${isEn? 'SHEET 2: CREDIT ANALYSIS & FINANCIALS': 'الورقة 2: التحليل الائتماني والبيانات المالية'}</div>
+		  </div>
+
+		  <div class="doc-section-title">${isEn? 'II. LOAN FACILITY & FINANCIALS': 'ثانياً: التمويل المطلوب والبيانات المالية'}</div>
+		  <div class="doc-grid">
+			<div class="field-group">
+			  <span class="field-label">${isEn? 'Requested Principal': 'مبلغ التمويل المطلوب'}</span>
+			  <span class="field-value highlight">${formatRupiah(client.loan)}</span>
+			</div>
+			<div class="field-group">
+			  <span class="field-label">${isEn? 'Lending Sector': 'قطاع التمويل'}</span>
+			  <span class="field-value">${client.sector}</span>
+			</div>
+			<div class="field-group">
+			  <span class="field-label">${isEn? 'Loan Purpose': 'الغرض من التمويل'}</span>
+			  <span class="field-value">${client.purpose}</span>
+			</div>
+			<div class="field-group">
+			  <span class="field-label">${isEn? 'Loan Tenor / Term': 'مدة التمويل / الأجل'}</span>
+			  <span class="field-value">${client.tenorMonths} ${isEn? 'Months': 'شهرًا'} (${client.tenorYears} ${isEn? 'Years': 'سنوات'})</span>
+			</div>
+			<div class="field-group">
+			  <span class="field-label">${isEn? 'Net Monthly Income': 'صافي الدخل الشهري'}</span>
+			  <span class="field-value">${formatRupiah(client.income)}</span>
+			</div>
+			<div class="field-group">
+			  <span class="field-label">${isEn? 'Monthly Installment': 'القسط الشهري المستحق'}</span>
+			  <span class="field-value">${formatRupiah(client.installment)}</span>
+			</div>
+		  </div>
+
+		  <div class="doc-section-title">${isEn? 'III. PHYSICAL COLLATERAL': 'ثالثاً: الضمانات العينية / الرهن'}</div>
+		  <div class="doc-grid">
+			<div class="field-group">
+			  <span class="field-label">${isEn? 'Collateral Title Type': 'نوع وثيقة الضمان'}</span>
+			  <span class="field-value">${client.collateralType}</span>
+			</div>
+			<div class="field-group">
+			  <span class="field-label">${isEn? 'Appraised Collateral Value': 'القيمة التقديرية للضمان'}</span>
+			  <span class="field-value highlight">${formatRupiah(client.collateralValue)}</span>
+			</div>
+		  </div>
+
+		  <div class="doc-section-title">${isEn? 'IV. RAPID CREDIT METRICS SUMMARY': 'رابعاً: ملخص المؤشرات الائتمانية السريعة'}</div>
+		  <div class="doc-grid">
+			<div class="field-group">
+			  <span class="field-label calc">
+				<span class="field-label-wrapper">
+				  <span>${isEn? 'Debt-to-Income Ratio (DTI)': 'نسبة عبء الدين (DTI)'}</span>
+				  <button type="button" class="hint-btn" onclick="toggleFormulaHint(event, 'hint-dti')">?</button>
+				  <div class="hint-bubble" id="hint-dti">${dtiFormula}</div>
+				</span>
+			  </span>
+			  <span class="field-value highlight">${dti}</span>
+			</div>
+
+			<div class="field-group">
+			  <span class="field-label ${gameState.currentDay > 2? 'calc': ''}">
+				<span class="field-label-wrapper">
+				  <span>${isEn? 'Collateral Coverage Ratio': 'نسبة تغطية الضمان العيني'}</span>
+				  <button type="button" class="hint-btn" onclick="toggleFormulaHint(event, 'hint-col')">?</button>
+				  <div class="hint-bubble" id="hint-col">${colFormula}</div>
+				</span>
+			  </span>
+			  <span class="field-value highlight">${collateralRatio}</span>
+			</div>
+
+			<div class="field-group">
+			  <span class="field-label ${gameState.currentDay > 5? 'calc': ''}">
+				<span class="field-label-wrapper">
+				  <span>${isEn? 'Applicant Age at Loan Maturity': 'عمر المتقدم عند اكتمال السداد'}</span>
+				  <button type="button" class="hint-btn" onclick="toggleFormulaHint(event, 'hint-age')">?</button>
+				  <div class="hint-bubble" id="hint-age">${ageFormula}</div>
+				</span>
+			  </span>
+			  <span class="field-value highlight">${agecreditend}</span>
+			</div>
+		  </div>
+		  <div class="doc-header" style="margin-top:10px;"></div>
+		`;
+	  }
+	}
 
   function stampDocument(action) {
     const currentClients = DAYS_DATA[gameState.currentDay - 1].clients;
@@ -1669,7 +1722,7 @@
 
     if (type === "STAR_OFFICER") {
 	  playSfx('winning');
-      endImg.src = "end-star.PNG";
+      endImg.src = "end-star.png";
       badge.textContent = isEn? "STAR LOAN OFFICER": "مسؤول ائتمان مثالي";
       badge.style.color = "#2e7d32";
       title.textContent = isEn? "PROMOTION: BRANCH MANAGER": "ترقية وظيفية: مدير الفرع";
@@ -1681,7 +1734,7 @@
       status.style.color = "#1b5e20";
     } else if (type === "SURVIVOR") {
 	  playSfx('winning');
-      endImg.src = "end-survivor.PNG";
+      endImg.src = "end-survivor.png";
       badge.textContent = isEn? "MODEST SURVIVOR": "النجاة بالكاد";
       badge.style.color = "#f57f17";
       title.textContent = isEn? "SURVIVOR: SURGERY FUNDED ON TIME": "ناجٍ: تم تمويل الجراحة في موعدها";
@@ -1693,7 +1746,7 @@
       status.style.color = "#e65100";
     } else if (type === "FINANCIAL_RUIN") {
 	  playSfx('lose');
-      endImg.src = "end-ruin.PNG";
+      endImg.src = "end-ruin.png";
       badge.textContent = isEn? "FINANCIAL INSOLVENCY": "إعسار مالي وإفلاس";
       badge.style.color = "#c62828";
       title.textContent = isEn? "GAME OVER: UNPAID HOSPITAL BILLS": "نهاية اللعبة: عجز عن سداد المستشفى";
@@ -1705,7 +1758,7 @@
       status.style.color = "#b71c1c";
     } else {
 	  playSfx('lose');
-      endImg.src = "end-terminated.PNG";
+      endImg.src = "end-terminated.png";
       badge.textContent = isEn? "TERMINATION OF EMPLOYMENT": "إنهاء الخدمة والفصل الفوري";
       badge.style.color = "#c62828";
       title.textContent = isEn? "TERMINATED: DISHONORABLE DISMISSAL": "فصل: إنهاء خدمة تأديبي فوري";
