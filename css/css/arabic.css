@@ -1,0 +1,299 @@
+/* DASAR TIPOGRAFI ARAB & RTL */
+html[lang="ar"],
+html[lang="ar"] body,
+html[lang="ar"] button,
+html[lang="ar"] input {
+  font-family: 'Amiri', 'Georgia', serif!important;
+}
+
+html[lang="ar"].doc-title,
+html[lang="ar"].newspaper-header h1,
+html[lang="ar"].handbook-title,
+html[lang="ar"].eval-header,
+html[lang="ar"].ending-title,
+html[lang="ar"].story-box h2 {
+  font-family: 'Amiri', serif!important;
+  font-weight: 700;
+  font-size: 26px;
+}
+
+html[lang="ar"].panel-title,
+html[lang="ar"].tool-title,
+html[lang="ar"].ending-badge,
+html[lang="ar"] #memo-title,
+html[lang="ar"].doc-section-title,
+html[lang="ar"].eval-section-title {
+  font-family: 'Amiri', serif!important;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+html[lang="ar"].stamp-button,
+html[lang="ar"] #btn-submit-day,
+html[lang="ar"].modal-close-btn,
+html[lang="ar"].restart-btn,
+html[lang="ar"].side-btn,
+html[lang="ar"].news-nav-btn,
+html[lang="ar"].doc-page-tab {
+  font-family: 'Amiri', serif!important;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+/* ISOLASI ANGKA LATIN DI MODE ARAB (IBM PLEX MONO + LTR) */
+html[lang="ar"].field-value.highlight,
+html[lang="ar"].folder-tab > div > div:last-child,
+html[lang="ar"].meter-labels span,
+html[lang="ar"].badge-box span,
+html[lang="ar"] #calendar-day,
+html[lang="ar"] #calendar-widget.day-num,
+html[lang="ar"] #calc-screen,
+html[lang="ar"].calc-key,
+html[lang="ar"] #crt-screen,
+html[lang="ar"] #crt-log strong,
+html[lang="ar"].eval-line span:last-child,
+html[lang="ar"].stat-grid strong {
+  font-family: var(--font-mono)!important;
+  font-weight: 600;
+  direction: ltr!important;
+  display: inline-block;
+  unicode-bidi: embed;
+}
+
+/* WATERMARK & KOP DOKUMEN */
+html[lang="en"] #document-sheet::before {
+  content: "BRANCH CREDIT APPLICATION FORM";
+}
+
+html[lang="ar"] #document-sheet::before {
+  content: "نموذج طلب التمويل للفرع"!important;
+  right: auto!important;
+  left: 15px!important;
+}
+
+/* ARAH BACA KONTEN LEMBAR & MODAL */
+html[lang="ar"] #document-sheet,
+html[lang="ar"].story-text,
+html[lang="ar"].newspaper-box,
+html[lang="ar"].handbook-box,
+html[lang="ar"].eval-box,
+html[lang="ar"].ending-box,
+html[lang="ar"] #phone-display,
+html[lang="ar"] #crt-log {
+  direction: rtl!important;
+  text-align: right!important;
+  unicode-bidi: isolate!important;
+  line-height: 1.7!important;
+}
+
+html[lang="ar"].doc-header,
+html[lang="ar"].doc-title,
+html[lang="ar"].doc-sub,
+html[lang="ar"].field-group,
+html[lang="ar"].field-label,
+html[lang="ar"].field-value {
+  text-align: right!important;
+}
+
+html[lang="ar"].doc-page-tabs {
+  direction: rtl!important;
+}
+
+html[lang="ar"].wall-item {
+  direction: rtl!important;
+  text-align: right!important;
+  border-left: none!important;
+  border-right: 4px solid #fbc02d!important;
+}
+
+html[lang="ar"].memo-tag {
+  right: auto!important;
+  left: 8px!important;
+}
+
+html[lang="ar"].folder-tab {
+  direction: rtl!important;
+  text-align: right!important;
+  flex-direction: row!important;
+  justify-content: space-between!important;
+  border-left: none!important;
+  border-right: 6px solid #8d6e63!important;
+}
+
+html[lang="ar"].folder-tab > div:first-child {
+  text-align: right!important;
+  direction: rtl!important;
+}
+
+html[lang="ar"].folder-tab.tab-status {
+  margin-right: auto!important;
+  margin-left: 0!important;
+}
+
+html[lang="ar"].folder-tab:hover {
+  transform: translateX(-4px)!important;
+}
+
+html[lang="ar"].folder-tab.active {
+  border-right-color: #ff8f00!important;
+  border-left: none!important;
+  box-shadow: -2px 2px 6px rgba(0, 0, 0, 0.4)!important;
+}
+
+html[lang="ar"].doc-section-title {
+  border-left: none!important;
+  border-right: 3px solid #8d6e63!important;
+  text-align: right!important;
+}
+
+html[lang="ar"].sop-rule-item {
+  border-left: none!important;
+  border-right: 3px solid #ff8f00!important;
+  padding-left: 0!important;
+  padding-right: 8px!important;
+  text-align: right!important;
+  direction: rtl!important;
+}
+
+html[lang="ar"].eval-header,
+html[lang="ar"].eval-section-title {
+  text-align: right!important;
+}
+
+html[lang="ar"].eval-line,
+html[lang="ar"].newspaper-date {
+  direction: rtl!important;
+  text-align: right!important;
+}
+
+html[lang="ar"].strike-box {
+  direction: rtl!important;
+  text-align: right!important;
+}
+
+html[lang="ar"].strike-box ul {
+  padding-right: 20px!important;
+  padding-left: 0!important;
+}
+
+html[lang="ar"].newspaper-nav {
+  direction: rtl!important;
+  flex-direction: row-reverse!important;
+}
+
+html[lang="ar"].newspaper-box,
+html[lang="ar"] #modal-newspaper.newspaper-box,
+html[lang="ar"] #news-container,
+html[lang="ar"].news-articles,
+html[lang="ar"].news-item,
+html[lang="ar"].news-item p,
+html[lang="ar"].news-item div,
+html[lang="ar"].tutorial-text,
+html[lang="ar"].tutorial-text p {
+  direction: rtl!important;
+  text-align: right!important;
+  text-align-last: right!important;
+  unicode-bidi: isolate!important;
+  line-height: 1.7!important;
+}
+
+html[lang="ar"].news-item h3,
+html[lang="ar"].tutorial-text h4 {
+  direction: rtl!important;
+  text-align: right!important;
+  margin-bottom: 6px!important;
+}
+
+html[lang="ar"].news-welcome >.news-item:nth-child(2) {
+  border-right: none!important;
+  border-left: 1px dashed #7a7060!important;
+  padding-right: 0!important;
+  padding-left: 16px!important;
+}
+
+#calculator,
+#calc-screen,
+.calc-keys {
+  direction: ltr!important;
+  text-align: right!important;
+}
+
+html[lang="ar"] #cash-bar-container {
+  flex-direction: row-reverse!important;
+}
+
+html[lang="ar"] #meter-labels,
+html[lang="ar"].meter-labels,
+html[lang="ar"].meter-label-row,
+html[lang="ar"].meter-labels div,
+html[lang="ar"].meter-labels span {
+  direction: rtl!important;
+  text-align: right!important;
+  unicode-bidi: isolate!important;
+}
+
+/* RESPONSIF MODE ARAB */
+@media (max-width: 768px) {
+  html[lang="ar"] #cash-bar-container {
+    display: grid!important;
+    grid-template-columns: auto 1fr!important;
+    grid-template-rows: auto auto!important;
+    gap: 8px 12px!important;
+    align-items: center!important;
+  }
+
+  html[lang="ar"] #btn-submit-day {
+    grid-column: 1!important;
+    grid-row: 1!important;
+  }
+
+  html[lang="ar"] #meter-labels,
+  html[lang="ar"].meter-labels,
+  html[lang="ar"].meter-label-row,
+  html[lang="ar"].meter-labels div {
+    grid-column: 2!important;
+    grid-row: 1!important;
+    direction: rtl!important;
+    text-align: right!important;
+    unicode-bidi: isolate!important;
+  }
+
+  html[lang="ar"] #meter-track {
+    grid-column: 1 / span 2!important;
+    grid-row: 2!important;
+    width: 100%!important;
+  }
+
+  html[lang="ar"].news-welcome >.news-item:nth-child(2) {
+    border-left: none!important;
+    padding-left: 0!important;
+    border-bottom: 1px solid #8d6e63!important;
+  }
+}
+
+/* BALON TEKS RUMUS MODE ARAB */
+html[lang="ar"].hint-btn {
+  font-family: 'Amiri', serif!important;
+}
+
+html[lang="ar"].hint-bubble {
+  left: auto!important;
+  right: 0!important;
+  border-left: 1px solid #8d6e63!important;
+  border-right: 3px solid #ff8f00!important;
+}
+
+html[lang="ar"].hint-bubble strong {
+  margin-right: 0;
+  margin-left: 4px;
+}
+
+html[lang="ar"].hint-bubble::before {
+  left: auto!important;
+  right: 10px!important;
+}
+
+html[lang="ar"].hint-bubble::after {
+  left: auto!important;
+  right: 11px!important;
+}
