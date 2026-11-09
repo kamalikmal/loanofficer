@@ -17,7 +17,31 @@
 <link href="css/arabic.css?v=1" type="text/css" rel="stylesheet" media="all">
 </head>
 <body>
-
+<!-- TITLE / HOME SCREEN OVERLAY -->
+<div id="home-screen" onclick="dismissHomeScreen()" style="
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  background-color: #000;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+">
+  <picture style="width: 100%; height: 100%; display: block;">
+    <!-- Khusus layar potret (HP berdiri) atau lebar maksimal 768px -->
+    <source media="(orientation: portrait), (max-width: 768px)" srcset="homescreen2.png">
+    
+    <!-- Default layar landscape / PC desktop -->
+    <img src="homescreen.png" alt="Desk of Fate Title Screen" style="
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    ">
+  </picture>
+</div>
   <!-- CUBICLE WALL -->
   <header id="cubicle-wall">
     <div class="wall-item" id="boss-sticky">
@@ -305,7 +329,7 @@
   </div>
 
   <!-- BACKGROUND STORY INTRO MODAL -->
-  <div class="modal-overlay active" id="modal-intro">
+  <div class="modal-overlay" id="modal-intro">
     <div class="story-box" id="story-box">
       <!-- MINI PILL SWITCH SUDUT MODAL INTRO -->
       <div class="lang-switch-group">
@@ -1556,6 +1580,15 @@
     openModal("modal-ending");
   }
 
+    function dismissHomeScreen() {
+    playBgm();
+    const hs = document.getElementById("home-screen");
+    if (hs) {
+      hs.style.display = "none";
+    }
+    openModal("modal-intro");
+  }
+
   function restartGame() {
     gameState.currentDay = 1;
     gameState.totalStrikes = 0;
@@ -1571,7 +1604,12 @@
     stopBgm();
     stopEndingSfx();
     closeModal("modal-ending");
-    openModal("modal-intro");
+    
+    // Tampilkan kembali home screen saat pemain mengulang karier
+    const hs = document.getElementById("home-screen");
+    if (hs) {
+      hs.style.display = "block";
+    }
   }
 
   function openModal(id) {
@@ -1585,14 +1623,14 @@
   }
 
   function startGameFromIntro() {
-	playBgm();
     closeModal("modal-intro");
     initDay(1);
   }
 
   window.addEventListener("DOMContentLoaded", () => {
     applyLanguage();
-    openModal("modal-intro");
+    // Biarkan modal intro tertutup dulu sampai home screen diklik
+    closeModal("modal-intro");
   });
   </script>
 </body>
