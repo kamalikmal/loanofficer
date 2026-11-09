@@ -3,11 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loan Officer</title>
+<title>The approval</title>
+<!-- FONT RESMI -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-<link href="loanoffice.css?v=107" type="text/css" rel="stylesheet" media="all">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Fredoka:wght@600;700&family=IBM+Plex+Mono:wght@500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- MODULAR CSS SYSTEM -->
+<link href="css/base.css?v=1" type="text/css" rel="stylesheet" media="all">
+<link href="css/desk.css?v=3" type="text/css" rel="stylesheet" media="all">
+<link href="css/modals.css?v=1" type="text/css" rel="stylesheet" media="all">
+<link href="css/responsive.css?v=1" type="text/css" rel="stylesheet" media="all">
+<link href="css/arabic.css?v=1" type="text/css" rel="stylesheet" media="all">
 </head>
 <body>
 
@@ -33,7 +40,7 @@
     <!-- LEFT PANEL: FOLDER TABS -->
     <section id="left-panel">
       <button class="side-btn" id="btn-open-sop">📚 SOP Handbook</button>
-      <div class="panel-title" id="lbl-folder-title">🗃️ Today's Applications</div>
+      <div class="panel-title" id="lbl-folder-title">🗃️ Applications</div>
       <div id="folder-list"></div>
     </section>
 
@@ -120,7 +127,7 @@
       <div id="ceiling-marker" title="Maximum Ceiling"></div>
       <div id="meter-fill"></div>
     </div>
-    <button id="btn-submit-day">END SHIFT</button>
+    <button id="btn-submit-day">SUBMIT DECISION</button>
   </footer>
 
   <!-- NEWSPAPER MODAL -->
@@ -305,7 +312,7 @@
         <button type="button" class="lang-pill-btn lang-btn-en active" id="btn-lang-en" onclick="toggleLanguage('en')">EN</button>
         <button type="button" class="lang-pill-btn lang-btn-ar" id="btn-lang-ar" onclick="toggleLanguage('ar')">AR</button>
       </div>
-      <h2 id="intro-title" style="margin: 0; color: #3e2723; font-size: 18px; text-transform: uppercase;">LOAN OFFICER</h2>
+      <h2 id="intro-title" style="margin: 0; color: #3e2723; font-size: 18px; text-transform: uppercase;">THE APPROVAL</h2>
       <div class="img-container-16-9">
         <img id="intro-image" src="story-intro.png" alt="Desk of Fate Story Illustration">
       </div>
@@ -314,6 +321,19 @@
       </div>
       <button class="restart-btn" id="btn-start-game" onclick="startGameFromIntro()" style="background:#2e7d32; width:100%; padding:10px; font-weight:bold; cursor:pointer;">
         START SHIFT
+      </button>
+    </div>
+  </div>
+
+  <!-- NIGHT STORY MODAL -->
+  <div class="modal-overlay" id="modal-night">
+    <div class="story-box" id="night-box">
+      <div class="img-container-16-9">
+        <img id="night-image" src="image1A.png" alt="Night Story Illustration">
+      </div>
+      <div class="story-text" id="night-story-desc"></div>
+      <button class="restart-btn" id="btn-night-step" onclick="advanceNightStory()" style="background:#455a64; width:100%; padding:10px; font-weight:bold; cursor:pointer;">
+        NEXT
       </button>
     </div>
   </div>
@@ -349,7 +369,7 @@
 		  <div id="options-credits-box" style="margin-top: 10px; padding: 12px; background: #e0d7c6; border: 1px dashed #8d6e63; border-radius: 4px; text-align: center; font-size: 11px; line-height: 1.5; color: #3e2723;">
 			<div id="lbl-opt-credits-title" style="font-weight: bold; margin-bottom: 4px; font-size: 12px;">CREDITS</div>
 			<div id="lbl-opt-credits-body">
-			  <strong>Loan Officer</strong><br>
+			  <strong>THE APPROVAL</strong><br>
 			  Game Designer: <strong>Kamal, Adhi, Adytia, Frisky, Purnomo</strong><br>
 			  Programmer: <strong>Kamal</strong><br>
 			  Illustration: <strong>Charish</strong><br>
@@ -362,9 +382,12 @@
 	  </div>
 	</div>
 
-  <!-- LOAD DATASETS -->
+  <!-- LOAD DATASETS & MODULES -->
+  <script type="text/javascript" src="audio.js?v=1"></script>
+  <script type="text/javascript" src="calculator.js?v=1"></script>
   <script type="text/javascript" src="days_data_ar.js?v=102"></script>
-  <script type="text/javascript" src="days_data_en.js?v=102"></script>
+  <script type="text/javascript" src="days_data_en.js?v=105"></script>
+  <script type="text/javascript" src="loanoffice.js?v=2"></script>
   <script>
   /* GAME DATABASE & CLIENTS (ARABIC & ENGLISH) */
   function resolveDaysDataset(lang) {
@@ -395,261 +418,6 @@
   let currentLang = "en";
   let DAYS_DATA = (currentLang === "en")? DAYS_DATA_EN: DAYS_DATA_AR;
 
-  /* TEKS INTRO DUAL BAHASA */
-  const INTRO_TEXTS = {
-    en: {
-      title: "LOAN OFFICER",
-      desc: "You were just hired as a credit analyst at this municipal branch. Facing strict lending quotas and an ailing family member with mounting hospital surgery deadlines, every stamp you place dictates lives—including your own.",
-      btn: "START SHIFT"
-    },
-    ar: {
-      title: "مسؤول القروض",
-      desc: "تم تعيينك حديثًا كمحلل ائتمان في هذا الفرع المحلي. في ظل حصص الإقراض الصارمة وحاجة أحد أفراد أسرتك المريض لتغطية تكاليف جراحة عاجلة، كل ختم تضعه يحدد مصائر الناس — بما في ذلك مصيرك.",
-      btn: "بدء الوردية"
-    }
-  };
-
-  const SOP_RULES_HISTORY = {
-    ar: [
-      {
-        day: 1,
-        title: "إجراء التشغيل 1: نسبة عبء الدين الأساسية (DTI)",
-        desc: "الحد الأقصى لنسبة عبء الدين (القسط الشهري / صافي الدخل الشهري) هو 30%. يجب ألا يتجاوز القسط هذه النسبة.<br>(إذا لم تكن البيانات مسجلة بالوثيقة، يتم حسابها يدويًا)"
-      },
-      {
-        day: 2,
-        title: "إجراء التشغيل 2: السجل الائتماني (SLIK)",
-        desc: "افحص سجلات مكتب الائتمان على شاشة CRT: التصنيف 1 (منتظم) مؤهل للموافقة. التصنيف 2 يتطلب ضمانًا عينيًا موثوقًا. التصنيفات 3 و4 و5 (متعثر/عاجز) يجب رفضها قطعًا."
-      },
-      {
-        day: 3,
-        title: "إجراء التشغيل 3: حد قيمة الضمان العيني / الرهن",
-        desc: "يجب ألا تقل القيمة التقديرية للضمان العيني المقدم عن 120% من أصل مبلغ التمويل المطلوب. المعادلة: (قيمة الضمان / مبلغ التمويل) × 100% >= 120%.<br>(إذا لم تكن مسجلة، تحسب يدويًا)"
-      },
-      {
-        day: 4,
-        title: "إجراء التشغيل 4: صحة الوثائق ومكافحة الاحتيال",
-        desc: "يجب التحقق من تطابق أرقام الهوية الوطنية (الأرقام من 7 إلى 12 يجب أن تعكس تاريخ الميلاد يوم-شهر-سنة). يلزم الاتصال بجهة العمل للتحقق؛ ارفض إذا كان الرقم غير صالح أو كان المتقدم غير موظف لديهم."
-      },
-      {
-        day: 5,
-        title: "إجراء التشغيل 5: تصنيف قطاعات التمويل",
-        desc: "تختلف نسبة عبء الدين حسب القطاع: التمويل الإنتاجي (تطوير الأعمال/المعدات) بحد أقصى 30%. التمويل الاستهلاكي (الاحتياجات الشخصية/الترميم) يشدد ليكون بحد أقصى 20%.<br>(إذا لم تكن مسجلة، تحسب يدويًا)"
-      },
-      {
-        day: 6,
-        title: "إجراء التشغيل 6: الحد الأقصى لسن التقاعد",
-        desc: "حساب تاريخ سداد آخر قسط: عمر المتقدم الحالي + مدة التمويل (بالسنوات) يجب ألا يتجاوز 60 عامًا.<br>(إذا لم تكن مسجلة، تحسب يدويًا)"
-      },
-      {
-        day: 7,
-        title: "إجراء التشغيل 7: التدقيق الشامل لنهاية العام",
-        desc: "تطبق جميع إجراءات التشغيل من اليوم الأول حتى اليوم السادس معًا دون أي تهاون إجرائي."
-      }
-    ],
-    en: [
-      {
-        day: 1,
-        title: "SOP 1: Debt-to-Income (DTI) Threshold",
-        desc: "The maximum Debt-to-Income ratio (Monthly Installment / Net Monthly Income) is 30%. Installments must not exceed this ceiling.<br>(if unlisted on document, calculate manually)"
-      },
-      {
-        day: 2,
-        title: "SOP 2: Central Credit Bureau (SLIK)",
-        desc: "Inspect credit registry records on the CRT terminal: Rating 1 (Current / Clean) is eligible. Rating 2 requires verified physical collateral. Rating 3, 4, and 5 (Delinquent / Default) must be strictly REJECTED."
-      },
-      {
-        day: 3,
-        title: "SOP 3: Physical Collateral Threshold",
-        desc: "Appraisal value of physical collateral must equal at least 120% of requested principal. Formula: (Collateral Value / Loan) x 100% >= 120%.<br>(if unlisted on document, calculate manually)"
-      },
-      {
-        day: 4,
-        title: "SOP 4: Identity & Anti-Fraud Verification",
-        desc: "Verify applicant National ID digits (digits 7 to 12 must match birth date DD-MM-YY; female applicants add +40 to date). Dial employer phone to verify employment; decline if phone is invalid or applicant is not employed there."
-      },
-      {
-        day: 5,
-        title: "SOP 5: Loan Sector Segmentation",
-        desc: "DTI ceiling is segmented by sector: Productive Credit (business expansion/tools) max DTI 30%. Consumer Credit (personal/lifestyle) tightened to max DTI 20%.<br>(if unlisted on document, calculate manually)"
-      },
-      {
-        day: 6,
-        title: "SOP 6: Retirement Maturity Age Limit",
-        desc: "Repayment maturity calculation: Applicant Age + Loan Tenor (in years) must not exceed 60 years.<br>(if unlisted on document, calculate manually)"
-      },
-      {
-        day: 7,
-        title: "SOP 7: Comprehensive Annual Audit",
-        desc: "All SOPs from Day 1 to Day 6 apply simultaneously without procedural tolerance."
-      }
-    ]
-  };
-
-  const EXPENSES_CONFIG = {
-    ar: {
-      1: [
-        { label: "وجبات اليوم", amount: 25 },
-        { label: "المواصلات والتنقل", amount: 15 }
-      ],
-      2: [
-        { label: "وجبات اليوم", amount: 25 },
-        { label: "المواصلات والتنقل", amount: 15 },
-        { label: "باقة بيانات الهاتف", amount: 25 }
-      ],
-      3: [
-        { label: "وجبات اليوم", amount: 25 },
-        { label: "المواصلات والتنقل", amount: 15 },
-        { label: "فاتورة كهرباء المنزل", amount: 35 }
-      ],
-      4: [
-        { label: "وجبات اليوم", amount: 25 },
-        { label: "المواصلات والتنقل", amount: 15 },
-        { label: "فاتورة المياه البلدية", amount: 30 }
-      ],
-      5: [
-        { label: "وجبات اليوم", amount: 25 },
-        { label: "المواصلات والتنقل", amount: 15 },
-        { label: "قسط تمويل السيارة الشهري", amount: 60 }
-      ],
-      6: [
-        { label: "وجبات اليوم", amount: 25 },
-        { label: "المواصلات والتنقل", amount: 15 },
-        { label: "رسوم الحي والخدمات", amount: 20 },
-        { label: "اشتراك التأمين الصحي", amount: 40 }
-      ],
-      7: [
-        { label: "وجبات اليوم", amount: 25 },
-        { label: "المواصلات والتنقل", amount: 15 },
-        { label: "صيانة دورية للسيارة", amount: 40 },
-        { label: "نفقات جراحة الوالدين بالمستشفى", amount: 250 }
-      ]
-    },
-    en: {
-      1: [
-        { label: "Daily Meals", amount: 25 },
-        { label: "Commute & Transit", amount: 15 }
-      ],
-      2: [
-        { label: "Daily Meals", amount: 25 },
-        { label: "Commute & Transit", amount: 15 },
-        { label: "Mobile Data Voucher", amount: 25 }
-      ],
-      3: [
-        { label: "Daily Meals", amount: 25 },
-        { label: "Commute & Transit", amount: 15 },
-        { label: "Home Electricity Token", amount: 35 }
-      ],
-      4: [
-        { label: "Daily Meals", amount: 25 },
-        { label: "Commute & Transit", amount: 15 },
-        { label: "Municipal Water Bill", amount: 30 }
-      ],
-      5: [
-        { label: "Daily Meals", amount: 25 },
-        { label: "Commute & Transit", amount: 15 },
-        { label: "Monthly Car Loan", amount: 60 }
-      ],
-      6: [
-        { label: "Daily Meals", amount: 25 },
-        { label: "Commute & Transit", amount: 15 },
-        { label: "Neighborhood Dues", amount: 20 },
-        { label: "Health Insurance", amount: 40 }
-      ],
-      7: [
-        { label: "Daily Meals", amount: 25 },
-        { label: "Commute & Transit", amount: 15 },
-        { label: "Car Routine Service", amount: 40 },
-        { label: "Parents Hospital Expenses", amount: 250 }
-      ]
-    }
-  };
-
-  const NEWS_PAGE_TITLES = {
-    ar: {
-      1: "الجريدة اليومية للأعمال والمجتمع",
-      2: "الملحق الأول: الدليل الأساسي للائتمان",
-      3: "الملحق الثاني: التحقق والضمانات",
-      4: "الملحق الثالث: إدارة السيولة والتدقيق"
-    },
-    en: {
-      1: "DAILY BUSINESS & SOCIAL TRIBUNE",
-      2: "APPENDIX I: BASIC CREDIT GUIDE",
-      3: "APPENDIX II: VERIFICATION & COLLATERAL",
-      4: "APPENDIX III: CASH MANAGEMENT & AUDIT"
-    }
-  };
-	/* AUDIO SYSTEM & CONTROLS */
-	const audioSettings = {
-	  bgmEnabled: true,
-	  sfxEnabled: true
-	};
-
-	const audioTracks = {
-	  bgm: new Audio("bgmusic.mp3"),
-	  pageturn: new Audio("pageturn.mp3"),
-	  stamp: new Audio("stamp.mp3"),
-	  coin: new Audio("coin.mp3"),
-	  winning: new Audio("winning.mp3"),
-	  lose: new Audio("lose.mp3")
-	};
-
-	audioTracks.bgm.loop = true;
-	audioTracks.bgm.volume = 0.25;
-
-	function playBgm() {
-	  if (!audioSettings.bgmEnabled) return;
-	  audioTracks.bgm.play().catch(() => {});
-	}
-
-	function stopBgm() {
-	  audioTracks.bgm.pause();
-	  audioTracks.bgm.currentTime = 0;
-	}
-
-	function playSfx(trackName) {
-	  if (!audioSettings.sfxEnabled) return;
-	  const sfx = audioTracks[trackName];
-	  if (sfx) {
-		sfx.currentTime = 0;
-		sfx.volume = 0.7;
-		sfx.play().catch(() => {});
-	  }
-	}
-	function stopEndingSfx() {
-	  audioTracks.winning.pause();
-	  audioTracks.winning.currentTime = 0;
-	  audioTracks.lose.pause();
-	  audioTracks.lose.currentTime = 0;
-	}
-
-	function toggleBgm() {
-	  audioSettings.bgmEnabled =!audioSettings.bgmEnabled;
-	  const btn = document.getElementById("btn-toggle-bgm");
-	  if (audioSettings.bgmEnabled) {
-		btn.textContent = "ON";
-		btn.style.backgroundColor = "#2e7d32";
-		audioTracks.bgm.play().catch(() => {});
-	  } else {
-		btn.textContent = "OFF";
-		btn.style.backgroundColor = "#c62828";
-		audioTracks.bgm.pause();
-	  }
-	}
-
-	function toggleSfx() {
-	  audioSettings.sfxEnabled =!audioSettings.sfxEnabled;
-	  const btn = document.getElementById("btn-toggle-sfx");
-	  if (audioSettings.sfxEnabled) {
-		btn.textContent = "ON";
-		btn.style.backgroundColor = "#2e7d32";
-		playSfx("pageturn");
-	  } else {
-		btn.textContent = "OFF";
-		btn.style.backgroundColor = "#c62828";
-	  }
-	}
-
   const gameState = {
     currentDay: 1,
     totalStrikes: 0,
@@ -660,7 +428,9 @@
     currentDocPage: 1,
     clientDecisions: {},
     yesterdayDecisions: null,
-    totalFilesProcessed: 0
+    totalFilesProcessed: 0,
+    nightPicks: [0, 0, 0],
+    nightStep: 0
   };
 
   function formatRupiah(amount) {
@@ -688,6 +458,7 @@
     playSfx('pageturn');
   }
   window.setLanguage = setLanguage;
+
   function applyLanguage() {
     const isEn = (currentLang === "en");
     document.documentElement.lang = currentLang;
@@ -698,7 +469,7 @@
     const rtlTargetIds = [
       "meter-labels", "document-sheet", "newspaper-box", "handbook-box",
       "eval-box", "ending-box", "phone-display", "crt-log", "boss-sticky",
-      "options-box"
+      "options-box", "night-box"
     ];
 
     rtlTargetIds.forEach(id => {
@@ -762,7 +533,7 @@
     document.getElementById("btn-open-options").textContent = isEn? "⚙️ Options": "⚙️ الإعدادات";
 
     document.getElementById("btn-open-sop").textContent = isEn? "📚 SOP Handbook": "📚 دليل إجراءات SOP";
-    document.getElementById("lbl-folder-title").textContent = isEn? "🗃️ Today's Applications": "🗃️ ملفات الوارد اليوم";
+    document.getElementById("lbl-folder-title").textContent = isEn? "🗃️ Applications": "🗃️ الملفات";
     document.getElementById("lbl-crt-title").textContent = isEn? "Credit Bureau Terminal": "جهاز الاستعلام الائتماني";
     document.getElementById("btn-query-slik").textContent = isEn? "QUERY CREDIT BUREAU": "فحص السجل الائتماني";
     document.getElementById("lbl-phone-title").textContent = isEn? "Employer Verification Phone": "هاتف التحقق من جهة العمل";
@@ -775,7 +546,7 @@
     document.getElementById("lbl-disbursed").textContent = isEn? "Disbursed": "المنصرف";
     document.getElementById("lbl-target").textContent = isEn? "Target": "المستهدف";
     document.getElementById("lbl-ceiling").textContent = isEn? "Ceiling": "السقف";
-    document.getElementById("btn-submit-day").textContent = isEn? "END SHIFT": "إنهاء الوردية";
+    document.getElementById("btn-submit-day").textContent = isEn? "SUBMIT DECISION": "إرسال القرار";
 
     document.getElementById("options-title-text").textContent = isEn? "GAME SETTINGS": "إعدادات اللعبة";
     document.getElementById("lbl-opt-bgm").textContent = isEn? "Background Music": "الموسيقى الخلفية";
@@ -836,7 +607,6 @@
     document.getElementById("badge-savings").textContent = formatRupiah(gameState.playerSavings);
     document.getElementById("calendar-day").textContent = gameState.currentDay;
 	
-	
     document.getElementById("options-title-text").textContent = isEn? "GAME SETTINGS": "إعدادات اللعبة";
     document.getElementById("lbl-opt-bgm").textContent = isEn? "Background Music": "الموسيقى الخلفية";
     document.getElementById("lbl-opt-sfx").textContent = isEn? "Sound Effects (SFX)": "المؤثرات الصوتية (SFX)";
@@ -844,6 +614,11 @@
     document.getElementById("btn-close-options").textContent = isEn? "CLOSE": "إغلاق";
 	
     renderSopHandbook();
+
+    const nightModal = document.getElementById("modal-night");
+    if (nightModal && nightModal.classList.contains("active")) {
+      renderNightStory();
+    }
   }
   
   function toggleLanguage(lang) {
@@ -918,7 +693,7 @@
     }
   }
 
-    function shuffleArray(array) {
+  function shuffleArray(array) {
     const arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -1085,7 +860,7 @@
 
 	window.addEventListener("click", closeAllFormulaHints);
 
-		function renderDocumentPage(client) {
+	function renderDocumentPage(client) {
 	  const docContainer = document.getElementById("doc-content");
 	  const isPage1 = (gameState.currentDocPage === 1);
 	  const isEn = (currentLang === "en");
@@ -1341,74 +1116,6 @@
     }
   };
 
-  let calcMemory = "0";
-
-  function updateScreen() {
-    if (calcMemory === "Error") {
-      document.getElementById("calc-screen").textContent = "Error";
-      return;
-    }
-
-    const formatted = calcMemory.replace(/\d+(\.\d*)?/g, (num) => {
-      const parts = num.split(".");
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      return parts.join(".");
-    });
-
-    document.getElementById("calc-screen").textContent = formatted;
-  }
-
-  function calcInput(char) {
-    if (calcMemory === "0" || calcMemory === "Error") {
-      if (char === "00" || char === "000") return;
-      calcMemory = "";
-    }
-    if (calcMemory.endsWith(" ") && (char === "00" || char === "000")) {
-      char = "0";
-    }
-    calcMemory += char;
-    updateScreen();
-  }
-
-  function calcBackspace() {
-    if (calcMemory === "Error" || calcMemory.length <= 1) {
-      calcMemory = "0";
-    } else {
-      if (calcMemory.endsWith(" ")) {
-        calcMemory = calcMemory.trimEnd().slice(0, -1).trimEnd();
-      } else {
-        calcMemory = calcMemory.slice(0, -1);
-      }
-      if (calcMemory === "") calcMemory = "0";
-    }
-    updateScreen();
-  }
-
-  function calcOp(op) {
-    if (calcMemory === "Error") calcMemory = "0";
-    if (calcMemory.endsWith(" ")) {
-      calcMemory = calcMemory.trimEnd().slice(0, -1);
-    }
-    calcMemory += " " + op + " ";
-    updateScreen();
-  }
-
-  function calcClear() {
-    calcMemory = "0";
-    updateScreen();
-  }
-
-  function calcEquals() {
-    try {
-      const sanitized = calcMemory.replace(/[^0-9+\-*/.]/g, '');
-      const res = Function(`'use strict'; return (${sanitized})`)();
-      calcMemory = Number.isFinite(res)? (Math.round(res * 100) / 100).toString(): "Error";
-    } catch (e) {
-      calcMemory = "Error";
-    }
-    updateScreen();
-  }
-
   function renderNewspaper() {
     totalNewsPages = (gameState.currentDay === 1)? 4: 1;
     currentNewsPage = 1;
@@ -1431,11 +1138,11 @@
           </div>
           <div class="news-item">
             <h3>CENTRAL BANK RELEASES INAUGURAL CREDIT SOP</h3>
-            <p>Operational handbooks are delivered to officers' desks each morning.<br>Staff must inspect the <strong>SOP HANDBOOK</strong> daily. (Rules expand every day)</p>
+            <p>Operational handbooks are delivered to officers' desks each morning.Staff must inspect the <strong>SOP HANDBOOK</strong> daily. (Rules expand every day)</p>
           </div>
           <div class="news-item">
             <h3>SMALL BUSINESS CLIMATE REBOUNDS</h3>
-            <p>Regional micro-entrepreneurs flock to branch desks seeking productive working capital.<br>The Branch Manager issues a daily <strong>MEMORANDUM</strong> serving as mandatory criteria for credit approval. (Memos change daily)</p>
+            <p>Regional micro-entrepreneurs flock to branch desks seeking productive working capital.The Branch Manager issues a daily <strong>MEMORANDUM</strong> serving as mandatory criteria for credit approval. (Memos change daily)</p>
           </div>
         `;
       } else {
@@ -1553,7 +1260,7 @@
     openModal("modal-sop");
   };
 
-    document.getElementById("btn-submit-day").onclick = () => {
+  document.getElementById("btn-submit-day").onclick = () => {
     const dayObj = DAYS_DATA[gameState.currentDay - 1];
     const isEn = (currentLang === "en");
 
@@ -1705,11 +1412,53 @@
         btnNext.textContent = isEn? "VIEW FINAL CAREER EVALUATION": "عرض التقييم المهني النهائي";
       }
     } else {
-      btnNext.textContent = isEn? "PROCEED TO NEXT DAY": "الانتقال إلى اليوم التالي";
+      btnNext.textContent = isEn? "Clock Out": "انصراف";
     }
 
     gameState.yesterdayDecisions = {...gameState.clientDecisions};
     openModal("modal-eval");
+  }
+
+  function renderNightStory() {
+    const isEn = (currentLang === "en");
+    const langKey = isEn? "en": "ar";
+    const slotIdx = gameState.nightStep;
+    const pickIdx = gameState.nightPicks[slotIdx] || 0;
+    const slideData = NIGHT_STORIES[langKey][slotIdx][pickIdx];
+
+    const imgEl = document.getElementById("night-image");
+    const textEl = document.getElementById("night-story-desc");
+    const btnEl = document.getElementById("btn-night-step");
+
+    if (imgEl) imgEl.src = slideData.img;
+    if (textEl) {
+      textEl.textContent = slideData.text;
+      const dirVal = isEn? "ltr": "rtl";
+      textEl.setAttribute("dir", dirVal);
+      textEl.style.direction = dirVal;
+      textEl.style.textAlign = isEn? "justify": "right";
+    }
+
+    if (btnEl) {
+      if (gameState.nightStep < 2) {
+        btnEl.textContent = isEn? "NEXT": "التالي";
+        btnEl.style.backgroundColor = "#455a64";
+      } else {
+        btnEl.textContent = isEn? "PROCEED TO NEXT DAY": "بدء اليوم التالي";
+        btnEl.style.backgroundColor = "#2e7d32";
+      }
+    }
+  }
+
+  function advanceNightStory() {
+    playSfx('pageturn');
+    if (gameState.nightStep < 2) {
+      gameState.nightStep++;
+      renderNightStory();
+    } else {
+      closeModal("modal-night");
+      initDay(gameState.currentDay + 1);
+    }
   }
 
   function advanceToNextDay() {
@@ -1731,7 +1480,14 @@
       return;
     }
 
-    initDay(gameState.currentDay + 1);
+    gameState.nightPicks = [
+      Math.random() < 0.5? 0: 1,
+      Math.random() < 0.5? 0: 1,
+      Math.random() < 0.5? 0: 1
+    ];
+    gameState.nightStep = 0;
+    renderNightStory();
+    openModal("modal-night");
   }
 
   function triggerEnding(type) {
@@ -1749,7 +1505,7 @@
 
     if (type === "STAR_OFFICER") {
 	  playSfx('winning');
-      endImg.src = "end-star.png";
+      endImg.src = "end-star.PNG";
       badge.textContent = isEn? "STAR LOAN OFFICER": "مسؤول ائتمان مثالي";
       badge.style.color = "#2e7d32";
       title.textContent = isEn? "PROMOTION: BRANCH MANAGER": "ترقية وظيفية: مدير الفرع";
@@ -1761,7 +1517,7 @@
       status.style.color = "#1b5e20";
     } else if (type === "SURVIVOR") {
 	  playSfx('winning');
-      endImg.src = "end-survivor.png";
+      endImg.src = "end-survivor.PNG";
       badge.textContent = isEn? "MODEST SURVIVOR": "النجاة بالكاد";
       badge.style.color = "#f57f17";
       title.textContent = isEn? "SURVIVOR: SURGERY FUNDED ON TIME": "ناجٍ: تم تمويل الجراحة في موعدها";
@@ -1773,7 +1529,7 @@
       status.style.color = "#e65100";
     } else if (type === "FINANCIAL_RUIN") {
 	  playSfx('lose');
-      endImg.src = "end-ruin.png";
+      endImg.src = "end-ruin.PNG";
       badge.textContent = isEn? "FINANCIAL INSOLVENCY": "إعسار مالي وإفلاس";
       badge.style.color = "#c62828";
       title.textContent = isEn? "GAME OVER: UNPAID HOSPITAL BILLS": "نهاية اللعبة: عجز عن سداد المستشفى";
@@ -1785,7 +1541,7 @@
       status.style.color = "#b71c1c";
     } else {
 	  playSfx('lose');
-      endImg.src = "end-terminated.png";
+      endImg.src = "end-terminated.PNG";
       badge.textContent = isEn? "TERMINATION OF EMPLOYMENT": "إنهاء الخدمة والفصل الفوري";
       badge.style.color = "#c62828";
       title.textContent = isEn? "TERMINATED: DISHONORABLE DISMISSAL": "فصل: إنهاء خدمة تأديبي فوري";
@@ -1810,8 +1566,10 @@
     gameState.clientDecisions = {};
     gameState.yesterdayDecisions = null;
     gameState.totalFilesProcessed = 0;
-	stopBgm();
-	stopEndingSfx();
+    gameState.nightPicks = [0, 0, 0];
+    gameState.nightStep = 0;
+    stopBgm();
+    stopEndingSfx();
     closeModal("modal-ending");
     openModal("modal-intro");
   }

@@ -1,0 +1,224 @@
+:root {
+  --bg-wood: #2b1d0c;
+  --desk-surface: #3e2723;
+  --desk-mat: #1e272c;
+  --paper-bg: #fdfbf7;
+  --paper-line: #d7ccc8;
+  --ink-black: #1a1a1a;
+  --ink-blue: #0d47a1;
+  --ink-red: #b71c1c;
+  --stamp-green: #1b5e20;
+  --stamp-red: #b71c1c;
+  --sticky-yellow: #fff9c4;
+  --terminal-green: #00ff66;
+  --terminal-bg: #051405;
+
+  /* SISTEM FONT */
+  --font-display: 'Fredoka', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  background-color: var(--bg-wood);
+  font-family: var(--font-body);
+  color: var(--ink-black);
+  height: 100vh;
+  overflow: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 75px;
+}
+
+/* PEMETAAN DASAR TIPOGRAFI */
+.doc-title,
+.newspaper-header h1,
+.handbook-title,
+.eval-header,
+.ending-title,
+.story-box h2,
+#news-main-header,
+#intro-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.25;
+}
+
+.panel-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.tool-title,
+.ending-badge,
+#memo-title,
+#memo-tag,
+.doc-section-title,
+.eval-section-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+.stamp-button,
+#btn-submit-day {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: 1.5px;
+}
+
+.doc-page-tab,
+.modal-close-btn,
+.restart-btn,
+.side-btn,
+.news-nav-btn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.stamp-mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.field-label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #616161;
+}
+
+.field-value {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  color: #212121;
+}
+
+.folder-tab {
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.folder-tab.tab-status {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-box {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.doc-sub,
+.story-text,
+.news-item p,
+.tutorial-text p,
+.sop-rule-item div,
+.eval-line,
+.ending-desc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* DATA FINANSIAL & ANGKA LATIN */
+.field-value.highlight,
+.folder-tab > div > div:last-child,
+.meter-labels span,
+.badge-box span,
+#calendar-widget.day-num,
+#calc-screen,
+.calc-key,
+#crt-screen,
+#crt-log,
+.eval-line span:last-child,
+.stat-grid strong {
+  font-family: var(--font-mono)!important;
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: -0.2px;
+}
+
+/* KEYFRAMES & ANIMASI */
+@keyframes blinkSop {
+  0%, 100% {
+    background-color: #8d6e63;
+    box-shadow: 0 0 0 rgba(255, 143, 0, 0);
+    transform: scale(1);
+  }
+  50% {
+    background-color: #e65100;
+    box-shadow: 0 0 12px #ff9800;
+    transform: scale(1.02);
+  }
+}
+
+.sop-blink {
+  animation: blinkSop 1.2s infinite ease-in-out;
+  border: 1px solid #ffe082!important;
+}
+
+@keyframes pulseApprove {
+  0%, 100% {
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.4), 0 0 0 rgba(76, 175, 80, 0);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.4), 0 0 16px rgba(76, 175, 80, 0.9);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes pulseDecline {
+  0%, 100% {
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.4), 0 0 0 rgba(239, 83, 80, 0);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 6px 0 rgba(0, 0, 0, 0.4), 0 0 16px rgba(239, 83, 80, 0.9);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes pulseSubmit {
+  0%, 100% {
+    box-shadow: 0 3px 0 #b26a00, 0 0 0 rgba(255, 143, 0, 0);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 3px 0 #b26a00, 0 0 18px #ffb300;
+    transform: scale(1.04);
+  }
+}
+
+.btn-pulse-approve {
+  animation: pulseApprove 1.6s infinite ease-in-out;
+}
+
+.btn-pulse-decline {
+  animation: pulseDecline 1.6s infinite ease-in-out;
+}
+
+.btn-pulse-submit {
+  animation: pulseSubmit 1.4s infinite ease-in-out;
+  border: 1px solid #ffe082!important;
+}
