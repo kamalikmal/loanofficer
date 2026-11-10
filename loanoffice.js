@@ -213,3 +213,10 @@
       ]
     ]
   };
+   /* DAFTAR DEFINISI 4 ENDING */
+  const ENDINGS_MASTER = [
+    { id: "STAR_OFFICER", num: 1, title: { en: "Ending 1: Branch Manager Promotion", ar: "النهاية 1: ترقية مدير الفرع" } },
+    { id: "SURVIVOR", num: 2, title: { en: "Ending 2: Modest Survivor", ar: "النهاية 2: النجاة بالكاد" } },
+    { id: "FINANCIAL_RUIN", num: 3, title: { en: "Ending 3: Financial Insolvency", ar: "النهاية 3: إعسار مالي وإفلاس" } },
+    { id: "TERMINATED", num: 4, title: { en: "Ending 4: Dishonorable Dismissal", ar: "النهاية 4: إنهاء الخدمة تأديبيًا" } }
+  ];

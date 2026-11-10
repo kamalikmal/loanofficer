@@ -324,6 +324,16 @@
         <div><span id="lbl-end-files">Total Files Processed</span>: <strong id="end-total-files">0 Files</strong></div>
         <div style="grid-column: span 2;"><span id="lbl-end-status">Employment Status</span>: <strong id="end-final-status">-</strong></div>
       </div>
+
+      <!-- TRACKER KOLEKSI ENDING (X / 4) -->
+      <div id="endings-tracker-container">
+        <div id="endings-tracker-header">
+          <span id="lbl-endings-tracker-title">ENDINGS DISCOVERED:</span>
+          <strong id="val-endings-tracker-count">0 / 4</strong>
+        </div>
+        <div id="endings-tracker-list"></div>
+      </div>
+
       <button class="restart-btn" id="btn-restart" onclick="restartGame()">START NEW CAREER</button>
     </div>
   </div>
@@ -493,7 +503,7 @@
     const rtlTargetIds = [
       "meter-labels", "document-sheet", "newspaper-box", "handbook-box",
       "eval-box", "ending-box", "phone-display", "crt-log", "boss-sticky",
-      "options-box", "night-box"
+      "options-box", "night-box", "endings-tracker-container"
     ];
 
     rtlTargetIds.forEach(id => {
@@ -642,6 +652,11 @@
     const nightModal = document.getElementById("modal-night");
     if (nightModal && nightModal.classList.contains("active")) {
       renderNightStory();
+    }
+
+    const endingModal = document.getElementById("modal-ending");
+    if (endingModal && endingModal.classList.contains("active")) {
+      renderEndingsTracker();
     }
   }
   
@@ -1528,6 +1543,85 @@
     openModal("modal-night");
 	playBgm('night');
   }
+  
+  const STORAGE_KEY_ENDINGS = "the_approval_unlocked_endings";
+  let activeEndingIdForRun = null;
+
+  function getUnlockedEndings() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_ENDINGS);
+      return raw? JSON.parse(raw): [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function recordUnlockedEnding(endingId) {
+    try {
+      const list = getUnlockedEndings();
+      if (!list.includes(endingId)) {
+        list.push(endingId);
+        localStorage.setItem(STORAGE_KEY_ENDINGS, JSON.stringify(list));
+      }
+    } catch (e) {
+      console.error("Failed saving ending progress to localStorage:", e);
+    }
+  }
+
+  function renderEndingsTracker(currentEndingId) {
+    if (currentEndingId) {
+      activeEndingIdForRun = currentEndingId;
+    }
+    const currentRun = activeEndingIdForRun;
+    const isEn = (currentLang === "en");
+    const unlockedList = getUnlockedEndings();
+
+    const titleEl = document.getElementById("lbl-endings-tracker-title");
+    const countEl = document.getElementById("val-endings-tracker-count");
+    const listEl = document.getElementById("endings-tracker-list");
+
+    if (!listEl) return;
+
+    if (titleEl) {
+      titleEl.textContent = isEn? "ENDINGS DISCOVERED:": "النهايات المكتشفة:";
+    }
+    if (countEl) {
+      countEl.textContent = `${unlockedList.length} / ${ENDINGS_MASTER.length}`;
+    }
+
+    listEl.innerHTML = "";
+
+    ENDINGS_MASTER.forEach(item => {
+      const isUnlocked = unlockedList.includes(item.id);
+      const isCurrent = (item.id === currentRun);
+
+      const slot = document.createElement("div");
+      let slotClass = "ending-slot ";
+      if (isCurrent) {
+        slotClass += "unlocked current-run";
+      } else if (isUnlocked) {
+        slotClass += "unlocked";
+      } else {
+        slotClass += "locked";
+      }
+      slot.className = slotClass;
+
+      let displayText = "";
+      if (isUnlocked) {
+        displayText = isEn? `✓ ${item.title.en}`: `✓ ${item.title.ar}`;
+      } else {
+        displayText = isEn? `🔒 Ending ${item.num}:???`: `🔒 النهاية ${item.num}: ؟؟؟`;
+      }
+
+      let badgeHtml = "";
+      if (isCurrent) {
+        badgeHtml = `<span class="ending-slot-tag">${isEn? "THIS RUN": "الآن"}</span>`;
+      }
+
+      slot.innerHTML = `<span>${displayText}</span>${badgeHtml}`;
+      listEl.appendChild(slot);
+    });
+  }
 
   function triggerEnding(type) {
     const isEn = (currentLang === "en");
@@ -1536,61 +1630,64 @@
     const desc = document.getElementById("end-desc");
     const status = document.getElementById("end-final-status");
     const endImg = document.getElementById("end-image");
-	stopBgm();
+    stopBgm();
     document.getElementById("end-total-comm").textContent = formatRupiah(gameState.totalCommission);
     document.getElementById("end-total-savings").textContent = formatRupiah(gameState.playerSavings);
     document.getElementById("end-total-sp").textContent = `${gameState.totalStrikes} / 3`;
     document.getElementById("end-total-files").textContent = `${gameState.totalFilesProcessed} ${isEn? 'Files': 'ملفات'}`;
 
     if (type === "STAR_OFFICER") {
-	  playSfx('winning');
+      playSfx('winning');
       endImg.src = "img/end-star.PNG";
       badge.textContent = isEn? "STAR LOAN OFFICER": "مسؤول ائتمان مثالي";
       badge.style.color = "#2e7d32";
       title.textContent = isEn? "PROMOTION: BRANCH MANAGER": "ترقية وظيفية: مدير الفرع";
       title.style.color = "#1b5e20";
       desc.textContent = isEn 
-? "7 audit days cleared with zero warnings. Hospital bills fully paid, and you are promoted to Branch Manager."
+? "Best Outcome. You made it through all seven audit days without a single warning, paid your mother's hospital bills in full, and earned a promotion to Branch Manager. For the first time in months, you can visit her without worrying about the bills waiting for you at home."
 : "تم اجتياز 7 أيام تدقيق بدون أي إنذار. تم سداد تكاليف المستشفى بالكامل، وحصلت على ترقية رسمية لمنصب مدير الفرع.";
       status.textContent = isEn? "PROMOTION TO BRANCH MANAGER": "ترقية إلى مدير الفرع";
       status.style.color = "#1b5e20";
     } else if (type === "SURVIVOR") {
-	  playSfx('winning');
+      playSfx('winning');
       endImg.src = "img/end-survivor.PNG";
       badge.textContent = isEn? "MODEST SURVIVOR": "النجاة بالكاد";
       badge.style.color = "#f57f17";
       title.textContent = isEn? "SURVIVOR: SURGERY FUNDED ON TIME": "ناجٍ: تم تمويل الجراحة في موعدها";
       title.style.color = "#e65100";
       desc.textContent = isEn 
-? "Survived 7 days without being fired. Commissions barely covered hospital bills with zero debt left."
+? "Survival Outcome. You survived all seven days, and your commissions were just enough to cover your mother's hospital bills. You kept your job and avoided debt, but after everything was paid, there was almost nothing left for you."
 : "اجتزت 7 أيام دون إنهاء خدمتك. غطت العمولات نفقات المستشفى بالكاد ودون أي ديون متبقية.";
       status.textContent = isEn? "CONTRACT EXTENDED (BREAK-EVEN)": "تمديد العقد (نقطة تعادل)";
       status.style.color = "#e65100";
     } else if (type === "FINANCIAL_RUIN") {
-	  playSfx('lose');
+      playSfx('lose');
       endImg.src = "img/end-ruin.PNG";
-      badge.textContent = isEn? "FINANCIAL INSOLVENCY": "إعسار مالي وإفلاس";
+      badge.textContent = isEn? "FINANCIAL INSOLVENCY": "إعسar مالي وإفلاس";
       badge.style.color = "#c62828";
       title.textContent = isEn? "GAME OVER: UNPAID HOSPITAL BILLS": "نهاية اللعبة: عجز عن سداد المستشفى";
       title.style.color = "#b71c1c";
       desc.textContent = isEn 
-? "Not fired, but commissions fell short. Savings are in deficit and surgery bills remain unpaid."
+? "Financial Failure. You managed to keep your job, but your commissions couldn't keep pace with your mother's mounting medical expenses. Your savings are gone, and her surgery bills remain unpaid"
 : "لم تفصل من الوظيفة، لكن العمولات لم تكن كافية. رصيد المدخرات في حالة عجز وفشلت في سداد الجراحة.";
       status.textContent = isEn? "HOSPITAL DEFAULT (DEFICIT)": "تخلف عن السداد الطبي (عجز مالي)";
       status.style.color = "#b71c1c";
     } else {
-	  playSfx('lose');
+      playSfx('lose');
       endImg.src = "img/end-terminated.PNG";
       badge.textContent = isEn? "TERMINATION OF EMPLOYMENT": "إنهاء الخدمة والفصل الفوري";
       badge.style.color = "#c62828";
       title.textContent = isEn? "TERMINATED: DISHONORABLE DISMISSAL": "فصل: إنهاء خدمة تأديبي فوري";
       title.style.color = "#b71c1c";
       desc.textContent = isEn 
-? "Reached 3 Warning Letters (SP 3). You are dismissed immediately due to operational negligence."
+? "Worst Outcome. Three warning letters were all it took to end your career: you were dismissed for operational negligence. Now you've lost your job, just when your mother needs you most."
 : "تراكمت لديك 3 خطابات إنذار. تم فصلك من العمل فورًا نتيجة الإهمال في تطبيق الإجراءات والضوابط.";
-      status.textContent = isEn? "DISMISSED (SP 3)": "مفصول (3 إنذارات)";
+      status.textContent = isEn? "DISMISSED (3 WARNING)": "مفصول (3 إنذارات)";
       status.style.color = "#b71c1c";
     }
+
+    recordUnlockedEnding(type);
+    renderEndingsTracker(type);
 
     openModal("modal-ending");
   }
