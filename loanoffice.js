@@ -186,30 +186,30 @@
   const NIGHT_STORIES = {
     en: [
       [
-        { img: "image1a.png", text: "Another exhausting day at work, but I can’t afford to give up—not when Mom’s life depends on the money I bring home. I just hope I can save enough to keep her with me a little longer." },
-        { img: "image1b.png", text: "I’m still on probation, but I can’t afford to lose this job—not when Mom’s hospital bills keep piling up. Even tonight, I have to bring work home… because her life depends on it." }
+        { img: "img/image1a.png", text: "Another exhausting day at work, but I can’t afford to give up—not when Mom’s life depends on the money I bring home. I just hope I can save enough to keep her with me a little longer." },
+        { img: "img/image1b.png", text: "I’m still on probation, but I can’t afford to lose this job—not when Mom’s hospital bills keep piling up. Even tonight, I have to bring work home… because her life depends on it." }
       ],
       [
-        { img: "image2a.png", text: "Another night lost in traffic, while Mom waits for me at the hospital. I wish I could be there instead of counting every minute—and every cent." },
-        { img: "image2b.png", text: "The city keeps moving, but my thoughts are back at the hospital. I hate being so far away when Mom needs me most." }
+        { img: "img/image2a.png", text: "Another night lost in traffic, while Mom waits for me at the hospital. I wish I could be there instead of counting every minute—and every cent." },
+        { img: "img/image2b.png", text: "The city keeps moving, but my thoughts are back at the hospital. I hate being so far away when Mom needs me most." }
       ],
       [
-        { img: "image3a.png", text: "Your smile tells me you’re okay, Mom, but I can see how much you’re hurting. I’m doing everything I can to keep you here with me." },
-        { img: "image3b.png", text: "Every time I see you in pain, I wish I could take it away. Please hold on, Mom—I’m not ready to lose you." }
+        { img: "img/image3a.png", text: "Your smile tells me you’re okay, Mom, but I can see how much you’re hurting. I’m doing everything I can to keep you here with me." },
+        { img: "img/image3b.png", text: "Every time I see you in pain, I wish I could take it away. Please hold on, Mom—I’m not ready to lose you." }
       ]
     ],
     ar: [
       [
-        { img: "image1a.png", text: "يوم شاق آخر في العمل، لكن لا يمكنني الاستسلام—فحياة أمي تعتمد على كل قرش أجنيه. آمل فقط أن أدخر ما يكفي لإبقائها معي لفترة أطول." },
-        { img: "image1b.png", text: "ما زلت في فترة التجربة، لكنني لا أحتمل خسارة هذه الوظيفة، ففواتير علاج أمي تتراكم باستمرار. حتى هذه الليلة، سآخذ عملي إلى المنزل... لأن حياتها تعتمد على ذلك." }
+        { img: "img/image1a.png", text: "يوم شاق آخر في العمل، لكن لا يمكنني الاستسلام—فحياة أمي تعتمد على كل قرش أجنيه. آمل فقط أن أدخر ما يكفي لإبقائها معي لفترة أطول." },
+        { img: "img/image1b.png", text: "ما زلت في فترة التجربة، لكنني لا أحتمل خسارة هذه الوظيفة، ففواتير علاج أمي تتراكم باستمرار. حتى هذه الليلة، سآخذ عملي إلى المنزل... لأن حياتها تعتمد على ذلك." }
       ],
       [
-        { img: "image2a.png", text: "ليلة أخرى تضيع وسط زحام الطرقات بينما تنتظرني أمي في المستشفى. ليتني كنت بجانبها الآن بدلاً من حساب كل دقيقة... وكل فلس." },
-        { img: "image2b.png", text: "المدينة لا تتوقف عن الحركة، لكن تفكيري عالق هناك في المستشفى. كم أكره أن أكون بعيدًا عنها وهي في أمس الحاجة إلي." }
+        { img: "img/image2a.png", text: "ليلة أخرى تضيع وسط زحام الطرقات بينما تنتظرني أمي في المستشفى. ليتني كنت بجانبها الآن بدلاً من حساب كل دقيقة... وكل فلس." },
+        { img: "img/image2b.png", text: "المدينة لا تتوقف عن الحركة، لكن تفكيري عالق هناك في المستشفى. كم أكره أن أكون بعيدًا عنها وهي في أمس الحاجة إلي." }
       ],
       [
-        { img: "image3a.png", text: "ابتسامتك تخبرني أنك بخير يا أمي، لكني أدرك حجم الألم الذي تكتمينه. سأفعل كل ما بوسعي لتبقي معي هنا." },
-        { img: "image3b.png", text: "في كل مرة أراك تتألمين، أتمنى لو كان بإمكاني حمل الألم عنك. تمسكي بالحياة يا أمي، فأنا لست مستعدًا لفقدانك." }
+        { img: "img/image3a.png", text: "ابتسامتك تخبرني أنك بخير يا أمي، لكني أدرك حجم الألم الذي تكتمينه. سأفعل كل ما بوسعي لتبقي معي هنا." },
+        { img: "img/image3b.png", text: "في كل مرة أراك تتألمين، أتمنى لو كان بإمكاني حمل الألم عنك. تمسكي بالحياة يا أمي، فأنا لست مستعدًا لفقدانك." }
       ]
     ]
   };

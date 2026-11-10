@@ -12,6 +12,11 @@
   --sticky-yellow: #fff9c4;
   --terminal-green: #00ff66;
   --terminal-bg: #051405;
+
+  /* SISTEM FONT */
+  --font-display: 'Fredoka', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
 }
 
 * {
@@ -24,7 +29,7 @@
 
 body {
   background-color: var(--bg-wood);
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-body);
   color: var(--ink-black);
   height: 100vh;
   overflow: hidden;
@@ -32,6 +37,132 @@ body {
   display: flex;
   flex-direction: column;
   padding-bottom: 75px;
+}
+
+/* ==========================================================================
+   TIPOGRAFI: DISPLAY & ACTION (FREDOKA)
+   ========================================================================== */
+.doc-title,
+.newspaper-header h1,
+.handbook-title,
+.eval-header,
+.ending-title,
+.story-box h2,
+#news-main-header,
+#intro-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.25;
+}
+
+.panel-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.tool-title,
+.ending-badge,
+#memo-title,
+#memo-tag,
+.doc-section-title,
+.eval-section-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+.stamp-button,
+#btn-submit-day {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: 1.5px;
+}
+
+.doc-page-tab,
+.modal-close-btn,
+.restart-btn,
+.side-btn,
+.news-nav-btn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.stamp-mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   TIPOGRAFI: UI & BODY (NUNITO)
+   ========================================================================== */
+.field-label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #616161;
+}
+
+.field-value {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  color: #212121;
+}
+
+.folder-tab {
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.folder-tab.tab-status {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-box {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.doc-sub,
+.story-text,
+.news-item p,
+.tutorial-text p,
+.sop-rule-item div,
+.eval-line,
+.ending-desc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   TIPOGRAFI: DATA FINANSIAL & ANGKA (IBM PLEX MONO)
+   ========================================================================== */
+.field-value.highlight,
+.folder-tab > div > div:last-child,
+.meter-labels span,
+.badge-box span,
+#calendar-widget.day-num,
+#calc-screen,
+.calc-key,
+#crt-screen,
+#crt-log,
+.eval-line span:last-child,
+.stat-grid strong {
+  font-family: var(--font-mono)!important;
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: -0.2px;
 }
 
 /* TOP HEADER / CUBICLE WALL */
@@ -52,8 +183,8 @@ body {
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
   transform: rotate(-1.5deg);
   max-width: 480px;
-  font-size: 13px;
-  line-height: 1.3;
+  font-size: 14px;
+  line-height: 1.35;
   border-left: 4px solid #fbc02d;
   color: #212121;
 }
@@ -81,6 +212,7 @@ body {
 }
 
 #calendar-widget.day-label {
+  font-family: var(--font-body);
   font-size: 11px;
   font-weight: bold;
   color: #37474f;
@@ -99,7 +231,6 @@ body {
   padding: 8px 14px;
   border-radius: 4px;
   border: 1px solid #455a64;
-  font-size: 13px;
 }
 
 .badge-box span {
@@ -134,8 +265,6 @@ body {
 
 .panel-title {
   color: #d7ccc8;
-  font-size: 13px;
-  font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
   border-bottom: 1px solid #6d4c41;
@@ -157,7 +286,6 @@ body {
   border-radius: 4px;
   cursor: pointer;
   border-left: 6px solid #8d6e63;
-  font-size: 12px;
   transition: all 0.15s ease;
   display: flex;
   justify-content: space-between;
@@ -177,10 +305,8 @@ body {
 }
 
 .folder-tab.tab-status {
-  font-size: 10px;
   padding: 2px 6px;
   border-radius: 3px;
-  font-weight: bold;
 }
 
 .status-pending { background: #b0bec5; color: #263238; }
@@ -192,9 +318,6 @@ body {
   color: #fff;
   border: none;
   padding: 8px;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: bold;
   cursor: pointer;
   border-radius: 4px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
@@ -221,7 +344,6 @@ body {
   padding: 24px 28px;
   position: relative;
   overflow-y: auto;
-  font-size: 13px;
   line-height: 1.5;
   border-top: 1px solid #fff;
 }
@@ -231,7 +353,9 @@ body {
   position: absolute;
   top: 8px;
   right: 15px;
-  font-size: 10px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
   color: #9e9e9e;
   letter-spacing: 1px;
 }
@@ -243,13 +367,11 @@ body {
 }
 
 .doc-title {
-  font-size: 16px;
-  font-weight: bold;
   color: #3e2723;
 }
 
 .doc-sub {
-  font-size: 11px;
+  font-size: 12px;
   color: #616161;
 }
 
@@ -266,20 +388,13 @@ body {
 }
 
 .field-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  color: #757575;
   display: block;
 }
 
 .field-label.calc {
   background-color: powderblue;
-}
-
-.field-value {
-  font-size: 13px;
-  font-weight: bold;
-  color: #212121;
+  border-radius: 2px;
+  padding: 0 4px;
 }
 
 .field-value.highlight {
@@ -288,9 +403,7 @@ body {
 
 .doc-section-title {
   background: #efebe9;
-  padding: 3px 6px;
-  font-size: 11px;
-  font-weight: bold;
+  padding: 4px 8px;
   margin: 12px 0 8px 0;
   border-left: 3px solid #8d6e63;
 }
@@ -350,10 +463,6 @@ body {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: bold;
-  letter-spacing: 2px;
   color: #fff;
   display: flex;
   align-items: center;
@@ -408,7 +517,9 @@ body {
 }
 
 .tool-title {
-  font-size: 11px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 12px;
   text-transform: uppercase;
   color: #90a4ae;
   margin-bottom: 6px;
@@ -432,7 +543,13 @@ body {
 }
 
 #crt-log {
-  line-height: 1.3;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+#crt-log strong {
+  font-family: var(--font-mono)!important;
+  font-size: 12px;
 }
 
 .crt-btn {
@@ -440,7 +557,8 @@ body {
   background: #004d20;
   color: #00ff66;
   border: 1px solid #00ff66;
-  font-family: inherit;
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: 10px;
   padding: 3px 8px;
   cursor: pointer;
@@ -460,6 +578,7 @@ body {
   background: #cfd8dc;
   color: #212121;
   padding: 6px;
+  font-family: var(--font-body);
   font-size: 11px;
   min-height: 38px;
   border-radius: 3px;
@@ -471,7 +590,8 @@ body {
   color: #fff;
   border: none;
   padding: 6px;
-  font-family: inherit;
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: 11px;
   cursor: pointer;
   border-radius: 3px;
@@ -514,7 +634,12 @@ body {
   border-radius: 2px;
 }
 .calc-key:hover { background: #78909c; }
-.calc-key.op { background: #ff8f00; color: #212121; font-weight: bold; font-size: 16px; }
+.calc-key.op { 
+  background: #ff8f00; 
+  color: #212121; 
+  font-weight: bold; 
+  font-size: 15px; 
+}
 .calc-key.clear { background: #d32f2f; }
 
 /* BOTTOM CASH METER BAR */
@@ -537,7 +662,8 @@ body {
 
 .meter-labels {
   width: 280px;
-  font-size: 12px;
+  font-family: var(--font-body);
+  font-size: 11px;
   color: #cfd8dc;
 }
 
@@ -546,6 +672,7 @@ body {
 }
 
 .meter-labels span {
+  font-size: 13px!important;
   font-weight: bold;
   color: #ffca28;
 }
@@ -593,9 +720,6 @@ body {
   color: #212121;
   border: none;
   padding: 8px 18px;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: bold;
   cursor: pointer;
   border-radius: 4px;
   box-shadow: 0 3px 0 #b26a00;
@@ -632,7 +756,7 @@ body {
   padding: 24px;
   overflow-y: auto;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-  font-family: 'Georgia', serif;
+  font-family: var(--font-body);
 }
 
 .newspaper-header {
@@ -643,13 +767,13 @@ body {
 }
 
 .newspaper-header h1 {
-  font-size: 38px;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
 
 .newspaper-date {
-  font-size: 11px;
+  font-family: var(--font-body);
+  font-size: 12px;
   font-style: italic;
   border-top: 1px solid #1a1a1a;
   padding-top: 4px;
@@ -663,8 +787,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  font-size: 12px;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .news-item {
@@ -673,7 +796,9 @@ body {
 }
 
 .news-item h3 {
-  font-size: 13px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
   margin-bottom: 4px;
   color: #2b1d0c;
 }
@@ -683,14 +808,12 @@ body {
   color: #fff;
   border: none;
   padding: 10px 20px;
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
   cursor: pointer;
   margin-top: 15px;
   display: block;
   width: 100%;
   border-radius: 4px;
-  text-align-last: center;
+  text-align: center;
 }
 
 .modal-close-btn:hover { background: #424242; }
@@ -709,8 +832,6 @@ body {
 }
 
 .handbook-title {
-  font-size: 18px;
-  font-weight: bold;
   border-bottom: 2px solid #8d6e63;
   padding-bottom: 6px;
   margin-bottom: 12px;
@@ -721,13 +842,16 @@ body {
   margin-bottom: 12px;
   border-left: 3px solid #ff8f00;
   padding-left: 8px;
-  font-size: 12px;
   line-height: 1.4;
 }
 
 .sop-rule-item strong {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
   color: #b71c1c;
   display: block;
+  margin-bottom: 2px;
 }
 
 /* DAY END EVALUATION MODAL */
@@ -744,8 +868,6 @@ body {
   border-bottom: 2px solid #90a4ae;
   padding-bottom: 8px;
   margin-bottom: 12px;
-  font-size: 16px;
-  font-weight: bold;
   color: #263238;
   text-transform: uppercase;
 }
@@ -754,7 +876,6 @@ body {
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
-  font-size: 13px;
 }
 
 .eval-line.alert {
@@ -773,7 +894,8 @@ body {
   padding: 10px;
   border-radius: 4px;
   margin: 10px 0;
-  font-size: 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
 }
 
 /* ENDING SCREEN MODAL */
@@ -787,23 +909,16 @@ body {
 }
 
 .ending-badge {
-  font-size: 13px;
-  letter-spacing: 2px;
-  font-weight: bold;
   text-transform: uppercase;
   margin-bottom: 8px;
   color: #546e7a;
 }
 
 .ending-title {
-  font-size: 24px;
-  font-weight: bold;
   margin-bottom: 12px;
 }
 
 .ending-desc {
-  font-size: 13px;
-  line-height: 1.6;
   color: #424242;
   margin-bottom: 20px;
   text-align: left;
@@ -817,7 +932,8 @@ body {
   padding: 12px;
   border-radius: 4px;
   margin-bottom: 20px;
-  font-size: 12px;
+  font-family: var(--font-body);
+  font-size: 14px;
   text-align: left;
 }
 
@@ -826,9 +942,6 @@ body {
   color: #fff;
   border: none;
   padding: 10px 24px;
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: bold;
   cursor: pointer;
   border-radius: 4px;
   width: 100%;
@@ -864,8 +977,7 @@ body {
   position: absolute;
   top: 6px;
   right: 8px;
-  font-size: 9px;
-  font-weight: bold;
+  font-size: 10px;
   color: #b71c1c;
   background: rgba(255, 255, 255, 0.7);
   padding: 2px 5px;
@@ -890,9 +1002,6 @@ body {
   color: #fff;
   border: none;
   padding: 8px 14px;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: bold;
   cursor: pointer;
   border-radius: 4px;
   transition: background 0.15s ease;
@@ -913,7 +1022,6 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  font-size: 12px;
   line-height: 1.4;
 }
 
@@ -938,7 +1046,8 @@ body {
   justify-content: center;
   text-align: center;
   color: #5d4037;
-  font-size: 11px;
+  font-family: var(--font-body);
+  font-size: 12px;
   font-weight: bold;
   padding: 8px;
   overflow: hidden;
@@ -951,7 +1060,9 @@ body {
 }
 
 .tutorial-text h4 {
-  font-size: 13px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
   color: #2b1d0c;
   margin-bottom: 4px;
   border-bottom: 1px solid #8d6e63;
@@ -972,10 +1083,7 @@ body {
   color: #4e342e;
   border: 1px solid #8d6e63;
   border-bottom: none;
-  padding: 6px 14px;
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: bold;
+  padding: 8px 16px;
   cursor: pointer;
   border-radius: 4px 4px 0 0;
   transition: all 0.15s ease;
@@ -989,7 +1097,7 @@ body {
   background: var(--paper-bg);
   color: #212121;
   border-top: 3px solid #ff8f00;
-  padding-bottom: 7px;
+  padding-bottom: 9px;
   margin-bottom: -1px;
 }
 
@@ -1046,7 +1154,8 @@ body {
   border: 1px solid #78909c;
   border-radius: 4px;
   padding: 4px 10px;
-  font-size: 11px;
+  font-family: var(--font-display);
+  font-size: 12px;
   font-weight: bold;
   cursor: pointer;
   display: inline-flex;
@@ -1137,14 +1246,12 @@ body {
 }
 
 .story-text {
-  font-size: 13px;
   color: #3e2723;
-  line-height: 1.5;
   margin-bottom: 16px;
   text-align: justify;
 }
 
-/* CONTAINER MINI SWITCH DI POJOK KANAN ATAS MODAL */
+/* CONTAINER MINI SWITCH DI POJOK MODAL */
 .lang-switch-group {
   position: absolute;
   top: 10px;
@@ -1156,29 +1263,26 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* TOMBOL OPSI BAHASA */
 .lang-pill-btn {
   background: #efebe9;
   color: #5d4037;
   border: none;
-  padding: 4px 8px;
-  font-size: 11px;
-  font-weight: 600;
+  padding: 4px 10px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-/* TOMBOL BAHASA YANG SEDANG AKTIF */
 .lang-pill-btn.active {
   background: #4e342e;
   color: #ffffff;
 }
 
 /* ==========================================================================
-   PENYESUAIAN RESPONSIF STANDAR (TABLET & SMARTPHONE)
+   PENYESUAIAN RESPONSIF (TABLET & SMARTPHONE)
    ========================================================================== */
-
-/* PENGAMAN MODAL SECARA UMUM (Semua Ukuran Layar) */
 .newspaper-box,
 .handbook-box,
 .eval-box,
@@ -1198,10 +1302,9 @@ body {
 
 .wall-item {
     max-width: 380px;
-    font-size: 12px;
+    font-size: 13px;
   }
 
-  /* Workspace 2 kolom: Berkas & Dokumen di atas, Peralatan Meja di baris bawah */
   #workspace {
     grid-template-columns: 220px 1fr;
     grid-template-rows: auto auto;
@@ -1230,7 +1333,7 @@ body {
   }
 
   #calc-screen {
-    font-size: 13px;
+    font-size: 16px;
   }
 }
 
@@ -1243,7 +1346,6 @@ body {
     padding-bottom: 95px;
   }
 
-  /* Header bilik ditumpuk vertikal */
   #cubicle-wall {
     height: auto;
     flex-direction: column;
@@ -1255,7 +1357,7 @@ body {
 .wall-item {
     max-width: 100%;
     transform: none;
-    font-size: 12px;
+    font-size: 13px;
   }
 
   #status-badges {
@@ -1265,13 +1367,12 @@ body {
   }
 
 .badge-box {
-    font-size: 11px;
+    font-size: 12px;
     padding: 6px 10px;
     flex: 1 1 auto;
     text-align: center;
   }
 
-  /* Workspace ditumpuk 1 kolom penuh */
   #workspace {
     display: flex;
     flex-direction: column;
@@ -1279,7 +1380,6 @@ body {
     padding: 8px;
   }
 
-  /* Panel kiri diubah menjadi selector kartu horizontal geser */
   #left-panel {
     position: static;
     height: auto;
@@ -1295,21 +1395,20 @@ body {
   }
 
 .folder-tab {
-    flex: 0 0 150px;
+    flex: 0 0 160px;
     padding: 8px;
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
   }
 
-  /* Area dokumen */
   #center-panel {
     padding: 10px;
   }
 
   #document-sheet {
     padding: 16px 12px;
-    font-size: 12px;
+    font-size: 13px;
   }
 
   #document-sheet::before {
@@ -1322,7 +1421,7 @@ body {
 
 .doc-page-tab {
     padding: 6px 8px;
-    font-size: 10px;
+    font-size: 11px;
     flex: 1;
     text-align: center;
   }
@@ -1357,11 +1456,10 @@ body {
   }
 
 .stamp-button {
-    font-size: 14px;
+    font-size: 16px;
     letter-spacing: 1px;
   }
 
-  /* Panel alat meja ditumpuk rapi di bawah dokumen */
   #right-panel {
     position: static;
     height: auto;
@@ -1372,13 +1470,11 @@ body {
     overflow: visible;
   }
 
-  /* Penyesuaian Modal pada Ponsel */
 .newspaper-header h1 {
-    font-size: 22px;
+    font-size: 24px;
   }
 
 .news-articles,
-.news-articles-sub,
 .tutorial-grid,
 .stat-grid {
     display: flex;
@@ -1404,7 +1500,6 @@ body {
     display: none;
   }
 
-  /* Ubah footer kas menjadi Grid 2 baris (LTR default) */
   #cash-bar-container {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -1428,7 +1523,7 @@ body {
     grid-column: 2;
     grid-row: 1;
     padding: 6px 14px;
-    font-size: 11px;
+    font-size: 13px;
     white-space: nowrap;
   }
 
@@ -1445,7 +1540,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    font-size: 13px;
+    font-size: 18px;
     line-height: 1.3;
   }
 
@@ -1455,18 +1550,69 @@ body {
 }
 
 /* ==========================================================================
-   DUAL LANGUAGE: ARABIC (RTL TEXT & AMIRI TYPOGRAPHY)
+   DUAL LANGUAGE: ARABIC (AMIRI FOR TEXT & ARABIC RTL RULES)
    ========================================================================== */
-
-/* 1. Font & Tipografi Dasar */
 html[lang="ar"],
 html[lang="ar"] body,
 html[lang="ar"] button,
 html[lang="ar"] input {
-  font-family: 'Amiri', 'Courier New', serif!important;
+  font-family: 'Amiri', 'Georgia', serif!important;
 }
 
-/* 2. Watermark Lembar Dokumen */
+html[lang="ar"].doc-title,
+html[lang="ar"].newspaper-header h1,
+html[lang="ar"].handbook-title,
+html[lang="ar"].eval-header,
+html[lang="ar"].ending-title,
+html[lang="ar"].story-box h2 {
+  font-family: 'Amiri', serif!important;
+  font-weight: 700;
+  font-size: 26px;
+}
+
+html[lang="ar"].panel-title,
+html[lang="ar"].tool-title,
+html[lang="ar"].ending-badge,
+html[lang="ar"] #memo-title,
+html[lang="ar"].doc-section-title,
+html[lang="ar"].eval-section-title {
+  font-family: 'Amiri', serif!important;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+html[lang="ar"].stamp-button,
+html[lang="ar"] #btn-submit-day,
+html[lang="ar"].modal-close-btn,
+html[lang="ar"].restart-btn,
+html[lang="ar"].side-btn,
+html[lang="ar"].news-nav-btn,
+html[lang="ar"].doc-page-tab {
+  font-family: 'Amiri', serif!important;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+/* KHUSUS ANGKA DI MODE ARAB: TETAP ANGKA LATIN DENGAN IBM PLEX MONO */
+html[lang="ar"].field-value.highlight,
+html[lang="ar"].folder-tab > div > div:last-child,
+html[lang="ar"].meter-labels span,
+html[lang="ar"].badge-box span,
+html[lang="ar"] #calendar-day,
+html[lang="ar"] #calendar-widget.day-num,
+html[lang="ar"] #calc-screen,
+html[lang="ar"].calc-key,
+html[lang="ar"] #crt-screen,
+html[lang="ar"] #crt-log strong,
+html[lang="ar"].eval-line span:last-child,
+html[lang="ar"].stat-grid strong {
+  font-family: var(--font-mono)!important;
+  font-weight: 600;
+  direction: ltr!important;
+  display: inline-block;
+  unicode-bidi: embed;
+}
+
 html[lang="en"] #document-sheet::before {
   content: "BRANCH CREDIT APPLICATION FORM";
 }
@@ -1477,19 +1623,12 @@ html[lang="ar"] #document-sheet::before {
   left: 15px!important;
 }
 
-/* 3. Sakelar Mini Bahasa di Sudut Modal (Pindah ke Kiri Atas saat Arab) */
-html[lang="ar"] .lang-switch-group {
-  /* right: auto!important; */
-  /* left: 12px!important; */
-}
-
-/* 4. Area Dokumen & Konten yang Membaca RTL */
 html[lang="ar"] #document-sheet,
-html[lang="ar"] .story-text,
-html[lang="ar"] .newspaper-box,
-html[lang="ar"] .handbook-box,
-html[lang="ar"] .eval-box,
-html[lang="ar"] .ending-box,
+html[lang="ar"].story-text,
+html[lang="ar"].newspaper-box,
+html[lang="ar"].handbook-box,
+html[lang="ar"].eval-box,
+html[lang="ar"].ending-box,
 html[lang="ar"] #phone-display,
 html[lang="ar"] #crt-log {
   direction: rtl!important;
@@ -1498,34 +1637,32 @@ html[lang="ar"] #crt-log {
   line-height: 1.7!important;
 }
 
-html[lang="ar"] .doc-header,
-html[lang="ar"] .doc-title,
-html[lang="ar"] .doc-sub,
-html[lang="ar"] .field-group,
-html[lang="ar"] .field-label,
-html[lang="ar"] .field-value {
+html[lang="ar"].doc-header,
+html[lang="ar"].doc-title,
+html[lang="ar"].doc-sub,
+html[lang="ar"].field-group,
+html[lang="ar"].field-label,
+html[lang="ar"].field-value {
   text-align: right!important;
 }
 
-html[lang="ar"] .doc-page-tabs {
+html[lang="ar"].doc-page-tabs {
   direction: rtl!important;
 }
 
-/* 5. Memo Pimpinan (Sticky Note di Dinding) */
-html[lang="ar"] .wall-item {
+html[lang="ar"].wall-item {
   direction: rtl!important;
   text-align: right!important;
   border-left: none!important;
   border-right: 4px solid #fbc02d!important;
 }
 
-html[lang="ar"] .memo-tag {
+html[lang="ar"].memo-tag {
   right: auto!important;
   left: 8px!important;
 }
 
-/* 6. Tab Berkas Klien (Panel Kiri) */
-html[lang="ar"] .folder-tab {
+html[lang="ar"].folder-tab {
   direction: rtl!important;
   text-align: right!important;
   flex-direction: row!important;
@@ -1534,34 +1671,33 @@ html[lang="ar"] .folder-tab {
   border-right: 6px solid #8d6e63!important;
 }
 
-html[lang="ar"] .folder-tab > div:first-child {
+html[lang="ar"].folder-tab > div:first-child {
   text-align: right!important;
   direction: rtl!important;
 }
 
-html[lang="ar"] .folder-tab.tab-status {
+html[lang="ar"].folder-tab.tab-status {
   margin-right: auto!important;
   margin-left: 0!important;
 }
 
-html[lang="ar"] .folder-tab:hover {
+html[lang="ar"].folder-tab:hover {
   transform: translateX(-4px)!important;
 }
 
-html[lang="ar"] .folder-tab.active {
+html[lang="ar"].folder-tab.active {
   border-right-color: #ff8f00!important;
   border-left: none!important;
   box-shadow: -2px 2px 6px rgba(0, 0, 0, 0.4)!important;
 }
 
-/* 7. Garis Aksen Judul Bagian & Buku Pedoman SOP */
-html[lang="ar"] .doc-section-title {
+html[lang="ar"].doc-section-title {
   border-left: none!important;
   border-right: 3px solid #8d6e63!important;
   text-align: right!important;
 }
 
-html[lang="ar"] .sop-rule-item {
+html[lang="ar"].sop-rule-item {
   border-left: none!important;
   border-right: 3px solid #ff8f00!important;
   padding-left: 0!important;
@@ -1570,43 +1706,41 @@ html[lang="ar"] .sop-rule-item {
   direction: rtl!important;
 }
 
-/* 8. Baris Evaluasi Hari & Baris Tanggal Koran */
-html[lang="ar"] .eval-header,
-html[lang="ar"] .eval-section-title {
+html[lang="ar"].eval-header,
+html[lang="ar"].eval-section-title {
   text-align: right!important;
 }
 
-html[lang="ar"] .eval-line,
-html[lang="ar"] .newspaper-date {
+html[lang="ar"].eval-line,
+html[lang="ar"].newspaper-date {
   direction: rtl!important;
   text-align: right!important;
 }
 
-html[lang="ar"] .strike-box {
+html[lang="ar"].strike-box {
   direction: rtl!important;
   text-align: right!important;
 }
 
-html[lang="ar"] .strike-box ul {
+html[lang="ar"].strike-box ul {
   padding-right: 20px!important;
   padding-left: 0!important;
 }
 
-html[lang="ar"] .newspaper-nav {
+html[lang="ar"].newspaper-nav {
   direction: rtl!important;
   flex-direction: row-reverse!important;
 }
 
-/* 9. Format Teks Berita Koran (Rata Kanan Penuh) */
-html[lang="ar"] .newspaper-box,
+html[lang="ar"].newspaper-box,
 html[lang="ar"] #modal-newspaper.newspaper-box,
 html[lang="ar"] #news-container,
-html[lang="ar"] .news-articles,
-html[lang="ar"] .news-item,
-html[lang="ar"] .news-item p,
-html[lang="ar"] .news-item div,
-html[lang="ar"] .tutorial-text,
-html[lang="ar"] .tutorial-text p {
+html[lang="ar"].news-articles,
+html[lang="ar"].news-item,
+html[lang="ar"].news-item p,
+html[lang="ar"].news-item div,
+html[lang="ar"].tutorial-text,
+html[lang="ar"].tutorial-text p {
   direction: rtl!important;
   text-align: right!important;
   text-align-last: right!important;
@@ -1614,22 +1748,20 @@ html[lang="ar"] .tutorial-text p {
   line-height: 1.7!important;
 }
 
-html[lang="ar"] .news-item h3,
-html[lang="ar"] .tutorial-text h4 {
+html[lang="ar"].news-item h3,
+html[lang="ar"].tutorial-text h4 {
   direction: rtl!important;
   text-align: right!important;
   margin-bottom: 6px!important;
 }
 
-/* Border Pemisah Kolom Berita Hari Pertama */
-html[lang="ar"] .news-welcome >.news-item:nth-child(2) {
+html[lang="ar"].news-welcome >.news-item:nth-child(2) {
   border-right: none!important;
   border-left: 1px dashed #7a7060!important;
   padding-right: 0!important;
   padding-left: 16px!important;
 }
 
-/* 10. Kalkulator Tetap LTR (Digit Angka Standar) */
 #calculator,
 #calc-screen,
 .calc-keys {
@@ -1637,26 +1769,21 @@ html[lang="ar"] .news-welcome >.news-item:nth-child(2) {
   text-align: right!important;
 }
 
-/* 11. Footer Kas Desktop: Tombol End Shift di Kiri, Label Kas di Kanan */
 html[lang="ar"] #cash-bar-container {
   flex-direction: row-reverse!important;
 }
 
 html[lang="ar"] #meter-labels,
-html[lang="ar"] .meter-labels,
-html[lang="ar"] .meter-label-row,
-html[lang="ar"] .meter-labels div,
-html[lang="ar"] .meter-labels span {
+html[lang="ar"].meter-labels,
+html[lang="ar"].meter-label-row,
+html[lang="ar"].meter-labels div,
+html[lang="ar"].meter-labels span {
   direction: rtl!important;
   text-align: right!important;
   unicode-bidi: isolate!important;
 }
 
-/* ==========================================================================
-   PENYESUAIAN RESPONSIF MOBILE (<= 768px) KHUSUS BAHASA ARAB
-   ========================================================================== */
 @media (max-width: 768px) {
-  /* Footer Kas Mobile: Tombol di Kolom Kiri, Teks Kas di Kolom Kanan */
   html[lang="ar"] #cash-bar-container {
     display: grid!important;
     grid-template-columns: auto 1fr!important;
@@ -1671,9 +1798,9 @@ html[lang="ar"] .meter-labels span {
   }
 
   html[lang="ar"] #meter-labels,
-  html[lang="ar"] .meter-labels,
-  html[lang="ar"] .meter-label-row,
-  html[lang="ar"] .meter-labels div {
+  html[lang="ar"].meter-labels,
+  html[lang="ar"].meter-label-row,
+  html[lang="ar"].meter-labels div {
     grid-column: 2!important;
     grid-row: 1!important;
     direction: rtl!important;
@@ -1687,15 +1814,14 @@ html[lang="ar"] .meter-labels span {
     width: 100%!important;
   }
 
-  /* Reset Border Berita pada Tampilan Ponsel 1 Kolom */
-  html[lang="ar"] .news-welcome >.news-item:nth-child(2) {
+  html[lang="ar"].news-welcome >.news-item:nth-child(2) {
     border-left: none!important;
     padding-left: 0!important;
     border-bottom: 1px solid #8d6e63!important;
   }
 }
 
-/* TOMBOL & BALON TEKS RUMUS (RETRO OFFICE THEME) */
+/* TOMBOL & BALON TEKS RUMUS */
 .field-label-wrapper {
   display: inline-flex;
   align-items: center;
@@ -1704,21 +1830,20 @@ html[lang="ar"] .meter-labels span {
   vertical-align: middle;
 }
 
-/* Tombol bergaya stempel paraf kecil */
 .hint-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 17px;
-  height: 17px;
-  padding: 0 3px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
   border-radius: 3px;
   background: #fff8e1;
   border: 1px dashed #8d6e63;
   color: #5d4037;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 11px;
-  font-weight: 900;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
   line-height: 1;
   cursor: pointer;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
@@ -1742,7 +1867,6 @@ html[lang="ar"] .meter-labels span {
   box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.4);
 }
 
-/* Balon teks memo arsip */
 .hint-bubble {
   display: none;
   position: absolute;
@@ -1754,8 +1878,8 @@ html[lang="ar"] .meter-labels span {
   border-left: 3px solid #ff8f00;
   border-radius: 3px;
   padding: 6px 10px;
-  font-size: 11px;
-  font-family: inherit;
+  font-family: var(--font-body);
+  font-size: 13px;
   font-weight: normal;
   white-space: nowrap;
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.25);
@@ -1784,7 +1908,6 @@ html[lang="ar"] .meter-labels span {
   }
 }
 
-/* Panah penunjuk memo */
 .hint-bubble::before {
   content: "";
   position: absolute;
@@ -1805,9 +1928,8 @@ html[lang="ar"] .meter-labels span {
   border-color: #fffdf7 transparent transparent transparent;
 }
 
-/* Dukungan Mode Arab (RTL) */
 html[lang="ar"].hint-btn {
-  font-family: 'Amiri', 'Courier New', serif!important;
+  font-family: 'Amiri', serif!important;
 }
 
 html[lang="ar"].hint-bubble {

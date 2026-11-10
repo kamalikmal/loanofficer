@@ -64,6 +64,11 @@
     padding: 10px;
   }
 
+.wall-item {
+    max-width: 100%;
+    transform: none;
+    font-size: 13px;
+  }
   #boss-sticky {
     position: relative;
     padding-top: 30px;

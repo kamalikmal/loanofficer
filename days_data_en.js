@@ -255,7 +255,7 @@ function generateDaysDataEn() {
         nik: clientNik,
         birthDate: item.dob,
         isNikValid: item.isNikOk,
-        phoneContact: `${item.phNo} (${item.job.split(" ")[0]} Office)`,
+        phoneContact: `${item.phNo} <br>(${item.job.split(" ")[0]} Office)`,
         phoneResponse: item.phResp,
         isPhoneValid: item.isPhOk,
         familyRelation: item.rel,
