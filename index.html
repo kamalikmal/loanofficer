@@ -415,7 +415,14 @@
 		<button class="modal-close-btn" id="btn-close-options" onclick="closeModal('modal-options')">CLOSE</button>
 	  </div>
 	</div>
-
+	<!-- WARNING ALERT MODAL -->
+	<div class="modal-overlay" id="modal-warning">
+	  <div class="handbook-box" id="warning-box" style="position: relative; max-width: 360px; text-align: center;">
+		<div class="handbook-title" style="color: #b71c1c;"><span id="warning-title-text">ATTENTION</span></div>
+		<p id="warning-message-text" style="margin: 16px 0; font-size: 13px; line-height: 1.5; color: #263238; font-weight: bold;"></p>
+		<button class="modal-close-btn" id="btn-close-warning" onclick="closeModal('modal-warning')" style="width: 100%;">OK</button>
+	  </div>
+	</div>
   <!-- LOAD DATASETS & MODULES -->
   <script type="text/javascript" src="audio.js?v=6"></script>
   <script type="text/javascript" src="calculator.js?v=1"></script>
@@ -503,7 +510,7 @@
     const rtlTargetIds = [
       "meter-labels", "document-sheet", "newspaper-box", "handbook-box",
       "eval-box", "ending-box", "phone-display", "crt-log", "boss-sticky",
-      "options-box", "night-box", "endings-tracker-container"
+      "options-box", "night-box", "endings-tracker-container", "warning-box"
     ];
 
     rtlTargetIds.forEach(id => {
@@ -1310,17 +1317,26 @@
     openModal("modal-sop");
   };
 
+  function showWarningModal(title, message) {
+    const titleEl = document.getElementById("warning-title-text");
+    const msgEl = document.getElementById("warning-message-text");
+    if (titleEl) titleEl.textContent = title;
+    if (msgEl) msgEl.textContent = message;
+    openModal("modal-warning");
+  }
+
   document.getElementById("btn-submit-day").onclick = () => {
     const dayObj = DAYS_DATA[gameState.currentDay - 1];
     const isEn = (currentLang === "en");
 
     const unhandled = dayObj.clients.filter(c =>!gameState.clientDecisions[c.id]);
     if (unhandled.length > 0) {
-      if (isEn) {
-        alert(`There are still ${unhandled.length} application(s) without an explicit stamp (APPROVE/DECLINE)! Process all files before closing the shift.`);
-      } else {
-        alert(`لا يزال هناك ${unhandled.length} ملف بدون قرار محدد (موافقة/رفض)! يرجى استكمال كافة الملفات قبل إنهاء الوردية.`);
-      }
+      const title = isEn? "INCOMPLETE DOSSIERS": "ملفات غير مكتملة";
+      const message = isEn
+? `There are still ${unhandled.length} application(s) without an explicit stamp (APPROVE/DECLINE)! Process all files before closing the shift.`
+: `لا يزال هناك ${unhandled.length} ملف بدون قرار محدد (موافقة/رفض)! يرجى استكمال كافة الملفات قبل إنهاء الوردية.`;
+
+      showWarningModal(title, message);
       return;
     }
 
