@@ -23,7 +23,9 @@ const sfxFiles = {
   stamp: new Audio('stamp.mp3'),
   coin: new Audio('coin.mp3'),
   winning: new Audio('winning.mp3'),
-  lose: new Audio('lose.mp3')
+  lose: new Audio('lose.mp3'),
+  phone: new Audio('phone.mp3'),
+  calc: new Audio('calc.mp3')
 };
 
 function playBgm(key) {

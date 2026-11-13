@@ -223,7 +223,7 @@
         <div class="tutorial-grid">
           <div class="tutorial-col">
             <div class="tutorial-img-placeholder">
-              <img src="tutorial-5.png" alt="Guide 5">
+              <img src="img/tutorial-5.png" alt="Guide 5">
             </div>
             <div class="tutorial-text">
               <h4 id="tut-title-5">GUIDE 5: CASH TARGETS & CEILING</h4>
@@ -232,7 +232,7 @@
           </div>
           <div class="tutorial-col">
             <div class="tutorial-img-placeholder">
-              <img src="tutorial-6.png" alt="Guide 6">
+              <img src="img/tutorial-6.png" alt="Guide 6">
             </div>
             <div class="tutorial-text">
               <h4 id="tut-title-6">GUIDE 6: AUDIT CONSEQUENCES</h4>
@@ -363,7 +363,7 @@
   <div class="modal-overlay" id="modal-night">
     <div class="story-box" id="night-box">
       <div class="img-container-16-9">
-        <img id="night-image" src="img/image1A.png" alt="Night Story Illustration">
+        <img id="night-image" src="img/image1a.png" alt="Night Story Illustration">
       </div>
       <div class="story-text" id="night-story-desc"></div>
       <button class="restart-btn" id="btn-night-step" onclick="advanceNightStory()" style="background:#455a64; width:100%; padding:10px; font-weight:bold; cursor:pointer;">
@@ -407,7 +407,7 @@
 			  Game Designer: <strong>Kamal, Adhi, Adytia, Frisky, Purnomo</strong><br>
 			  Programmer: <strong>Kamal</strong><br>
 			  Illustration: <strong>Charish</strong><br>
-			  Sound by <a href="https://www.freesoundeffects.com/" target="_blank" rel="noopener noreferrer" style="color: #1565c0; text-decoration: underline;">https://www.freesoundeffects.com/</a>
+			  Sound by <a href="https://www.freesoundeffects.com" target="_blank" rel="noopener noreferrer" style="color: #1565c0; text-decoration: underline;">https://www.freesoundeffects.com</a> <a href="https://www.epidemicsound.com" target="_blank" rel="noopener noreferrer" style="color: #1565c0; text-decoration: underline;">https://www.epidemicsound.com</a>
 			</div>
 		  </div>
 		</div>
@@ -424,7 +424,7 @@
 	  </div>
 	</div>
   <!-- LOAD DATASETS & MODULES -->
-  <script type="text/javascript" src="audio.js?v=6"></script>
+  <script type="text/javascript" src="audio.js?v=7"></script>
   <script type="text/javascript" src="calculator.js?v=1"></script>
   <script type="text/javascript" src="days_data_ar.js?v=102"></script>
   <script type="text/javascript" src="days_data_en.js?v=105"></script>
@@ -1161,16 +1161,27 @@
   };
 
   document.getElementById("btn-call-hrd").onclick = () => {
+    const btnCall = document.getElementById("btn-call-hrd");
     const currentClients = DAYS_DATA[gameState.currentDay - 1].clients;
     const client = currentClients[gameState.activeClientIndex];
     const phone = document.getElementById("phone-display");
     const isEn = (currentLang === "en");
 
-    if (isEn) {
-      phone.innerHTML = `Dialing employer ${client.phoneContact}...<br><strong>"${client.phoneResponse}"</strong>`;
-    } else {
-      phone.innerHTML = `الاتصال بجهة العمل ${client.phoneContact}...<br><strong>"${client.phoneResponse}"</strong>`;
-    }
+    playSfx('phone');
+    btnCall.disabled = true;
+
+    phone.innerHTML = isEn
+? `Calling ${client.phoneContact}...<br><span style="color:#78909c;">(Ringing...)</span>`
+: `الاتصال بـ ${client.phoneContact}...<br><span style="color:#78909c;">(جاري الاتصال...)</span>`;
+
+    setTimeout(() => {
+      if (isEn) {
+        phone.innerHTML = `Connected: ${client.phoneContact}<br><strong>"${client.phoneResponse}"</strong>`;
+      } else {
+        phone.innerHTML = `تم الاتصال: ${client.phoneContact}<br><strong>"${client.phoneResponse}"</strong>`;
+      }
+      btnCall.disabled = false;
+    }, 2000);
   };
 
   function renderNewspaper() {
@@ -1758,6 +1769,15 @@
     applyLanguage();
     closeModal("modal-intro");
     playBgm('home');
+
+    const calcKeys = document.querySelector(".calc-keys");
+    if (calcKeys) {
+      calcKeys.addEventListener("click", (e) => {
+        if (e.target.classList.contains("calc-key")) {
+          playSfx('calc');
+        }
+      });
+    }
   });
   </script>
 </body>
